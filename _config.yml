@@ -1,0 +1,31 @@
+title: Mat Manna
+description: "Indie maker, aspiring engineer, & security researcher."
+github: "https://github.com/matmanna"
+url: "https://matmanna.dev"
+encoding: utf-8
+theme: jekyll-theme-doctored
+color: stone
+
+plugins:
+  - kramdown-parser-gfm
+  - jekyll-gfm-admonitions
+  - jekyll-sitemap
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll/tagging
+
+feed:
+  icon: /assets/images/favicon.png
+
+redcarpet:
+  extensions: ["with_toc_data"]
+
+collections:
+  projects:
+    output: true
+  pages:
+    permalink: /:title/
+    output: true
+
+sass:
+  sourcemap: never
