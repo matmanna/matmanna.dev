@@ -1,0 +1,24 @@
+title: Mat Manna
+emoji: 🧪
+pages:
+  - title: about
+    url: /about
+  - title: projects
+    url: /projects
+  - title: blog
+    url: /blog
+  - title: now
+    url: /now
+  - title: contact
+    url: '#contact'
+socials:
+  - title: github
+    url: https://github.com/matmanna
+  - title: linkedin
+    url: https://linkedin.com/in/matmanna
+  - title: itchio
+    url: https://matmanna.itch.io
+  - title: devpost
+    url: https://devpost.com/matmanna
+  - title: hackernews
+    url: https://news.ycombinator.com

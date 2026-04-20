@@ -1,0 +1,14 @@
+---
+layout: page
+title: Blog
+description: A collection of the latest posts and articles
+permalink: /blog/
+---
+
+{{ page.description}}
+
+<ul class="px-0 flex flex-col mt-4 gap-4 not-prose pt-8">
+    {% for post in site.posts %}
+    {% include post-card.html post=post %}
+    {% endfor %}
+</ul>
