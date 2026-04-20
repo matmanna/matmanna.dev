@@ -15,10 +15,8 @@ links:
     url: https://itch.io/jam/gmtk-jam-2022/rate/1610145
     icon: fas fa-trophy
 tags:
-  - Adventure
   - Platformer
   - RPG
-  - Dice
   - Pixel Art
   - Game Jam
 skills:

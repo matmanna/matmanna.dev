@@ -4,6 +4,7 @@ title: O-FN (Life-sized Board Game)
 description: Industrial-tech-enabled life-sized board game built for outreach and competition.
 image: https://opengraph.githubassets.com/1/ldnano/o-fn
 start_date: 2025-10-07
+end_date: 2026-01-15
 activity_percent: 92
 activity_status: active
 links:
@@ -18,7 +19,6 @@ tags:
   - PLC
   - Competition
   - Outreach
-  - Open Source
 skills:
   - name: Industrial Controls
     icon: fa-solid fa-industry

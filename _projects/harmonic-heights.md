@@ -1,7 +1,7 @@
 ---
 layout: project
 title: Harmonic Heights
-description: Rhythm game about building a music district using scales, chords, and song arrangements.
+description: A rhythm game centered around building using chord progressions, scales, and simple song arrangements.
 image: https://img.itch.zone/aW1nLzE3NDkxOTczLnBuZw==/original/2K1m1y.png
 start_date: 2024-08-16
 end_date: 2024-08-20
@@ -15,12 +15,10 @@ links:
     url: https://itch.io/jam/gmtk-2024/rate/2903045
     icon: fas fa-trophy
 tags:
-  - Rhythm
   - Music
   - Pixel Art
   - Godot
   - Game Jam
-  - Singleplayer
 skills:
   - name: Godot
     icon: fa-solid fa-gamepad

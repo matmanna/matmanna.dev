@@ -1,9 +1,10 @@
 ---
 layout: project
 title: Big O's Loop Lab [DEMO]
-description: Programming-simulator puzzle game focused on loops, recursion, and optimization.
-image: https://img.itch.zone/aW1nLzIzMDA3NzIzLnBuZw==/original/bayAg6.png
+description: A programming-simulator puzzle game where you create programs with loops, recursive algorithms, 
+image: https://img.itch.zone/aW1nLzIzMzEwMjY0LnBuZw==/315x250%23c/brpp6C.png
 start_date: 2025-08-15
+end_date: 2025-08-15
 activity_percent: 30
 activity_status: low
 links:
@@ -15,8 +16,6 @@ links:
     icon: fas fa-trophy
 tags:
   - Puzzle
-  - Coding
-  - GUI
   - Pixel Art
   - Godot
   - Game Jam

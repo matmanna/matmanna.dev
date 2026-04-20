@@ -1,9 +1,7 @@
 title: Mat Manna
-emoji: 🍂 
+emoji: 🟫
 description: Indie maker, aspiring engineer, & security enthusiast.
 pages:
-  - title: about
-    url: /about
   - title: projects
     url: /projects
   - title: blog
