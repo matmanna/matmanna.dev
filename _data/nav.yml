@@ -1,5 +1,5 @@
 title: Mat Manna
-emoji: 🟫
+emoji: 🦖
 description: Indie maker, aspiring engineer, & security enthusiast.
 pages:
   - title: projects
@@ -8,5 +8,7 @@ pages:
     url: /blog
   - title: now
     url: /now
+  - title: subscribe
+    url: "/feed.xml"
   - title: contact
     url: "#contact"

@@ -1,12 +1,12 @@
 title: Mat Manna
-emoji: 🟫
+emoji: 🦖
 pages:
-  - title: about
-    url: /about
   - title: projects
     url: /projects
   - title: blog
     url: /blog
+  - title: subscribe
+    url: /feed.xml
   - title: now
     url: /now
   - title: contact

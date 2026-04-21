@@ -2,7 +2,7 @@
 layout: project
 title: Big O's Loop Lab [DEMO]
 description: A programming-simulator puzzle game where you create programs with loops, recursive algorithms, 
-image: https://img.itch.zone/aW1nLzIzMzEwMjY0LnBuZw==/315x250%23c/brpp6C.png
+image: /assets/images/projects/big-os-loop-lab.webp
 start_date: 2025-08-15
 end_date: 2025-08-15
 activity_percent: 30

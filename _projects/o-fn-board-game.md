@@ -1,17 +1,22 @@
 ---
 layout: project
-title: O-FN (Life-sized Board Game)
-description: Industrial-tech-enabled life-sized board game built for outreach and competition.
-image: https://opengraph.githubassets.com/1/ldnano/o-fn
-start_date: 2025-10-07
-end_date: 2026-01-15
-activity_percent: 92
-activity_status: active
+title: "Operation: Falcon Nation"
+description: Industrial-tech-enabled life-sized board game built for philanthropic outreach and competition(s).
+image: /assets/images/projects/o-fn-board-game.webp
+start_date: 2024-12-07
+end_date: 2025-04-15
+activity_status: production
 links:
   - title: Source code
     url: https://github.com/ldnano/o-fn
     icon: fa-brands fa-github
-  - title: CAC open-source certification
+  - title: CAC open-source cert
+    url: http://congressional.hackclub.com/
+    icon: fas fa-certificate
+  - title: 1st - PLCnext Innovation Contest '25
+    url: http://congressional.hackclub.com/
+    icon: fas fa-certificate
+  - title: 1st - PA Invention Convention '25
     url: http://congressional.hackclub.com/
     icon: fas fa-certificate
 tags:

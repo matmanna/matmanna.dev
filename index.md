@@ -5,13 +5,25 @@ description: My personal site's home page
 permalink: /
 ---
 
-<div class="flex flex-row gap-2 not-prose">
-<a data-no-external-icon href="https://linkedin.com/in/matmanna" data-no-external-icon rel="nofollow"><img src="https://camo.githubusercontent.com/2ede6d5b5e9d909a9cb14e9946e490db80e28df9a157f43e0fdabaf67f5539ae/68747470733a2f2f637573746f6d2d69636f6e2d6261646765732e64656d6f6c61622e636f6d2f62616467652f696e2d3041363643323f6c6f676f3d6c696e6b6564696e2d7768697465266c6f676f436f6c6f723d666666" alt="LinkedIn" data-canonical-src="https://custom-icon-badges.demolab.com/badge/in-0A66C2?logo=linkedin-white&amp;logoColor=fff" style="max-width: 100%;"></a>
-<a href="https://devpost.com/matmanna" data-no-external-icon rel="nofollow"><img src="https://camo.githubusercontent.com/a367172990b8bb46c894e27dc23ccfe48c89d33b55c92817dc1a747ab429e988/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f706f73742d3030334535343f6c6f676f3d646576706f7374266c6f676f436f6c6f723d7768697465" alt="" data-canonical-src="https://img.shields.io/badge/post-003E54?logo=devpost&amp;logoColor=white" style="max-width: 100%;"></a>
-<a href="https://matmanna.itch.io/" data-no-external-icon rel="nofollow"><img src="https://camo.githubusercontent.com/73fea2c27b65a79ee37d278a9e53d6b72dfdafce2c8b49e80efbe0667069743a/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f697463682d4641354335433f6c6f676f3d69746368646f74696f266c6f676f436f6c6f723d7768697465" alt="" data-canonical-src="https://img.shields.io/badge/itch-FA5C5C?logo=itchdotio&amp;logoColor=white" style="max-width: 100%;"></a>
-<a href="https://pypi.org/user/matmanna/" data-no-external-icon rel="nofollow"><img src="https://camo.githubusercontent.com/69ea1ee6eeed632a8ef6775d439b6d91f0a7695436967ca9cf01e917482ec312/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f707970692d3337373541393f6c6f676f3d70797069266c6f676f436f6c6f723d666666" alt="" data-canonical-src="https://img.shields.io/badge/pypi-3775A9?logo=pypi&amp;logoColor=fff" style="max-width: 100%;"></a>
-<a href="https://rubygems.org/profiles/matmanna" data-no-external-icon rel="nofollow"><img src="https://camo.githubusercontent.com/b7af774aceb683bf16775ade4edd94c68736cfdeb1394c6276e616290de5d362/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f67656d732d2532334343333432442e7376673f266c6f676f3d7275627967656d73266c6f676f436f6c6f723d7768697465" alt="" data-canonical-src="https://img.shields.io/badge/gems-%23CC342D.svg?&amp;logo=rubygems&amp;logoColor=white" style="max-width: 100%;"></a>
-<a href="https://gitlab.com/matmanna" data-no-external-icon rel="nofollow"><img src="https://camo.githubusercontent.com/2ea0be8e36b35c04fbf9f7c59be4d0fa37f7e86c45c62898134d147b8252e1c1/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f6c61622d4643364432363f6c6f676f3d6769746c6162266c6f676f436f6c6f723d7768697465" alt="" data-canonical-src="https://img.shields.io/badge/lab-FC6D26?logo=gitlab&amp;logoColor=white" style="max-width: 100%;"></a>
+<div class="flex flex-row gap-2 not-prose flex-wrap">
+  <a href="https://linkedin.com/in/matmanna" data-no-external-icon rel="nofollow">
+    <img src="https://custom-icon-badges.demolab.com/badge/in-0A66C2?logo=linkedin-white&logoColor=fff" alt="LinkedIn badge">
+  </a>
+  <a href="https://devpost.com/matmanna" data-no-external-icon rel="nofollow">
+    <img src="https://img.shields.io/badge/post-003E54?logo=devpost&logoColor=white" alt="Devpost badge">
+  </a>
+  <a href="https://matmanna.itch.io/" data-no-external-icon rel="nofollow">
+    <img src="https://img.shields.io/badge/itch-FA5C5C?logo=itchdotio&logoColor=white" alt="Itch.io badge">
+  </a>
+  <a href="https://pypi.org/user/matmanna/" data-no-external-icon rel="nofollow">
+    <img src="https://img.shields.io/badge/pypi-3775A9?logo=pypi&logoColor=white" alt="PyPI badge">
+  </a>
+  <a href="https://rubygems.org/profiles/matmanna" data-no-external-icon rel="nofollow">
+    <img src="https://img.shields.io/badge/gems-CC342D?logo=rubygems&logoColor=white" alt="RubyGems badge">
+  </a>
+  <a href="https://gitlab.com/matmanna" data-no-external-icon rel="nofollow">
+    <img src="https://img.shields.io/badge/lab-FC6D26?logo=gitlab&logoColor=white" alt="GitLab badge">
+  </a>
 </div>
 
 an aspiring engineer focused on open protocols, automation, and rapid prototyping.
@@ -36,7 +48,7 @@ Outside of computing, I’m also a guitarist, competition aficionado, and lingua
 - reverse-engineering electric and bass guitar amplifiers to build:
   - LtAmp.py: a Python [library](https://pypi.org/p/ltamp) for interacting with supported amplifiers
   - The Twist: an augmentation [module](https://github.com/benderhq/the-twist/tree/nix) with features incl. remote control and preset playlists
-- as a member of Hack Club, maintaining<small class="no-external-icon">I've also contrubuted code in infrastructure (such as [Hackatime](https://hackatime.hackclub.com), [Revoker](https://revoke.hackclub.com), & [site](https://hackclub.com?uwu)), and reported data leaks through the security [program](https://security.hackclub.com).</small>[^3] [Slacker News](https://news.hackclub.com) & the #ship Slack channel, as well as providing technical support to hackers for YSWS.
+- maintaining<small class="no-external-icon">I've also contrubuted code in infrastructure (such as [Hackatime](https://hackatime.hackclub.com), [Revoker](https://revoke.hackclub.com), & [site](https://hackclub.com?uwu)), and reported data leaks through the security [program](https://security.hackclub.com).</small>[^3] Hack Club tools such as [Slacker News](https://news.hackclub.com), the #ship feed, and technical support channels to new hackers & YSWS participants.
 
 <hr class="not-prose">
 

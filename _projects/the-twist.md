@@ -2,7 +2,7 @@
 layout: project
 title: The Twist
 description: A portable platform which augments the capabilities of LT-series amps made by a certain guitar brand that rhymes with "bender".
-image: https://github.com/user-attachments/assets/58ce5217-b79b-4d99-894d-8866c4a96b48
+image: /assets/images/projects/the-twist.webp
 start_date: 2025-07-05
 activity_percent: 55
 activity_status: paused

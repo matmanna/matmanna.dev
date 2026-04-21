@@ -1,0 +1,29 @@
+---
+layout: project
+title: Doctored
+description: Jekyll blog theme (powering this site!,) prioritizing uniqueness, technical complexity, and sophistication.
+image: /assets/images/projects/doctored.webp
+start_date: 2025-05-04
+end_date: 2025-05-04
+
+links:
+  - title: Demo deployment
+    url: https://doctored.matmanna.dev/
+    icon: fa-solid fa-up-right-from-square
+  - title: Source code
+    url: https://github.com/matmanna/doctored
+    icon: fa-brands fa-github
+tags:
+  - Jekyll
+  - Theme
+  - Tailwind CSS
+  - Markdown
+  - GitHub Pages
+skills:
+  - name: Theme Engineering
+    icon: fa-solid fa-paintbrush
+  - name: Frontend Architecture
+    icon: fa-solid fa-code
+---
+
+Doctored is a customizable Jekyll theme designed for distinctive personal publishing, including multi-page content structures, rich markdown support, and a broad visual theming system.
