@@ -23,7 +23,8 @@ an aspiring engineer focused on open protocols, automation, and rapid prototypin
 
 A decade of technical experience has shaped me into an indie maker who builds engaging, accessible, and secure tools<small>I see my projects as tools meant to serve humans, not exploit them. I prefer to use products which align with this.</small>[^1] for real people. I am especially passionate about search UX, secure interfaces with the real world, and decentralized infrastructure. 
 
-Outside of computing, I’m also a guitarist, competition aficionado, and linguaphile<small>English, Spanish, and Esperanto</small>[^2].
+Outside of computing, I’m also a guitarist, competition aficionado, and linguaphile<small>English, Spanish, and Esperanto so far</small>[^2].
+
 
 
 ### what i'm up to `:now`
@@ -36,6 +37,8 @@ Outside of computing, I’m also a guitarist, competition aficionado, and lingua
   - LtAmp.py: a Python [library](https://pypi.org/p/ltamp) for interacting with supported amplifiers
   - The Twist: an augmentation [module](https://github.com/benderhq/the-twist/tree/nix) with features incl. remote control and preset playlists
 - as a member of Hack Club, maintaining<small class="no-external-icon">I've also contrubuted code in infrastructure (such as [Hackatime](https://hackatime.hackclub.com), [Revoker](https://revoke.hackclub.com), & [site](https://hackclub.com?uwu)), and reported data leaks through the security [program](https://security.hackclub.com).</small>[^3] [Slacker News](https://news.hackclub.com) & the #ship Slack channel, as well as providing technical support to hackers for YSWS.
+
+<hr class="not-prose">
 
 
 ### formative `:experiences`
@@ -78,5 +81,7 @@ _...and here are some thoughts I've had and shared..._
 
 ## Footnotes 
 [^1]: I see my projects as tools meant to serve humans, not exploit them. I prefer to use products which align with this.
-[^2]: English, Spanish, and Esperanto
+[^2]: English, Spanish, and Esperanto so far
 [^3]: I've also contrubuted code in infrastructure (such as [Hackatime](https://hackatime.hackclub.com), [Revoker](https://revoke.hackclub.com), & [site](https://hackclub.com?uwu)), and reported data leaks through the security [program](https://security.hackclub.com).
+
+<hr class="not-prose">
