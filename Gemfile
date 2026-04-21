@@ -1,1 +1,3 @@
-gem "jekyll-theme-doctored", path: "../doctored"
+source "https://rubygems.org"
+
+gem "jekyll-theme-doctored", "~> 0.3.7"
