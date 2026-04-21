@@ -6,6 +6,9 @@ encoding: utf-8
 theme: jekyll-theme-doctored
 color: stone
 
+kramdown:
+  gfm_quirks: [paragraph_end]
+
 plugins:
   - kramdown-parser-gfm
   - jekyll-gfm-admonitions

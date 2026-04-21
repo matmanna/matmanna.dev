@@ -68,7 +68,7 @@ adjust based on kind so the same template can render posts, projects, pages, etc
                     {% for tag in entry.tags %}
                     <a href="/tag/{{ tag | downcase | replace: ' ', '-' }}/" class="no-underline no-external-icon">
                         <div
-                            class="bg-primary-500 dark:bg-primary-900 py-1 items-center px-2 rounded-md flex flex-row gap-2 h-fit text-xs">
+                            class="bg-primary-300 text-primary-800 dark:bg-primary-900 dark:text-primary-200 py-1 items-center px-2 rounded-md flex flex-row gap-2 h-fit text-xs">
                             {% include icon.html name="fa-tag" class="w-3 h-3" %}{{ tag }}
                         </div>
                     </a>

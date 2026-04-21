@@ -24,6 +24,9 @@ permalink: /
   <a href="https://gitlab.com/matmanna" data-no-external-icon rel="nofollow">
     <img src="https://img.shields.io/badge/lab-FC6D26?logo=gitlab&logoColor=white" alt="GitLab badge">
   </a>
+  <p>(
+    <code>:places</code> 
+    to find me)</p>
 </div>
 
 an aspiring engineer focused on open protocols, automation, and rapid prototyping.
@@ -63,14 +66,14 @@ Since being exposed to computer programming on [Scratch](https://scratch.mit.edu
 - made videogame [submissions](https://matmanna.itch.io) within 48hrs-2wks for ~7 game jams
 - ran AV systems (livestreams and sound mixers) for funerals and weddings
 - discovered and disclosed vulnerabilities and data leaks within my school and Hack Club
-- <details><summary>other miscellaneous things (not that interesting)</sub></summary><ul>
+- <details><summary>other miscellaneous things <sub>(not that interesting)</sub></summary><ul>
   <li>Participated in the selective PennApps XXVI college [hackathon](https://pennapps.com)</li>
   <li>Received recognition for Integrity and Sportsmanship within academic competitions.</li>
   <li>Earned ~$1k in grants and prizes for personal projects submitted to Hack Club programs incl. High Seas, Summer of Making, CMD-K, and Magazine.</li></ul>
   </details>
 
 
-_Here are some more orgs & projects I've contributed to..._
+_Here are some more orgs & projects I've contributed to... (<a href="/projects">all projects</a>)_
 
 <ul class="px-0 flex mt-3 flex-col gap-3 not-prose">
   {% assign projects_without_end = site.projects | where_exp: "project", "project.end_date == nil or project.end_date == ''" %}
