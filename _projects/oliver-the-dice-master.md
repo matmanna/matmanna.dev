@@ -2,7 +2,7 @@
 layout: project
 title: Oliver the Dice Master
 description: Kirby-inspired platformer where dice rolls drive combat against numbered enemies.
-image: /assets/images/projects/oliver-the-dice-master.avif
+image: /assets/images/projects/oliver-the-dice-master.webp
 start_date: 2022-07-15
 end_date: 2022-07-17
 activity_percent: 8
