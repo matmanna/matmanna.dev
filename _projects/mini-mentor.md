@@ -2,7 +2,7 @@
 layout: project
 title: MiniMentor
 description: Micromentorship platform for connecting learners and mentors through personalized, skill-building lessons.
-image: /assets/images/projects/mini-mentor.webp
+image: /assets/images/projects/mini-mentor.avif
 start_date: 2025-09-20
 end_date: 2025-09-20
 activity_status: paused

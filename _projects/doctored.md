@@ -2,7 +2,7 @@
 layout: project
 title: Doctored
 description: Jekyll blog theme (powering this site!,) prioritizing uniqueness, technical complexity, and sophistication.
-image: /assets/images/projects/doctored.webp
+image: /assets/images/projects/doctored.avif
 start_date: 2025-05-04
 end_date: 2025-05-04
 

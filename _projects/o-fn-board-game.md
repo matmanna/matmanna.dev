@@ -2,7 +2,7 @@
 layout: project
 title: "Operation: Falcon Nation"
 description: Industrial-tech-enabled life-sized board game built for philanthropic outreach and competition(s).
-image: /assets/images/projects/o-fn-board-game.webp
+image: /assets/images/projects/o-fn-board-game.avif
 start_date: 2024-12-07
 end_date: 2025-04-15
 activity_status: production

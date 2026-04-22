@@ -2,7 +2,7 @@
 layout: project
 title: Regreso
 description: Open-source tool for creating, finding, and managing links, files, and resources you want to return to later.
-image: /assets/images/projects/regreso.webp
+image: /assets/images/projects/regreso.avif
 start_date: 2024-11-28
 activity_percent: 72
 activity_status: active
