@@ -5,6 +5,9 @@ url: "https://matmanna.dev"
 encoding: utf-8
 theme: jekyll-theme-doctored
 color: stone
+analytics: true
+include:
+  - _headers
 
 kramdown:
   gfm_quirks: [paragraph_end]

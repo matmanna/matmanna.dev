@@ -5,7 +5,7 @@ description: My personal site's home page
 permalink: /
 ---
 
-<div class="flex flex-row gap-2 not-prose flex-wrap">
+<div class="flex flex-row gap-2 not-prose flex-wrap" style="height: 30.33px;">
   <a href="https://linkedin.com/in/matmanna" data-no-external-icon rel="nofollow">
     <img src="https://custom-icon-badges.demolab.com/badge/in-0A66C2?logo=linkedin-white&logoColor=fff" alt="LinkedIn badge">
   </a>
@@ -45,7 +45,7 @@ Outside of computing, I’m also a guitarist, competition aficionado, and lingua
 <details><summary>Recently, I've been shipping,<sub> (expand for stats!)</sub> but also: </summary>
   
 </details>
-  <a class="no-external-icon heatmap-link" href="https://heatmap.shymike.dev?id=U07VA44DNBA&timezone=America%2FNew_York&standalone=true" title="Click to view detailed data for each day!">
+  <a class="no-external-icon heatmap-link" href="https://heatmap.shymike.dev?id=U07VA44DNBA&timezone=America%2FNew_York&standalone=true" title="Click to view detailed data for each day!" style="height: 122.33px; display: inline-block;">
     <img class="heatmap-light" alt="Hackatime activity heatmap" src="https://heatmap.shymike.dev?id=U07VA44DNBA&timezone=America%2FNew_York&theme=light">
     <img class="heatmap-dark" alt="Hackatime activity heatmap" src="https://heatmap.shymike.dev?id=U07VA44DNBA&timezone=America%2FNew_York&theme=dark">
   </a>
