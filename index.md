@@ -7,22 +7,22 @@ permalink: /
 
 <div class="flex flex-row gap-2 not-prose flex-wrap" style="height: 30.33px;">
   <a href="https://linkedin.com/in/matmanna" data-no-external-icon rel="nofollow">
-    <img src="https://custom-icon-badges.demolab.com/badge/in-0A66C2?logo=linkedin-white&logoColor=fff" alt="LinkedIn badge">
+    <img src="/assets/images/badges/social/linkedin-badge.svg" alt="LinkedIn badge">
   </a>
   <a href="https://devpost.com/matmanna" data-no-external-icon rel="nofollow">
-    <img src="https://img.shields.io/badge/post-003E54?logo=devpost&logoColor=white" alt="Devpost badge">
+    <img src="/assets/images/badges/social/devpost-badge.svg" alt="Devpost badge">
   </a>
   <a href="https://matmanna.itch.io/" data-no-external-icon rel="nofollow">
-    <img src="https://img.shields.io/badge/itch-FA5C5C?logo=itchdotio&logoColor=white" alt="Itch.io badge">
+    <img src="/assets/images/badges/social/itch-badge.svg" alt="Itch.io badge">
   </a>
   <a href="https://pypi.org/user/matmanna/" data-no-external-icon rel="nofollow">
-    <img src="https://img.shields.io/badge/pypi-3775A9?logo=pypi&logoColor=white" alt="PyPI badge">
+    <img src="/assets/images/badges/social/pypi-badge.svg" alt="PyPI badge">
   </a>
   <a href="https://rubygems.org/profiles/matmanna" data-no-external-icon rel="nofollow">
-    <img src="https://img.shields.io/badge/gems-CC342D?logo=rubygems&logoColor=white" alt="RubyGems badge">
+    <img src="/assets/images/badges/social/rubygems-badge.svg" alt="RubyGems badge">
   </a>
   <a href="https://gitlab.com/matmanna" data-no-external-icon rel="nofollow">
-    <img src="https://img.shields.io/badge/lab-FC6D26?logo=gitlab&logoColor=white" alt="GitLab badge">
+    <img src="/assets/images/badges/social/gitlab-badge.svg" alt="GitLab badge">
   </a>
   <p>(<code>:places</code>)</p>
 </div>
