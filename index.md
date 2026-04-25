@@ -7,22 +7,22 @@ permalink: /
 
 <div class="flex flex-row gap-2 not-prose flex-wrap" style="height: 30.33px;">
   <a href="https://linkedin.com/in/matmanna" data-no-external-icon rel="nofollow">
-    <img src="/assets/images/badges/social/linkedin-badge.svg" alt="LinkedIn badge">
+    <img src="/assets/images/badges/social/linkedin-badge.svg" alt="LinkedIn badge" width="37" height="20">
   </a>
   <a href="https://devpost.com/matmanna" data-no-external-icon rel="nofollow">
-    <img src="/assets/images/badges/social/devpost-badge.svg" alt="Devpost badge">
+    <img src="/assets/images/badges/social/devpost-badge.svg" alt="Devpost badge" width="51" height="20">
   </a>
   <a href="https://matmanna.itch.io/" data-no-external-icon rel="nofollow">
-    <img src="/assets/images/badges/social/itch-badge.svg" alt="Itch.io badge">
+    <img src="/assets/images/badges/social/itch-badge.svg" alt="Itch.io badge" width="49" height="20">
   </a>
   <a href="https://pypi.org/user/matmanna/" data-no-external-icon rel="nofollow">
-    <img src="/assets/images/badges/social/pypi-badge.svg" alt="PyPI badge">
+    <img src="/assets/images/badges/social/pypi-badge.svg" alt="PyPI badge" width="51" height="20">
   </a>
   <a href="https://rubygems.org/profiles/matmanna" data-no-external-icon rel="nofollow">
-    <img src="/assets/images/badges/social/rubygems-badge.svg" alt="RubyGems badge">
+    <img src="/assets/images/badges/social/rubygems-badge.svg" alt="RubyGems badge" width="57" height="20">
   </a>
   <a href="https://gitlab.com/matmanna" data-no-external-icon rel="nofollow">
-    <img src="/assets/images/badges/social/gitlab-badge.svg" alt="GitLab badge">
+    <img src="/assets/images/badges/social/gitlab-badge.svg" alt="GitLab badge" width="45" height="20">
   </a>
   <p>(<code>:places</code>)</p>
 </div>
@@ -32,7 +32,7 @@ an aspiring engineer focused on open protocols, automation, and rapid prototypin
 <hr class="not-prose">
 
 
-### a lil' <code>:about</code> me
+## a lil' <code>:about</code> me
 
 A decade of technical experience has shaped me into an indie maker who builds engaging, accessible, and secure tools<small>I see my projects as tools meant to serve, not products to exploit. I prefer to use tools which align with this.</small>[^1] for real people. I am especially passionate about search UX, crafting interfaces with the real world, and decentralized infrastructure. 
 
@@ -46,10 +46,15 @@ Outside of computing, I’m also a guitarist, competition aficionado, and lingua
   
 </details>
   <a class="no-external-icon heatmap-link" href="https://heatmap.shymike.dev?id=U07VA44DNBA&timezone=America%2FNew_York&standalone=true" title="Click to view detailed data for each day!" style="height: 122.33px; display: inline-block;">
-    <img class="heatmap-light" alt="Hackatime activity heatmap" src="https://heatmap.shymike.dev?id=U07VA44DNBA&timezone=America%2FNew_York&theme=light">
-    <img class="heatmap-dark" alt="Hackatime activity heatmap" src="https://heatmap.shymike.dev?id=U07VA44DNBA&timezone=America%2FNew_York&theme=dark">
+    <img class="heatmap-light" alt="Hackatime activity heatmap" src="https://heatmap.shymike.dev?id=U07VA44DNBA&timezone=America%2FNew_York&theme=light" width="742" height="122">
+    <img class="heatmap-dark" alt="Hackatime activity heatmap" src="https://heatmap.shymike.dev?id=U07VA44DNBA&timezone=America%2FNew_York&theme=dark" width="742" height="122">
   </a>
   <style>
+    .heatmap-link img {
+      width: 100%;
+      height: auto;
+      max-width: 742px;
+    }
     html.dark .heatmap-light { display: none; }
     html:not(.dark) .heatmap-dark { display: none; }
   </style>
