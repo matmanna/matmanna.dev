@@ -7,14 +7,16 @@ start_date: 2025-07-05
 activity_percent: 55
 activity_status: paused
 links:
-  - title: Source code (nix branch)
+  - title: Source
     url: https://github.com/benderhq/the-twist/tree/nix
     icon: fa-brands fa-github
+  - title: Video
+    url: https://github.com/user-attachments/assets/ab2fa6d3-ed6a-48c6-a2fd-b2e2458a9679
+    icon: fa-solid fa-film
 tags:
   - Nix
   - Module
   - Remote Control
-  - Presets
   - Audio
 skills:
   - name: Nix

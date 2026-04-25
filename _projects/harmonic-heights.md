@@ -2,7 +2,7 @@
 layout: project
 title: Harmonic Heights
 description: A rhythm game centered around building using chord progressions, scales, and simple song arrangements.
-image: /assets/images/projects/harmonic-heights.webp
+image: /assets/images/projects/harmonic-heights.avif
 start_date: 2024-08-16
 end_date: 2024-08-20
 activity_percent: 18

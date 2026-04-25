@@ -7,10 +7,13 @@ start_date: 2025-05-04
 end_date: 2025-05-04
 
 links:
-  - title: Demo deployment
+  - title: Demo
     url: https://doctored.matmanna.dev/
     icon: fa-solid fa-up-right-from-square
-  - title: Source code
+  - title: RubyGems
+    url: https://github.com/matmanna/doctored
+    icon: fa-solid fa-gem
+  - title: Source
     url: https://github.com/matmanna/doctored
     icon: fa-brands fa-github
 tags:
@@ -18,7 +21,6 @@ tags:
   - Theme
   - Tailwind CSS
   - Markdown
-  - GitHub Pages
 skills:
   - name: Theme Engineering
     icon: fa-solid fa-paintbrush
