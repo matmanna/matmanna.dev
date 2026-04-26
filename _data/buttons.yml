@@ -1,24 +1,49 @@
 - image: ./assets/images/badges/hackclub.png
-  href: https://hackclub.com
+  url: https://hackclub.com
   alt: Hack Club
 - image: ./assets/images/badges/archive.gif
-  href: https://archive.org
+  url: https://archive.org
   alt: Archive
 - image: ./assets/images/badges/roly-saynotoweb3.gif
-  href: https://yesterweb.org/no-to-web3/
+  url: https://yesterweb.org/no-to-web3/
   alt: Say No to Web3
-- image: ./assets/images/badges/runrust.png
-  href: https://rust-lang.org
-  alt: Rust!
+#- image: ./assets/images/badges/runrust.png
+#  url: https://rust-lang.org
+#  alt: Rust!
 - image: ./assets/images/badges/catppuccin.gif
-  href: https://catppuccin.com
+  url: https://catppuccin.com
   alt: Catppuccin
 - image: ./assets/images/badges/penguins.gif
-  href: https://kernel.org
+  url: https://kernel.org
   alt: Powered by Penguins
 - image: ./assets/images/badges/powered_by_nixos.gif
-  href: https://nixos.org/
+  url: https://nixos.org/
   alt: Powered by NixOS
 - image: ./assets/images/badges/made-with-neovim.png
-  href: https://neovim.io
+  url: https://neovim.io
   alt: Made with Neovim
+- image: ./assets/images/badges/friends/gideon.gif
+  url: https://gideon.sh
+  alt: Friend of Gideon
+- image: ./assets/images/badges/friends/mahad.png
+  url: https://mahadk.com
+  alt: Friend of Mahad
+- image: ./assets/images/badges/friends/kieran.png
+  url: https://dunkirk.sh
+  alt: Friend of Kieran
+# rowan / 3kh0.net
+- image: ./assets/images/badges/friends/rowan.png
+  url: https://3kh0.net
+  alt: Friend of Rowan
+# foxmoss
+- image: ./assets/images/badges/friends/foxmoss.png
+  url: https://foxmoss.com
+  alt: Friend of Foxmoss
+# bunnyguy
+- image: ./assets/images/badges/friends/bunnyguy.gif
+  url: https://sundial.city
+  alt: Friend of Bunnyguy
+# shuflduf.xyz
+- image: ./assets/images/badges/friends/shuflduf.gif
+  url: https://shuflduf.xyz
+  alt: Friend of Shuflduf
