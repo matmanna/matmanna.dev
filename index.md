@@ -45,9 +45,9 @@ Outside of computing, I’m also a guitarist, competition aficionado, and lingua
 <details><summary>Recently, I've been shipping,<sub> (expand for stats!)</sub> but also: </summary>
   
 </details>
-  <a class="no-external-icon heatmap-link" href="https://heatmap.shymike.dev?id=U07VA44DNBA&timezone=America%2FNew_York&standalone=true" title="Click to view detailed data for each day!" style="height: 122.33px; display: inline-block;">
-    <img class="heatmap-light" alt="Hackatime activity heatmap" src="https://heatmap.shymike.dev?id=U07VA44DNBA&timezone=America%2FNew_York&theme=light" width="742" height="122">
-    <img class="heatmap-dark" alt="Hackatime activity heatmap" src="https://heatmap.shymike.dev?id=U07VA44DNBA&timezone=America%2FNew_York&theme=dark" width="742" height="122">
+  <a class="no-external-icon heatmap-link" href="https://heatmap.shymike.dev?id=U07VA44DNBA&timezone=America%2FNew_York&standalone=true" title="Click to view detailed data for each day!" style="min-height: 122.33px; display: inline-block;">
+    <img class="heatmap-light" alt="Hackatime activity heatmap" src="https://heatmap.shymike.dev?id=U07VA44DNBA&timezone=America%2FNew_York&theme=light" width="684" height="90.33">
+    <img class="heatmap-dark" alt="Hackatime activity heatmap" src="https://heatmap.shymike.dev?id=U07VA44DNBA&timezone=America%2FNew_York&theme=dark" width="684" height="90.33">
   </a>
   <style>
     .heatmap-link img {
