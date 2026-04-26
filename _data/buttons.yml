@@ -1,53 +1,53 @@
-- image: ./assets/images/badges/hackclub.avif
+- image: /assets/images/badges/hackclub.avif
   url: https://hackclub.com
   alt: Hack Club
-- image: ./assets/images/badges/archive.avif
+- image: /assets/images/badges/archive.avif
   url: https://archive.org
   alt: Archive
-- image: ./assets/images/badges/roly-saynotoweb3.gif
+- image: /assets/images/badges/roly-saynotoweb3.gif
   url: https://yesterweb.org/no-to-web3/
   alt: Say No to Web3
-#- image: ./assets/images/badges/runrust.png
+#- image: /assets/images/badges/runrust.png
 #  url: https://rust-lang.org
 #  alt: Rust!
-- image: ./assets/images/badges/catppuccin.gif
+- image: /assets/images/badges/catppuccin.gif
   url: https://catppuccin.com
   alt: Catppuccin
-- image: ./assets/images/badges/penguins.gif
+- image: /assets/images/badges/penguins.gif
   url: https://kernel.org
   alt: Powered by Penguins
-- image: ./assets/images/badges/powered_by_nixos.gif
+- image: /assets/images/badges/powered_by_nixos.gif
   url: https://nixos.org/
   alt: Powered by NixOS
-- image: ./assets/images/badges/made-with-neovim.avif
+- image: /assets/images/badges/made-with-neovim.avif
   url: https://neovim.io
   alt: Made with Neovim
-- image: ./assets/images/badges/friends/gideon.gif
+- image: /assets/images/badges/friends/gideon.gif
   url: https://gideon.sh
   alt: Friend of Gideon
-- image: ./assets/images/badges/friends/mahad.png
+- image: /assets/images/badges/friends/mahad.png
   url: https://mahadk.com
   alt: Friend of Mahad
-- image: ./assets/images/badges/friends/kieran.avif
+- image: /assets/images/badges/friends/kieran.avif
   url: https://dunkirk.sh
   alt: Friend of Kieran
 # rowan / 3kh0.net
-- image: ./assets/images/badges/friends/rowan.avif
+- image: /assets/images/badges/friends/rowan.avif
   url: https://3kh0.net
   alt: Friend of Rowan
 # foxmoss
-- image: ./assets/images/badges/friends/foxmoss.png
+- image: /assets/images/badges/friends/foxmoss.png
   url: https://foxmoss.com
   alt: Friend of Foxmoss
 # bunnyguy
-# - image: ./assets/images/badges/friends/bunnyguy.gif
+# - image: /assets/images/badges/friends/bunnyguy.gif
 #   url: https://sundial.city
 #   alt: Friend of Bunnyguy
 # hex4.xyz
-- image: ./assets/images/badges/friends/hex4.gif
+- image: /assets/images/badges/friends/hex4.gif
   url: https://hex4.xyz
   alt: Friend of Hex4
 # shuflduf.xyz
-- image: ./assets/images/badges/friends/shuflduf.gif
+- image: /assets/images/badges/friends/shuflduf.gif
   url: https://shuflduf.xyz
   alt: Friend of Shuflduf
