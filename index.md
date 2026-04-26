@@ -5,7 +5,7 @@ description: My personal site's home page
 permalink: /
 ---
 
-<div class="flex flex-row gap-2 not-prose flex-wrap" style="height: 30.33px;">
+<div class="flex flex-row gap-2 not-prose flex-wrap nomin" style="height: 30.33px;">
   <a href="https://linkedin.com/in/matmanna" data-no-external-icon rel="nofollow">
     <img src="/assets/images/badges/social/linkedin-badge.svg" alt="LinkedIn badge" width="37" height="20">
   </a>
@@ -29,7 +29,7 @@ permalink: /
 
 an aspiring engineer focused on open protocols, automation, and rapid prototyping.
 
-<hr class="not-prose">
+<hr class="not-prose nomin">
 
 
 ## a lil' <code>:about</code> me
@@ -104,7 +104,7 @@ Outside of computing, I’m also a guitarist, competition aficionado, and lingua
 - reverse-engineering electric and bass guitar amplifiers to build:
   - LtAmp.py: a Python [library](https://pypi.org/p/ltamp) for interacting with supported amplifiers
   - The Twist: an augmentation [module](https://github.com/benderhq/the-twist/tree/nix) with features incl. remote control and preset playlists
-- maintaining<small class="no-external-icon">I've also contributed code to systems (such as [Hackatime](https://hackatime.hackclub.com), [Revoker](https://revoke.hackclub.com), & [site](https://hackclub.com?uwu)), and reported data leaks through the security [program](https://security.hackclub.com).</small>[^3] Hack Club tools such as [Slacker News](https://news.hackclub.com), the <a class="slack_channel" href="https://app.slack.com/client/E09V59WQY1E/C0M8PUPU6">#ship</a> channel (30k+ members), and technical support systems for new hackers & YSWS participants.
+- maintaining<small class="no-external-icon">I've also contributed code to systems (such as [Hackatime](https://hackatime.hackclub.com), [Revoker](https://revoke.hackclub.com), & [site](https://hackclub.com?uwu)), and reported data leaks through the security [program](https://security.hackclub.com).</small>[^3] Hack Club tools such as [Slacker News](https://news.hackclub.com), the <a class="slack_channel nomin" href="https://app.slack.com/client/E09V59WQY1E/C0M8PUPU6">#ship</a> channel (30k+ members), and technical support systems for new hackers & YSWS participants.
 
 <style>
   .slack_channel {
@@ -116,7 +116,7 @@ Outside of computing, I’m also a guitarist, competition aficionado, and lingua
 }
 </style>
 
-<hr class="not-prose">
+<hr class="not-prose nomin">
 
 
 ### formative <code>:experiences</code>

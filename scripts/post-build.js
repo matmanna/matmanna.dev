@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Post-build class minifier for Jekyll - updates both HTML classes AND inline <style> CSS
+// Post-build class minifier - skips layout-critical + nomin-marked elements
 
 const fs = require('fs');
 const path = require('path');
@@ -7,57 +7,71 @@ const path = require('path');
 const classMap = {};
 let idx = 0;
 
+function shouldSkip(c) {
+  // Icon/fa
+  if (c.startsWith('fa-') || c.includes('icon-fa')) return true;
+  if (c.startsWith('not-prose')) return true;
+  // no- prefixes
+  if (c.startsWith('no-')) return true;
+  // Variants (dark:, md:, etc.)
+  if (c.includes(':')) return true;
+  // Arbitrary values  
+  if (c.includes('[')) return true;
+  // All flexbox
+  if (c.startsWith('flex') || c.startsWith('items-') || c.startsWith('justify-') || c.startsWith('self-')) return true;
+  // Spacing
+  if (c.startsWith('gap-')) return true;
+  if (c.match(/^[mp](?:-|$|x|y|t|b|l|r)/)) return true;
+  // Widths/heights
+  if (c.startsWith('w-') || c.startsWith('h-') || c.startsWith('max-') || c.startsWith('min-')) return true;
+  // Border/radius
+  if (c.startsWith('border') || c.startsWith('rounded')) return true;
+  // Images
+  if (c.startsWith('object-')) return true;
+  if (c.startsWith('space-')) return true;
+  // Font
+  if (c.startsWith('font-')) return true;
+  // nowrap 
+  if (c.startsWith('text-nowrap')) return true;
+  if (c.startsWith('inline')) return true;
+  if (c.startsWith('text-xs') || c.startsWith('text-sm')) return true;
+  if (c.startsWith('bg-transparent')) return true;
+  if (c.startsWith('block')) return true;
+
+  return false;
+}
+
 function processFile(filePath) {
   let html = fs.readFileSync(filePath, 'utf8');
   let modified = false;
   
-  // First pass: collect class mappings from HTML class attributes
-  const matches = html.match(/class="([^"]+)"/g) || [];
+  const matches = html.match(/class="[^"]+"/g) || [];
+  
+  // First pass: collect mappings
   matches.forEach(m => {
-    const orig = m.match(/class="([^"]+)"/)[1];
-    const classArr = orig.split(' ').filter(c => c);
+    const fullClassAttr = m.slice(7, -1);
+    if (fullClassAttr.includes('nomin')) return;
+    const classArr = fullClassAttr.split(' ').filter(c => c);
     classArr.forEach(c => {
-      // Skip icons, no-*, and variant classes
-      if (c.startsWith('fa-') || c.startsWith('no-') || c.includes(':') || c.startsWith('[')) return;
-      if (!classMap[c]) {
-        classMap[c] = `c${idx++}`;
-      }
+      if (shouldSkip(c)) return;
+      if (!classMap[c]) classMap[c] = 'c' + idx++;
     });
   });
   
-  // Second pass: replace classes in HTML
+  // Second pass: replace
   matches.forEach(m => {
-    const orig = m.match(/class="([^"]+)"/)[1];
-    const classArr = orig.split(' ').filter(c => c);
-    const newArr = classArr.map(c => {
-      if (c.startsWith('fa-') || c.startsWith('no-') || c.includes(':') || c.startsWith('[')) return c;
-      return classMap[c] || c;
-    });
-    const newClasses = newArr.join(' ');
-    if (newClasses !== orig) {
-      html = html.replace(m, `class="${newClasses}"`);
+    const fullClassAttr = m.slice(7, -1);
+    if (fullClassAttr.includes('nomin')) return;
+    const classArr = fullClassAttr.split(' ').filter(c => c);
+    const newArr = classArr.map(c => shouldSkip(c) ? c : classMap[c]);
+    const newClassAttr = newArr.join(' ');
+    if (newClassAttr !== fullClassAttr) {
+      html = html.replace(m, 'class="' + newClassAttr + '"');
       modified = true;
     }
   });
   
-  // Third pass: replace classes in <style> block
-  if (html.includes('<style>')) {
-    let styleBlock = html.match(/<style>([\s\S]*?)<\/style>/)[1];
-    let newStyle = styleBlock;
-    const entries = Object.entries(classMap).sort((a, b) => b[0].length - a[0].length);
-    entries.forEach(([orig, short]) => {
-      const regex = new RegExp(`\\.${orig}`, 'g');
-      newStyle = newStyle.replace(regex, `.${short}`);
-    });
-    if (newStyle !== styleBlock) {
-      html = html.replace(styleBlock, newStyle);
-      modified = true;
-    }
-  }
-  
-  if (modified) {
-    fs.writeFileSync(filePath, html);
-  }
+  if (modified) fs.writeFileSync(filePath, html);
 }
 
 function walkDir(dir) {
