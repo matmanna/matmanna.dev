@@ -20,6 +20,13 @@ plugins:
   - jekyll-seo-tag
   - jekyll/tagging
 
+compress_html:
+  clippings: all
+  comments: ["<!-- ", " -->"]
+  endings: all
+  ignore:
+    envs: []
+
 feed:
   icon: /assets/images/favicon.png
 
