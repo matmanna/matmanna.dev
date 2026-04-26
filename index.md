@@ -46,7 +46,7 @@ Outside of computing, I’m also a guitarist, competition aficionado, and lingua
   
 </details>
   <a class="no-external-icon heatmap-link" href="https://heatmap.shymike.dev?id=U07VA44DNBA&timezone=America%2FNew_York&standalone=true" title="Click to view detailed data for each day!" style="min-height: 122.33px; display: inline-block;">
-    <img id="heatmap-image" class="heatmap-image" alt="Hackatime activity heatmap" width="684" height="90.33" fetchpriority="high" src="https://heatmap.shymike.dev?id=U07VA44DNBA&timezone=America%2FNew_York&theme=light" data-light-src="https://heatmap.shymike.dev?id=U07VA44DNBA&timezone=America%2FNew_York&theme=light" data-dark-src="https://heatmap.shymike.dev?id=U07VA44DNBA&timezone=America%2FNew_York&theme=dark">
+    <img id="heatmap-image" class="heatmap-image" alt="Hackatime activity heatmap" width="684" height="90.33" fetchpriority="high" src="https://heatmap.shymike.dev?id=U07VA44DNBA&timezone=America%2FNew_York&theme=light&format=png" data-light-src="https://heatmap.shymike.dev?id=U07VA44DNBA&timezone=America%2FNew_York&format=png&theme=light" data-dark-src="https://heatmap.shymike.dev?id=U07VA44DNBA&timezone=America%2FNew_York&theme=dark&format=png">
   </a>
   <noscript>
     <a class="no-external-icon heatmap-link" href="https://heatmap.shymike.dev?id=U07VA44DNBA&timezone=America%2FNew_York&standalone=true" title="Click to view detailed data for each day!">
