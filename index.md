@@ -5,7 +5,7 @@ description: My personal site's home page
 permalink: /
 ---
 
-<div class="flex flex-row gap-2 not-prose flex-wrap nomin" style="height: 30.33px;">
+<div class="flex flex-row gap-2 not-prose flex-wrap" style="height: 30.33px;">
   <a href="https://linkedin.com/in/matmanna" data-no-external-icon rel="nofollow">
     <img src="/assets/images/badges/social/linkedin-badge.svg" alt="LinkedIn badge" width="37" height="20">
   </a>
@@ -29,7 +29,7 @@ permalink: /
 
 an aspiring engineer focused on open protocols, automation, and rapid prototyping.
 
-<hr class="not-prose nomin">
+<hr class="not-prose">
 
 
 ## a lil' <code>:about</code> me
@@ -116,7 +116,7 @@ Outside of computing, I’m also a guitarist, competition aficionado, and lingua
 }
 </style>
 
-<hr class="not-prose nomin">
+<hr class="not-prose">
 
 
 ### formative <code>:experiences</code>
