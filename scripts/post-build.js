@@ -11,8 +11,11 @@ function shouldSkip(c) {
   // Icons - MUST skip
   if (c.includes('fa-') || c.includes('icon-fa')) return true;
   if (c.startsWith('no-') || c.startsWith('not-')) return true;
-  if (c.includes(':') || c.includes('[')) return true;
-
+    if (c.includes('border')) return true;
+  // Dark mode variants won't work without complex CSS mapping
+  if (c.startsWith('dark:') || c.includes(":")) return true;
+  // Max/min widths
+  if (c.startsWith('max-w-') ) return true;
   return false;
 }
 
