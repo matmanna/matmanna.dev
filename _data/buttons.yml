@@ -40,9 +40,13 @@
   url: https://foxmoss.com
   alt: Friend of Foxmoss
 # bunnyguy
-- image: ./assets/images/badges/friends/bunnyguy.gif
-  url: https://sundial.city
-  alt: Friend of Bunnyguy
+# - image: ./assets/images/badges/friends/bunnyguy.gif
+#   url: https://sundial.city
+#   alt: Friend of Bunnyguy
+# hex4.xyz
+- image: ./assets/images/badges/friends/hex4.gif
+  url: https://hex4.xyz
+  alt: Friend of Hex4
 # shuflduf.xyz
 - image: ./assets/images/badges/friends/shuflduf.gif
   url: https://shuflduf.xyz
