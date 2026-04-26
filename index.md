@@ -46,18 +46,61 @@ Outside of computing, I’m also a guitarist, competition aficionado, and lingua
   
 </details>
   <a class="no-external-icon heatmap-link" href="https://heatmap.shymike.dev?id=U07VA44DNBA&timezone=America%2FNew_York&standalone=true" title="Click to view detailed data for each day!" style="min-height: 122.33px; display: inline-block;">
-    <img class="heatmap-light" alt="Hackatime activity heatmap" src="https://heatmap.shymike.dev?id=U07VA44DNBA&timezone=America%2FNew_York&theme=light" width="684" height="90.33">
-    <img class="heatmap-dark" alt="Hackatime activity heatmap" src="https://heatmap.shymike.dev?id=U07VA44DNBA&timezone=America%2FNew_York&theme=dark" width="684" height="90.33">
+    <img id="heatmap-image" class="heatmap-image" alt="Hackatime activity heatmap" width="684" height="90.33" decoding="async" loading="lazy" data-light-src="https://heatmap.shymike.dev?id=U07VA44DNBA&timezone=America%2FNew_York&theme=light" data-dark-src="https://heatmap.shymike.dev?id=U07VA44DNBA&timezone=America%2FNew_York&theme=dark">
   </a>
+  <noscript>
+    <a class="no-external-icon heatmap-link" href="https://heatmap.shymike.dev?id=U07VA44DNBA&timezone=America%2FNew_York&standalone=true" title="Click to view detailed data for each day!">
+      <img class="heatmap-image" alt="Hackatime activity heatmap" src="https://heatmap.shymike.dev?id=U07VA44DNBA&timezone=America%2FNew_York&theme=light" width="684" height="90.33">
+    </a>
+  </noscript>
   <style>
     .heatmap-link img {
       width: 100%;
       height: auto;
       max-width: 742px;
     }
-    html.dark .heatmap-light { display: none; }
-    html:not(.dark) .heatmap-dark { display: none; }
   </style>
+  <script>
+    (function () {
+      const img = document.getElementById('heatmap-image');
+      if (!img) return;
+      const lightSrc = img.dataset.lightSrc;
+      const darkSrc = img.dataset.darkSrc;
+      if (!lightSrc) return;
+      const root = document.documentElement;
+      const updateSrc = () => {
+        const isDark = root.classList.contains('dark') || 
+          (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches) ||
+          localStorage.theme === 'dark';
+        const target = isDark ? darkSrc : lightSrc;
+        if (img.getAttribute('src') !== target) {
+          img.setAttribute('src', target);
+        }
+      };
+      const runAfterDoctored = () => {
+        updateSrc();
+        setTimeout(updateSrc, 100);
+        setTimeout(updateSrc, 500);
+      };
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', runAfterDoctored);
+      } else {
+        runAfterDoctored();
+      }
+      document.addEventListener('click', (e) => {
+        const toggle = document.getElementById('theme-toggle');
+        if (toggle && (toggle.contains(e.target) || toggle === e.target)) {
+          setTimeout(updateSrc, 50);
+        }
+      });
+      window.addEventListener('storage', (e) => {
+        if (e.key === 'theme') updateSrc();
+      });
+      if (window.MutationObserver) {
+        new MutationObserver(updateSrc).observe(root, { attributes: true, attributeFilter: ['class'] });
+      }
+    })();
+  </script>
 - reverse-engineering electric and bass guitar amplifiers to build:
   - LtAmp.py: a Python [library](https://pypi.org/p/ltamp) for interacting with supported amplifiers
   - The Twist: an augmentation [module](https://github.com/benderhq/the-twist/tree/nix) with features incl. remote control and preset playlists
