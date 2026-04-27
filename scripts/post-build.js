@@ -9,8 +9,8 @@ let idx = 0;
 
 function shouldSkip(c) {
   // Icons - MUST skip
-  if (c.includes('fa-') || c.includes('icon-fa')) return true;
-  if (c.startsWith('no-') || c.startsWith('not-')) return true;
+  if (c.includes('fa-') || c.includes('icon-fa') || c.includes('icon-fa')) return true;
+  if (c.startsWith('not-')) return true;
     if (c.includes('border')) return true;
   // Dark mode variants won't work without complex CSS mapping
   if (c.startsWith('dark:') || c.includes(":")) return true;
@@ -43,43 +43,31 @@ function processFile(filePath) {
     }
   });
   
-  // Third pass: replace in CSS (handle : and [)  
+  // Third pass: replace in ALL CSS blocks 
   const styleMatches = html.match(/<style>([\s\S]*?)<\/style>/g) || [];
-  if (styleMatches[0]) {
-    let newStyle = styleMatches[0];
+  styleMatches.forEach((styleBlock, styleIdx) => {
+    let newStyle = styleBlock;
     Object.entries(classMap).forEach(([orig, short]) => {
       if (shouldSkip(orig)) return;
       
-      // Base escape
       let escaped = orig.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      // Escape dashes
       escaped = escaped.replace(/-/g, '\\-');
       
-      // Pattern 1: normal .class
       let regex = new RegExp('\\.' + escaped + '([{:, >~]+)', 'g');
       newStyle = newStyle.replace(regex, '.' + short + '$1');
       
-      // Pattern 2: escaped colon (for dark:text etc)
       if (orig.includes(':')) {
-        // Replace each : with \\: in the escaped string
         const colonEscaped = escaped.split(':').join('\\:');
-        const regex = new RegExp('\\.' + colonEscaped + '([{:, >~]+)', 'g');
-        newStyle = newStyle.replace(regex, '.' + short + '$1');
-      }
-      
-      // Pattern 3: escaped brackets (for w-[88px])
-      if (orig.includes('[')) {
-        const bracketEscaped = orig.replace(/\[/g, '\\[').replace(/\]/g, '\\]');
-        regex = new RegExp('\\.' + bracketEscaped + '([{:, >~]+)', 'g');
+        regex = new RegExp('\\.' + colonEscaped + '([{:, >~]+)', 'g');
         newStyle = newStyle.replace(regex, '.' + short + '$1');
       }
     });
     
-    if (newStyle !== styleMatches[0]) {
-      html = html.replace(styleMatches[0], newStyle);
+    if (newStyle !== styleBlock) {
+      html = html.replace(styleBlock, newStyle);
       modified = true;
     }
-  }
+  });
   
   if (modified) fs.writeFileSync(filePath, html);
 }
