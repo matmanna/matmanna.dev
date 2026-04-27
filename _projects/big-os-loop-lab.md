@@ -2,7 +2,7 @@
 layout: project
 title: Big O's Loop Lab
 description: A programming-simulator puzzle game where you create programs with loops, recursive algorithms, 
-image: /assets/images/projects/big-os-loop-lab.avif
+image: /assets/images/projects/big-os-loop-lab_compressed.avif
 start_date: 2025-08-15
 end_date: 2025-08-15
 activity_percent: 30

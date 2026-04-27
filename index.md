@@ -169,7 +169,7 @@ _Here are some more orgs & projects I've contributed to... (<a href="/projects">
   {% endfor %}
 </ul>
 
-_...and here are some thoughts I've had and shared..._
+_...and here are some thoughts I've had and shared... (<a href="/blog">all</a>)_
 
 <ul class="px-0 flex mt-3 flex-col gap-3 not-prose">
   {% for post in site.posts limit:3 %}

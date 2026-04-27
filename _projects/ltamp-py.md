@@ -2,7 +2,7 @@
 layout: project
 title: LtAmp.py
 description: A cross-platform Python module for interacting with LT amplifiers from a guitar company that rhymes with "bender".
-image: /assets/images/projects/ltamp-py.avif
+image: /assets/images/projects/ltamp-py_compressed.avif
 start_date: 2025-06-30
 activity_percent: 48
 activity_status: maintenance
