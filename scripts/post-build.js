@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Post-build class minifier - updates BOTH HTML classes AND CSS
+// Post-build class minifier - updates BOTH HTML classes AND inline CSS
 
 const fs = require('fs');
 const path = require('path');
@@ -15,8 +15,6 @@ function shouldSkip(c) {
   if (c.includes('border')) return true;
   // Widths
   if (c.startsWith('max-w-')) return true;
-  // Responsive (sm:, md:, lg:, etc.) - complex to handle properly
-  if (c.includes(':') && !c.startsWith('dark:')) return true;
   return false;
 }
 
@@ -40,7 +38,17 @@ function processFile(filePath) {
     classMap[darkVer] = classMap[orig];
   });
   
-  // Second pass: replace in HTML (including dark: variants)
+  // Also create responsive mappings (sm:, md:, lg: → same cXX as base)
+  ['sm:', 'md:', 'lg:', 'xl:', '2xl:'].forEach(prefix => {
+    Object.keys(classMap).forEach(orig => {
+      if (!orig.includes(':') && classMap[orig]) {
+        const respVer = prefix + orig;
+        classMap[respVer] = classMap[orig];
+      }
+    });
+  });
+  
+  // Second pass: replace in HTML
   matches.forEach(m => {
     const arr = m.slice(7, -1).split(' ').filter(c => c);
     const newArr = arr.map(c => shouldSkip(c) ? c : classMap[c]);
@@ -50,34 +58,38 @@ function processFile(filePath) {
     }
   });
   
-  // Third pass: replace in ALL CSS blocks 
-  const styleMatches = html.match(/<style>([\s\S]*?)<\/style>/g) || [];
-  styleMatches.forEach((styleBlock, styleIdx) => {
-    let newStyle = styleBlock;
-    Object.entries(classMap).forEach(([orig, short]) => {
-      if (shouldSkip(orig)) return;
-      
-      // Base: .class → .short
-      let escaped = orig.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      escaped = escaped.replace(/-/g, '\\-');
-      
-      let regex = new RegExp('\\.' + escaped + '([{:, >~]+)', 'g');
-      newStyle = newStyle.replace(regex, '.' + short + '$1');
-      
-      // Dark variant: .dark\:class → .short
-      // CSS selector is .dark\:baseclass, regex needs \.dark\\:baseclass
-      if (orig.startsWith('dark:')) {
-        const baseClass = orig.slice(5);
-        const baseEscaped = baseClass.replace(/-/g, '\\-');
-        const darkPattern = '\\.dark\\\\:' + baseEscaped;
-        const regex = new RegExp(darkPattern + '([{:, ])');
-        newStyle = newStyle.replace(regex, '.' + short + '$1');
-      }
-    });
+  // Third pass: replace in ALL CSS (both <style> blocks AND Tailwind inline styles)
+  Object.entries(classMap).forEach(([orig, short]) => {
+    if (shouldSkip(orig)) return;
     
-    if (newStyle !== styleBlock) {
-      html = html.replace(styleBlock, newStyle);
-      modified = true;
+    // Build escaped pattern for class name
+    // Use String.raw with double backslash to get single backslash in regex
+    let escaped = orig.replace(/-/g, String.raw`\-`);
+    
+    // 1. Base class: .flex-row → .c6
+    const basePattern = String.raw`\.` + escaped;
+    const baseRegex = new RegExp(basePattern + String.raw`([{:, >~])`, 'g');
+    html = html.replace(baseRegex, '.' + short + '$1');
+    
+    // 2. Dark variant: .dark\:flex-row → .c6  
+    if (orig.startsWith('dark:')) {
+      const baseClass = orig.slice(5);
+      const baseEscaped = baseClass.replace(/-/g, String.raw`\-`);
+      const darkPattern = String.raw`\.dark\\:` + baseEscaped;
+      const darkRegex = new RegExp(darkPattern + String.raw`([{:, >])`, 'g');
+      html = html.replace(darkRegex, '.' + short + '$1');
+    }
+    
+    // 3. Responsive variant: .sm\:flex-row → .c6
+    if (orig.match(/^(sm|md|lg|xl|2xl):/)) {
+      const baseClass = orig.replace(/^(sm|md|lg|xl|2xl):/, '');
+      const prefix = orig.match(/^(sm|md|lg|xl|2xl):/)[1];
+      const baseEscaped = baseClass.replace(/-/g, String.raw`\-`);
+      
+      // Use \\ to match single backslash in CSS - need TWO in string for regex
+      const respPattern = String.raw`\.` + prefix + String.raw`\\:` + baseEscaped;
+      const respRegex = new RegExp(respPattern + String.raw`([{:, >])`, 'g');
+      html = html.replace(respRegex, '.' + short + '$1');
     }
   });
   
