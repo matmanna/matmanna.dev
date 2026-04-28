@@ -5,7 +5,9 @@ const fs = require('fs');
 const path = require('path');
 
 const classMap = {};
+const varMap = {}; // CSS variable minification map
 let idx = 0;
+let varIdx = 0;
 
 function shouldSkip(c) {
   // Icons
@@ -15,13 +17,30 @@ function shouldSkip(c) {
   return false;
 }
 
+function getVarShortName(num) {
+  // Map to --a, --b, --c, ... --z, --aa, --ab, etc.
+  if (num < 26) return '--' + String.fromCharCode(97 + num); // a-z
+  const letters = 'abcdefghijklmnopqrstuvwxyz';
+  let result = '';
+  num -= 26;
+  result += letters[Math.floor(num / 26)];
+  result += letters[num % 26];
+  return '--' + result;
+}
+
 function processFile(filePath) {
   let html = fs.readFileSync(filePath, 'utf8');
   let modified = false;
   
   const matches = html.match(/class="[^"]+"/g) || [];
   
-  // First pass: collect mappings
+  // Collect --tw-* variables (first file only, or reset per file - using global map)
+  const varMatches = html.match(/--tw-[a-z0-9-]*/g) || [];
+  varMatches.forEach(v => {
+    if (!varMap[v]) varMap[v] = getVarShortName(varIdx++);
+  });
+  
+  // First pass: collect class mappings
   matches.forEach(m => {
     const arr = m.slice(7, -1).split(' ').filter(c => c);
     arr.forEach(c => {
@@ -45,12 +64,21 @@ function processFile(filePath) {
     });
   });
   
-// Second pass: replace in HTML
+// Second pass: replace classes in HTML
   matches.forEach(m => {
     const arr = m.slice(7, -1).split(' ').filter(c => c);
     const newArr = arr.map(c => shouldSkip(c) ? c : classMap[c]);
     if (newArr.join(' ') !== arr.join(' ')) {
       html = html.replace(m, 'class="' + newArr.join(' ') + '"');
+      modified = true;
+    }
+  });
+  
+  // Replace --tw-* variables in HTML and inline styles
+  Object.entries(varMap).forEach(([orig, short]) => {
+    const varRegex = new RegExp(orig.replace(/[-]/g, '\\-'), 'g');
+    if (html.match(varRegex)) {
+      html = html.replace(varRegex, short);
       modified = true;
     }
   });
@@ -151,11 +179,20 @@ function walkDir(dir) {
   });
 }
 
-// Also update tailwind.css with minified class names
+// Also update tailwind.css with minified class names and CSS variables
 function updateCSS(filePath) {
   if (!fs.existsSync(filePath)) return;
   let css = fs.readFileSync(filePath, 'utf8');
   let modified = false;
+  
+  // Replace --tw-* variables in CSS
+  Object.entries(varMap).forEach(([orig, short]) => {
+    const varRegex = new RegExp(orig.replace(/[-]/g, '\\-'), 'g');
+    if (css.match(varRegex)) {
+      css = css.replace(varRegex, short);
+      modified = true;
+    }
+  });
   
   Object.entries(classMap).forEach(([orig, short]) => {
     if (orig.startsWith('no-')) {
@@ -193,4 +230,4 @@ function updateCSS(filePath) {
 
 walkDir('_site');
 updateCSS('_site/assets/css/tailwind.css');
-console.log('Minified ' + idx + ' classes');
+console.log('Minified ' + idx + ' classes, ' + varIdx + ' CSS variables');
