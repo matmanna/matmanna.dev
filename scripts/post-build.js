@@ -9,13 +9,11 @@ let idx = 0;
 
 function shouldSkip(c) {
   // Icons - MUST skip
-  if (c.includes('fa-') || c.includes('icon-fa') || c.includes('icon-fa')) return true;
+  if (c.includes('fa-') || c.includes('icon-fa')) return true;
   if (c.startsWith('not-')) return true;
-    if (c.includes('border')) return true;
-  // Dark mode variants won't work without complex CSS mapping
-  if (c.startsWith('dark:') || c.includes(":")) return true;
+  if (c.includes('border')) return true;
   // Max/min widths
-  if (c.startsWith('max-w-') ) return true;
+  if (c.startsWith('max-w-')) return true;
   return false;
 }
 
@@ -33,7 +31,13 @@ function processFile(filePath) {
     });
   });
   
-  // Second pass: replace in HTML
+  // Also create dark: mappings (e.g., dark:text-primary-300 → same cXX as text-primary-300)
+  Object.keys(classMap).forEach(orig => {
+    const darkVer = 'dark:' + orig;
+    classMap[darkVer] = classMap[orig];
+  });
+  
+  // Second pass: replace in HTML (including dark: variants)
   matches.forEach(m => {
     const arr = m.slice(7, -1).split(' ').filter(c => c);
     const newArr = arr.map(c => shouldSkip(c) ? c : classMap[c]);
@@ -50,17 +54,17 @@ function processFile(filePath) {
     Object.entries(classMap).forEach(([orig, short]) => {
       if (shouldSkip(orig)) return;
       
+      // Base: .class → .short
       let escaped = orig.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       escaped = escaped.replace(/-/g, '\\-');
       
       let regex = new RegExp('\\.' + escaped + '([{:, >~]+)', 'g');
       newStyle = newStyle.replace(regex, '.' + short + '$1');
       
-      if (orig.includes(':')) {
-        const colonEscaped = escaped.split(':').join('\\:');
-        regex = new RegExp('\\.' + colonEscaped + '([{:, >~]+)', 'g');
-        newStyle = newStyle.replace(regex, '.' + short + '$1');
-      }
+      // Dark variant: .dark\:class → .short
+      const darkEscaped = '.dark\\\\:' + escaped;
+      regex = new RegExp(darkEscaped + '([{:, >~]+)', 'g');
+      newStyle = newStyle.replace(regex, '.' + short + '$1');
     });
     
     if (newStyle !== styleBlock) {
