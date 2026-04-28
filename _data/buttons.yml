@@ -10,7 +10,7 @@
 #- image: /assets/images/badges/runrust.png
 #  url: https://rust-lang.org
 #  alt: Rust!
-- image: /assets/images/badges/catppuccin.gif
+- image: /assets/images/badges/catppuccin.webp
   url: https://catppuccin.com
   alt: Catppuccin
 - image: /assets/images/badges/penguins.gif
@@ -22,7 +22,7 @@
 - image: /assets/images/badges/made-with-neovim.avif
   url: https://neovim.io
   alt: Made with Neovim
-- image: /assets/images/badges/friends/gideon.gif
+- image: /assets/images/badges/friends/gideon.webp
   url: https://gideon.sh
   alt: Friend of Gideon
 - image: /assets/images/badges/friends/mahad.png
