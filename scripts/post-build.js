@@ -62,9 +62,14 @@ function processFile(filePath) {
       newStyle = newStyle.replace(regex, '.' + short + '$1');
       
       // Dark variant: .dark\:class → .short
-      const darkEscaped = '.dark\\\\:' + escaped;
-      regex = new RegExp(darkEscaped + '([{:, >~]+)', 'g');
-      newStyle = newStyle.replace(regex, '.' + short + '$1');
+      // CSS selector is .dark\:baseclass, regex needs \.dark\\:baseclass
+      if (orig.startsWith('dark:')) {
+        const baseClass = orig.slice(5);
+        const baseEscaped = baseClass.replace(/-/g, '\\-');
+        const darkPattern = '\\.dark\\\\:' + baseEscaped;
+        const regex = new RegExp(darkPattern + '([{:, ])');
+        newStyle = newStyle.replace(regex, '.' + short + '$1');
+      }
     });
     
     if (newStyle !== styleBlock) {
