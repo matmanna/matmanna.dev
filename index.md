@@ -144,8 +144,8 @@ Since being exposed to computer programming on [Scratch](https://scratch.mit.edu
         grid-template-columns: repeat(2, minmax(0, 1fr));
         width: var(--projects-breakout-width);
         max-width: none;
-        margin-left: calc((80ch - var(--projects-breakout-width)) / 2);
-        margin-right: calc((80ch - var(--projects-breakout-width)) / 2);
+        margin-left: calc((85ch - var(--projects-breakout-width)) / 2);
+        margin-right: calc((85ch - var(--projects-breakout-width)) / 2);
     }
 }
 .prose :where(code):not(:where([class~=not-prose],
