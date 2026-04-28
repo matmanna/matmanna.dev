@@ -12,7 +12,7 @@ layout: compress
 
     <header
         class="w-full dark:text-primary-700 text-primary-800 dark:bg-primary-950 bg-primary-300 flex flex-col items-center py-4 px-4 border-t-[6px] border-solid border-primary-500">
-        <div class="max-w-[75ch] w-full">
+        <div class="max-w-[80ch] w-full">
             {% include nav.html %}
         </div>
     </header>
@@ -25,10 +25,10 @@ layout: compress
     {% if site.data.buttons.size > 0 %}
 
     <div
-        class="max-w-[75ch] justify-center items-center w-full not-prose flex flex-row flex-wrap gap-2 items-center no-external-icon mb-4">
+        class="max-w-[80ch] justify-center items-center w-full not-prose flex flex-row flex-wrap gap-2 items-center no-external-icon mb-4">
 
         {% for button in site.data.buttons %}
-        <a class="no-external-icon" href="{{ button.url }}"><img class="w-[88px] h-[31px]" src="{{ button.image }}" alt="{{ button.alt }}"></a>
+        <a class="no-external-icon" href="{{ button.url }}"><img width="88" height="31" src="{{ button.image }}" alt="{{ button.alt }}"></a>
         {% endfor %}
     </div>
     {% endif %}
