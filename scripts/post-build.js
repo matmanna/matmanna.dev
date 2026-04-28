@@ -91,10 +91,30 @@ function processFile(filePath) {
     }
   });
   
-// Fourth pass: handle arbitrary value classes (max-w-[80ch], etc)
+// Fourth pass: handle CSS selectors with no- prefix classes
+  // e.g., a:not(.no-external-icon) → a:not(.cXX)
+  // e.g., a[data-no-external-icon] → a[data-cXX]
+  Object.entries(classMap).forEach(([orig, short]) => {
+    if (orig.startsWith('no-')) {
+      // Replace .no-external-icon in CSS selectors
+      const escaped = orig.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const selectorRegex = new RegExp('\\.' + escaped + '(?=[^a-zA-Z0-9]|$)', 'g');
+      html = html.replace(selectorRegex, '.' + short);
+      
+      // Also replace data-no-external-icon in attribute selectors: [data-no-external-icon] → [data-cXX]
+      const attrRegex = new RegExp('\\[data-' + escaped + '\\]', 'g');
+      html = html.replace(attrRegex, '[data-' + short + ']');
+      
+      // And data-no-external-icon="..." in HTML: data-no-external-icon="..." → data-cXX="..."
+      const htmlAttrRegex = new RegExp('data-' + escaped + '=', 'g');
+      html = html.replace(htmlAttrRegex, 'data-' + short + '=');
+    }
+  });
+   
+  // Fourth pass: handle arbitrary value classes (max-w-[80ch], etc)
   // These must NOT be minified in HTML since we can't reliably replace in CSS
   // Instead, skip them entirely - they'll remain as-is in both HTML and CSS
-  
+   
   if (modified) fs.writeFileSync(filePath, html);
 }
 
@@ -108,5 +128,35 @@ function walkDir(dir) {
   });
 }
 
+// Also update tailwind.css with minified class names
+function updateCSS(filePath) {
+  if (!fs.existsSync(filePath)) return;
+  let css = fs.readFileSync(filePath, 'utf8');
+  let modified = false;
+  
+  Object.entries(classMap).forEach(([orig, short]) => {
+    if (orig.startsWith('no-')) {
+      const escaped = orig.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      
+      // Replace .no-external-icon in any CSS selector
+      const selectorRegex = new RegExp('\\.' + escaped + '(?=[^a-zA-Z0-9]|$)', 'g');
+      if (css.match(selectorRegex)) {
+        css = css.replace(selectorRegex, '.' + short);
+        modified = true;
+      }
+      
+      // Replace [data-no-external-icon] attribute selector
+      const attrRegex = new RegExp('\\[data-' + escaped + '\\]', 'g');
+      if (css.match(attrRegex)) {
+        css = css.replace(attrRegex, '[data-' + short + ']');
+        modified = true;
+      }
+    }
+  });
+  
+  if (modified) fs.writeFileSync(filePath, css);
+}
+
 walkDir('_site');
+updateCSS('_site/assets/css/tailwind.css');
 console.log('Minified ' + idx + ' classes');
