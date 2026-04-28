@@ -11,10 +11,10 @@ function shouldSkip(c) {
   // Icons
   if (c.includes('fa-') || c.includes('icon-fa')) return true;
   if (c.startsWith('not-')) return true;
-  // Border
-  if (c.includes('border')) return true;
-  // Widths
-  if (c.startsWith('max-w-')) return true;
+  
+  // Skip arbitrary values entirely - can't reliably replace in CSS
+  if (c.includes('[')) return true;
+  
   return false;
 }
 
@@ -48,7 +48,7 @@ function processFile(filePath) {
     });
   });
   
-  // Second pass: replace in HTML
+// Second pass: replace in HTML
   matches.forEach(m => {
     const arr = m.slice(7, -1).split(' ').filter(c => c);
     const newArr = arr.map(c => shouldSkip(c) ? c : classMap[c]);
@@ -58,40 +58,42 @@ function processFile(filePath) {
     }
   });
   
-  // Third pass: replace in ALL CSS (both <style> blocks AND Tailwind inline styles)
+  // Third pass: replace in ALL CSS
   Object.entries(classMap).forEach(([orig, short]) => {
     if (shouldSkip(orig)) return;
     
-    // Build escaped pattern for class name
-    // Use String.raw with double backslash to get single backslash in regex
+    // For regular classes: escape dashes, NOT brackets (CSS keeps them as-is)
     let escaped = orig.replace(/-/g, String.raw`\-`);
     
     // 1. Base class: .flex-row → .c6
     const basePattern = String.raw`\.` + escaped;
-    const baseRegex = new RegExp(basePattern + String.raw`([{:, >~])`, 'g');
-    html = html.replace(baseRegex, '.' + short + '$1');
+    const baseRegex = new RegExp(basePattern + '(?=[{:, >])', 'g');
+    html = html.replace(baseRegex, '.' + short);
     
     // 2. Dark variant: .dark\:flex-row → .c6  
     if (orig.startsWith('dark:')) {
       const baseClass = orig.slice(5);
-      const baseEscaped = baseClass.replace(/-/g, String.raw`\-`);
+      let baseEscaped = baseClass.replace(/-/g, String.raw`\-`);
       const darkPattern = String.raw`\.dark\\:` + baseEscaped;
-      const darkRegex = new RegExp(darkPattern + String.raw`([{:, >])`, 'g');
-      html = html.replace(darkRegex, '.' + short + '$1');
+      const darkRegex = new RegExp(darkPattern + '(?=[{:, >])', 'g');
+      html = html.replace(darkRegex, '.' + short);
     }
     
-    // 3. Responsive variant: .sm\:flex-row → .c6
+    // 3. Responsive variant
     if (orig.match(/^(sm|md|lg|xl|2xl):/)) {
       const baseClass = orig.replace(/^(sm|md|lg|xl|2xl):/, '');
       const prefix = orig.match(/^(sm|md|lg|xl|2xl):/)[1];
       const baseEscaped = baseClass.replace(/-/g, String.raw`\-`);
       
-      // Use \\ to match single backslash in CSS - need TWO in string for regex
       const respPattern = String.raw`\.` + prefix + String.raw`\\:` + baseEscaped;
-      const respRegex = new RegExp(respPattern + String.raw`([{:, >])`, 'g');
-      html = html.replace(respRegex, '.' + short + '$1');
+      const respRegex = new RegExp(respPattern + '(?=[{:, >])', 'g');
+      html = html.replace(respRegex, '.' + short);
     }
   });
+  
+// Fourth pass: handle arbitrary value classes (max-w-[80ch], etc)
+  // These must NOT be minified in HTML since we can't reliably replace in CSS
+  // Instead, skip them entirely - they'll remain as-is in both HTML and CSS
   
   if (modified) fs.writeFileSync(filePath, html);
 }
