@@ -8,12 +8,15 @@ const classMap = {};
 let idx = 0;
 
 function shouldSkip(c) {
-  // Icons - MUST skip
+  // Icons
   if (c.includes('fa-') || c.includes('icon-fa')) return true;
   if (c.startsWith('not-')) return true;
+  // Border
   if (c.includes('border')) return true;
-  // Max/min widths
+  // Widths
   if (c.startsWith('max-w-')) return true;
+  // Responsive (sm:, md:, lg:, etc.) - complex to handle properly
+  if (c.includes(':') && !c.startsWith('dark:')) return true;
   return false;
 }
 
