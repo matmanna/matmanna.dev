@@ -12,9 +12,6 @@ function shouldSkip(c) {
   if (c.includes('fa-') || c.includes('icon-fa')) return true;
   if (c.startsWith('not-')) return true;
   
-  // Skip arbitrary values entirely - can't reliably replace in CSS
-  if (c.includes('[')) return true;
-  
   return false;
 }
 
@@ -89,6 +86,36 @@ function processFile(filePath) {
       const respRegex = new RegExp(respPattern + '(?=[{:, >])', 'g');
       html = html.replace(respRegex, '.' + short);
     }
+    
+    // 4. Arbitrary value classes: w-[88px], max-w-[80ch], border-t-[6px]
+    // In CSS: brackets are escaped as \[ and \]
+    if (orig.includes('[')) {
+      // Build regex pattern with backslash+bracket for each bracket
+      // \x5c in regex = backslash, \x5b = [
+      const cssClass = orig.replace(/\[/g, '\\x5c\\x5b').replace(/\]/g, '\\x5c\\x5d');
+      const arbiPattern = '.' + cssClass;
+      const arbiRegex = new RegExp(arbiPattern + '(?=[{:, >])', 'g');
+      html = html.replace(arbiRegex, '.' + short);
+      
+      // Dark + arbitrary
+      if (orig.startsWith('dark:')) {
+        const baseClass = orig.slice(5);
+        const cssClass2 = baseClass.replace(/\[/g, '\\x5c\\x5b').replace(/\]/g, '\\x5c\\x5d');
+        const darkArbiPattern = '.dark\\:' + cssClass2;
+        const darkArbiRegex = new RegExp(darkArbiPattern + '(?=[{:, >])', 'g');
+        html = html.replace(darkArbiRegex, '.' + short);
+      }
+      
+      // Responsive + arbitrary
+      if (orig.match(/^(sm|md|lg|xl|2xl):/)) {
+        const baseClass = orig.replace(/^(sm|md|lg|xl|2xl):/, '');
+        const prefix = orig.match(/^(sm|md|lg|xl|2xl):/)[1];
+        const cssClass2 = baseClass.replace(/\[/g, '\\x5c\\x5b').replace(/\]/g, '\\x5c\\x5d');
+        const respArbiPattern = '.' + prefix + '\\:' + cssClass2;
+        const respArbiRegex = new RegExp(respArbiPattern + '(?=[{:, >])', 'g');
+        html = html.replace(respArbiRegex, '.' + short);
+      }
+    }
   });
   
 // Fourth pass: handle CSS selectors with no- prefix classes
@@ -110,10 +137,6 @@ function processFile(filePath) {
       html = html.replace(htmlAttrRegex, 'data-' + short + '=');
     }
   });
-   
-  // Fourth pass: handle arbitrary value classes (max-w-[80ch], etc)
-  // These must NOT be minified in HTML since we can't reliably replace in CSS
-  // Instead, skip them entirely - they'll remain as-is in both HTML and CSS
    
   if (modified) fs.writeFileSync(filePath, html);
 }
@@ -149,6 +172,17 @@ function updateCSS(filePath) {
       const attrRegex = new RegExp('\\[data-' + escaped + '\\]', 'g');
       if (css.match(attrRegex)) {
         css = css.replace(attrRegex, '[data-' + short + ']');
+        modified = true;
+      }
+    }
+    
+    // Arbitrary value classes
+    if (orig.includes('[')) {
+      const cssClass = orig.replace(/\[/g, '\\x5c\\x5b').replace(/\]/g, '\\x5c\\x5d');
+      const arbiPattern = '.' + cssClass;
+      const arbiRegex = new RegExp(arbiPattern + '(?=[{:, >])', 'g');
+      if (css.match(arbiRegex)) {
+        css = css.replace(arbiRegex, '.' + short);
         modified = true;
       }
     }
