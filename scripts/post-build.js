@@ -115,31 +115,33 @@ function processFile(filePath) {
       html = html.replace(respRegex, '.' + short);
     }
 
-// 4. Arbitrary value classes: w-[88px], max-w-[80ch], border-t-[6px]
-    // In CSS: brackets are escaped as \[ and \], and % is escaped as \%
+    // 4. Arbitrary value classes: w-[88px], max-w-[80ch], border-t-[6px]
+    // In CSS: brackets are escaped as \[ and \], % is escaped as \%
     if (orig.includes('[')) {
-      // Build regex pattern with backslash+bracket for each bracket, and \% for percent
-      // \x5c in regex = backslash, \x5b = [, \x5d = ]
-      const cssClass = orig.replace(/\[/g, '\\x5c\\x5b').replace(/\]/g, '\\x5c\\x5d').replace(/%/g, '\\x5c%');
+      // Build the EXACT string as it appears in CSS
+      // CSS has: max-w-\[85ch\]  (literal backslash before [ and ])
+      // In regex, to match literal backslash + [, we need: \\\[
+      // But in JS string, that's '\\\\[' (two backslashes in string = one in regex)
+      const cssClass = orig.replace(/\[/g, '\\\\[').replace(/\]/g, '\\\\]').replace(/%/g, '\\\\%');
       const arbiPattern = '.' + cssClass;
       const arbiRegex = new RegExp(arbiPattern + '(?=[{:, >])', 'g');
       html = html.replace(arbiRegex, '.' + short);
-      
+
       // Dark + arbitrary
       if (orig.startsWith('dark:')) {
         const baseClass = orig.slice(5);
-        const cssClass2 = baseClass.replace(/\[/g, '\\x5c\\x5b').replace(/\]/g, '\\x5c\\x5d').replace(/%/g, '\\x5c%');
-        const darkArbiPattern = '.dark\\:' + cssClass2;
+        const cssClass2 = baseClass.replace(/\[/g, '\\\\[').replace(/\]/g, '\\\\]').replace(/%/g, '\\\\%');
+        const darkArbiPattern = '.dark\\\\:' + cssClass2;
         const darkArbiRegex = new RegExp(darkArbiPattern + '(?=[{:, >])', 'g');
         html = html.replace(darkArbiRegex, '.' + short);
       }
-      
+
       // Responsive + arbitrary
       if (orig.match(/^(sm|md|lg|xl|2xl):/)) {
         const baseClass = orig.replace(/^(sm|md|lg|xl|2xl):/, '');
         const prefix = orig.match(/^(sm|md|lg|xl|2xl):/)[1];
-        const cssClass2 = baseClass.replace(/\[/g, '\\x5c\\x5b').replace(/\]/g, '\\x5c\\x5d').replace(/%/g, '\\x5c%');
-        const respArbiPattern = '.' + prefix + '\\:' + cssClass2;
+        const cssClass2 = baseClass.replace(/\[/g, '\\\\[').replace(/\]/g, '\\\\]').replace(/%/g, '\\\\%');
+        const respArbiPattern = '.' + prefix + '\\\\:' + cssClass2;
         const respArbiRegex = new RegExp(respArbiPattern + '(?=[{:, >])', 'g');
         html = html.replace(respArbiRegex, '.' + short);
       }
@@ -234,7 +236,7 @@ function updateCSS(filePath) {
 
     // 4. Arbitrary value classes: .w-[88px] → .c5
     if (orig.includes('[')) {
-      const cssClass = orig.replace(/\[/g, '\\x5c\\x5b').replace(/\]/g, '\\x5c\\x5d');
+      const cssClass = orig.replace(/\[/g, '\\\\[').replace(/\]/g, '\\\\]').replace(/%/g, '\\\\%');
       const arbiPattern = '.' + cssClass;
       const arbiRegex = new RegExp(arbiPattern + '(?=[^a-zA-Z0-9\\-]|$)', 'g');
       if (css.match(arbiRegex)) {

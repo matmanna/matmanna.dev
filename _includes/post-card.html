@@ -23,10 +23,10 @@ adjust based on kind so the same template can render posts, projects, pages, etc
     <div class="project-card__layout flex flex-col sm:flex-row items-stretch gap-3 w-full px-3 py-2">
         {%- if (kind == 'project' or kind == 'projects') and card_image -%}
         <div
-            class="w-full h-36 min-w-0 self-center overflow-hidden rounded-md border border-primary-500/40 md:w-36 md:h-24 md:min-w-36 lg:w-48 lg:h-36 lg:min-w-44">
+            class="w-full h-36 min-w-0 self-center overflow-hidden rounded-md border-0 border-primary-500/40 md:w-36 md:h-24 md:min-w-36 lg:w-48 lg:h-36 lg:min-w-44">
             <a href="{{ entry.url | relative_url }}" class="no-underline block w-full h-full">
                 <img src="{{ card_image | relative_url }}" alt="{{ entry.title }} image"
-                    class="w-full h-full object-cover" loading="lazy">
+                    class="w-full h-full object-cover border-0" loading="lazy">
             </a>
         </div>
         {%- endif -%}
