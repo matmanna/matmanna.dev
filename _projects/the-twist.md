@@ -7,7 +7,7 @@ start_date: 2025-07-05
 activity_percent: 55
 activity_status: paused
 links:
-  - title: Source
+  - title: Src
     url: https://github.com/benderhq/the-twist/tree/nix
     icon: fa-brands fa-github
   - title: Video

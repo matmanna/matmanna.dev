@@ -13,7 +13,7 @@ links:
   - title: RubyGems
     url: https://github.com/matmanna/doctored
     icon: fa-solid fa-gem
-  - title: Source
+  - title: Src
     url: https://github.com/matmanna/doctored
     icon: fa-brands fa-github
 tags:

@@ -14,7 +14,7 @@ links:
   - title: Wiki
     url: https://github.com/regresado/regreso/wiki
     icon: fa-solid fa-book
-  - title: Source
+  - title: Src
     url: https://github.com/regresado/regreso
     icon: fa-brands fa-github
   - title: Client Utils

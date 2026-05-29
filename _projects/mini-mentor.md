@@ -11,7 +11,7 @@ links:
   - title: Live app
     url: https://mini-mentor.netlify.app
     icon: fa-solid fa-up-right-from-square
-  - title: Source
+  - title: Src
     url: https://github.com/matmanna/mini-mentor
     icon: fa-brands fa-github
 tags:

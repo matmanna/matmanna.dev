@@ -7,7 +7,7 @@ start_date: 2024-12-07
 end_date: 2025-04-15
 activity_status: production
 links:
-  - title: Source
+  - title: Src
     url: https://github.com/ldnano/o-fn
     icon: fa-brands fa-github
   - title: CAC OSS Cert
