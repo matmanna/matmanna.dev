@@ -11,4 +11,4 @@ https://matmanna.dev
 - [shymike](https://imshymike.dev) for hackatime-heatmap
 - all the people who inspired [doctored](https://doctored.matmanna.dev)
 
-i used little to no genai for the content/design of the site, but codex was shockingly super helpful for the tailwind compression functions and optimization prototypes!
+i avoided relying on genai for the content/design of the site, but codex was shockingly super helpful for the tailwind compression functions and optimization prototypes!
