@@ -10,7 +10,7 @@ links:
   - title: PyPI package
     url: https://pypi.org/project/ltamp/
     icon: fa-brands fa-python
-  - title: Src
+  - title: src
     url: https://github.com/benderhq/LtAmp.py
     icon: fa-brands fa-github
 tags:

@@ -7,10 +7,10 @@ start_date: 2024-12-07
 end_date: 2025-04-15
 activity_status: production
 links:
-  - title: Src
+  - title: src
     url: https://github.com/ldnano/o-fn
     icon: fa-brands fa-github
-  - title: CAC OSS Cert
+  - title: CAC Cert
     url: http://congressional.hackclub.com/
     icon: fas fa-certificate
   - title: 1st - PLCnext '25

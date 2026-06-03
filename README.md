@@ -6,6 +6,17 @@ https://matmanna.dev
 
 ---
 
+**deployment:**
+
+
+right now deployed on cloudflare pages! still some kinks to work out from github pages but i dont really have time right now lol.
+
+```bash
+bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}" && node scripts/post-build.js
+```
+
+---
+
 **attribution:**
 
 - [shymike](https://imshymike.dev) for hackatime-heatmap
