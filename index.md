@@ -39,7 +39,6 @@ A decade of technical experience has shaped me into an indie maker who builds en
 Outside of computing, I’m also a guitarist, competition aficionado, and linguaphile<small>English, Spanish, and Esperanto so far</small>[^2].
 
 
-
 ### what i'm up to <code>:now</code>
 
 <details><summary>Recently, I've been shipping,<sub> (expand for stats!)</sub> but also: </summary>
