@@ -25,7 +25,7 @@ layout: compress
     {% if site.data.buttons.size > 0 %}
 
     <div class="max-w-[85ch] justify-center items-center w-full not-prose flex flex-row flex-wrap gap-2 items-center no-external-icon mb-4"
-        style="max-width: 80ch;">
+        style="max-width: 85ch;">
 
         {% for button in site.data.buttons %}
         <a class="no-external-icon" href="{{ button.url }}"><img width="88" height="31" src="{{ button.image }}"
@@ -35,7 +35,8 @@ layout: compress
     {% endif %}
 
     <footer
-        class="w-full dark:text-primary-400 text-primary-800 dark:bg-primary-950 bg-primary-100 py-6 pt-3 flex flex-col items-center">
+        class="w-full dark:text-primary-400 text-primary-800 dark:bg-primary-950 bg-primary-100 py-6 pt-3 flex flex-col items-center"
+                    style="border-top-width: 2px; max-width: 85ch;"></footer>>
         <div class="max-w-[85ch] w-full border-top-3 border-dotted border-primary-500 pt-3 dark:border-none">
             {% include foot.html %}
         </div>
