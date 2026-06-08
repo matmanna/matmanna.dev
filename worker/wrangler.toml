@@ -1,0 +1,7 @@
+name = "matmanna-heatmap"
+main = "index.js"
+compatibility_date = "2025-01-01"
+
+routes = [
+  { pattern = "heatmap.matmanna.dev/*", zone_name = "matmanna.dev" }
+]
