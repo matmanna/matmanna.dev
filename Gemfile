@@ -1,3 +1,3 @@
 source "https://rubygems.org"
 
-gem "jekyll-theme-doctored", "~> 0.3.24"
+gem "jekyll-theme-doctored", "~> 0.3.25"

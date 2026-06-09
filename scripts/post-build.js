@@ -28,9 +28,32 @@ function getVarShortName(num) {
   return '--' + result;
 }
 
+function stripPalette(html) {
+  // Strip duplicate Tailwind base reset blocks from inline palette
+  // These duplicate the same --tw-* vars already in :root
+  const before = html.length;
+  html = html.replace(/\*,:after,:before\{--tw-[^}]*\}/g, '');
+  html = html.replace(/::backdrop\{--tw-[^}]*\}/g, '');
+
+  // Strip prose rules for elements never used anywhere on the site
+  const deadElements = ['pre', 'blockquote', 'kbd', 'table', 'thead', 'tbody', 'tfoot', 'figure', 'figcaption', 'dl', 'dt', 'dd'];
+  deadElements.forEach(el => {
+    const regex = new RegExp('\\.prose :where\\([^)]*\\b' + el + '\\b[^)]*\\):not\\(:where\\(\\[class~=not-prose\\],\\[class~=not-prose\\] \\*\\)\\)\\{[^}]*\\}', 'g');
+    html = html.replace(regex, '');
+  });
+
+  if (html.length < before) {
+    console.log('Palette optimized: ' + (before - html.length) + ' bytes');
+  }
+  return html;
+}
+
 function processFile(filePath) {
   let html = fs.readFileSync(filePath, 'utf8');
   let modified = false;
+
+  // Optimize palette CSS before class renaming (selectors still say .prose)
+  html = stripPalette(html);
 
   const matches = html.match(/class="[^"]+"/g) || [];
 
