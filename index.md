@@ -42,6 +42,8 @@ Outside of computing, I’m also a guitarist, competition aficionado, and lingua
 
 ### what i'm up to <code>:now</code>
 
+Recently, I've been shipping,<sub> (expand for stats!)</sub> but also: 
+
   <a class="no-external-icon heatmap-link" href="https://heatmap.shymike.dev?id=U07VA44DNBA&timezone=America%2FNew_York&standalone=true" title="Click to view detailed data for each day!" style="display: inline-block;">
     <img id="heatmap-image" class="heatmap-image my-0" alt="Hackatime activity heatmap" width="689" height="91" fetchpriority="high" src="https://heatmap.matmanna.dev/light?v=1781229188" data-light-src="https://heatmap.matmanna.dev/light?v=1781229188" data-dark-src="https://heatmap.matmanna.dev/dark?v=1781229188">
   </a>
