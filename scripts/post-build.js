@@ -29,17 +29,121 @@ function getVarShortName(num) {
 }
 
 function stripPalette(html) {
-  // Strip duplicate Tailwind base reset blocks from inline palette
-  // These duplicate the same --tw-* vars already in :root
   const before = html.length;
-  html = html.replace(/\*,:after,:before\{--tw-[^}]*\}/g, '');
+
+  // 1. Strip redundant ::backdrop reset (inherits from parent via *, :after, :before)
   html = html.replace(/::backdrop\{--tw-[^}]*\}/g, '');
 
-  // Strip prose rules for elements never used anywhere on the site
-  const deadElements = ['pre', 'blockquote', 'kbd', 'table', 'thead', 'tbody', 'tfoot', 'figure', 'figcaption', 'dl', 'dt', 'dd'];
+  // 2. Strip unused --tw-* variable declarations from base reset
+  // These are empty/whitespace defaults that no utility class references via var()
+  const baseResetMatch = html.match(/\*,?:after,:before\{([^}]*)\}/);
+  if (baseResetMatch) {
+    const block = baseResetMatch[0];
+    const decls = baseResetMatch[1].match(/--tw-[a-z0-9-]+:\s*[^;]+;/g) || [];
+    // Find which --tw-* vars are referenced via var() anywhere in the HTML
+    const restOfHTML = html.replace(block, '');
+    const unused = decls.filter(d => {
+      const varName = d.split(':')[0].trim();
+      return !restOfHTML.includes('var(' + varName + ')');
+    });
+    if (unused.length > 0) {
+      let newBlock = block;
+      unused.forEach(d => { newBlock = newBlock.replace(d, ''); });
+      // Clean up empty declarations and trailing semicolons
+      newBlock = newBlock.replace(/;\s*;/g, ';').replace(/;\}/, '}');
+      html = html.replace(block, newBlock);
+      console.log('Stripped ' + unused.length + ' unused --tw-* variables');
+    }
+  }
+
+  // 2. Strip dead prose rules (elements never used on the site)
+  const deadElements = ['pre', 'blockquote', 'kbd', 'table', 'thead', 'tbody', 'tfoot', 'figure', 'figcaption', 'dl', 'dt', 'dd', 'picture', 'video'];
   deadElements.forEach(el => {
     const regex = new RegExp('\\.prose :where\\([^)]*\\b' + el + '\\b[^)]*\\):not\\(:where\\(\\[class~=not-prose\\],\\[class~=not-prose\\] \\*\\)\\)\\{[^}]*\\}', 'g');
     html = html.replace(regex, '');
+  });
+
+  // 3. Strip @font-face (embedded Libertinus Mono — use system monospace instead)
+  html = html.replace(/@font-face\{[^}]*src:url\([^)]*\)[^}]*\}/g, '');
+
+  // 4. Strip unused prose variable declarations
+  // Find the second .prose{ block (the one with --tw-prose-* variables)
+  const proseVarBlock = html.match(/\.prose\{(--tw-prose[^}]*)\}/);
+  if (proseVarBlock) {
+    const block = proseVarBlock[0];
+    const vars = proseVarBlock[1].match(/--[a-z-]+:[^;]+/g) || [];
+    // Check which vars are used in remaining prose rules
+    const restOfHTML = html.replace(block, '');
+    const unused = vars.filter(v => {
+      const varName = v.split(':')[0];
+      return !restOfHTML.includes('var(' + varName + ')');
+    });
+    if (unused.length > 0) {
+      let newBlock = block;
+      unused.forEach(v => { newBlock = newBlock.replace(v + ';', ''); });
+      html = html.replace(block, newBlock);
+    }
+  }
+
+  // 5. Strip unused utility classes from inline CSS
+  // Collect all class names used in HTML
+  const usedClasses = new Set();
+  const classAttrRegex = /class="([^"]*)"/g;
+  let cm;
+  while ((cm = classAttrRegex.exec(html)) !== null) {
+    cm[1].split(/\s+/).filter(Boolean).forEach(c => usedClasses.add(c));
+  }
+
+  // Strip single-class utility rules where the class isn't used
+  // Pattern: .className{...} or .dark\:className{...} or .sm\:className{...}
+  const utilRegex = /\.([a-z][a-z0-9_-]*)\{[^}]*\}/g;
+  let um;
+  const toRemove = [];
+  while ((um = utilRegex.exec(html)) !== null) {
+    const fullMatch = um[0];
+    const className = um[1];
+    const matchStart = um.index;
+    // Skip if it's a minified class (c0-c99) or prose class
+    if (className.match(/^c\d+$/) || className === 'prose') continue;
+    // Skip if it contains complex selectors (spaces, commas, >)
+    if (className.includes(' ') || className.includes(',') || className.includes('>')) continue;
+    // Skip if preceded by a comma (part of combined selector like .overflow-hidden,.truncate{...})
+    if (matchStart > 0 && html[matchStart - 1] === ',') continue;
+    // Check if class is used in HTML
+    if (!usedClasses.has(className)) {
+      // Also check dark: and responsive: variants
+      const darkUsed = usedClasses.has('dark:' + className);
+      const respUsed = ['sm:', 'md:', 'lg:', 'xl:', '2xl:'].some(p => usedClasses.has(p + className));
+      if (!darkUsed && !respUsed) {
+        toRemove.push(fullMatch);
+      }
+    }
+  }
+  // Also strip dark: variant rules
+  const darkUtilRegex = /\.dark\\:([a-z][a-z0-9_-]*)\{[^}]*\}/g;
+  while ((um = darkUtilRegex.exec(html)) !== null) {
+    const fullMatch = um[0];
+    const className = um[1];
+    if (className.match(/^c\d+$/)) continue;
+    if (!usedClasses.has('dark:' + className)) {
+      toRemove.push(fullMatch);
+    }
+  }
+  // Also strip responsive variant rules
+  ['sm', 'md', 'lg', 'xl', '2xl'].forEach(prefix => {
+    const respRegex = new RegExp('\\.' + prefix + '\\\\:([a-z][a-z0-9_-]*)\\{[^}]*\\}', 'g');
+    while ((um = respRegex.exec(html)) !== null) {
+      const fullMatch = um[0];
+      const className = um[1];
+      if (className.match(/^c\d+$/)) continue;
+      if (!usedClasses.has(prefix + ':' + className)) {
+        toRemove.push(fullMatch);
+      }
+    }
+  });
+  // Remove duplicates and strip
+  [...new Set(toRemove)].forEach(rule => {
+    html = html.replace(rule, '');
   });
 
   if (html.length < before) {
@@ -48,12 +152,29 @@ function stripPalette(html) {
   return html;
 }
 
+function minifyInlineScripts(html) {
+  // Minify inline script blocks (strip comments and excess whitespace)
+  return html.replace(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi, (match, content) => {
+    if (content.length < 50) return match; // Skip tiny scripts
+    const minified = content
+      .replace(/\/\*[\s\S]*?\*\//g, '') // strip block comments
+      .replace(/\/\/[^\n]*/g, '') // strip line comments
+      .replace(/\s+/g, ' ') // collapse whitespace
+      .replace(/\s*([{}();,])\s*/g, '$1') // remove space around punctuation
+      .trim();
+    return match.replace(content, minified);
+  });
+}
+
 function processFile(filePath) {
   let html = fs.readFileSync(filePath, 'utf8');
   let modified = false;
 
   // Optimize palette CSS before class renaming (selectors still say .prose)
   html = stripPalette(html);
+
+  // Minify inline scripts
+  html = minifyInlineScripts(html);
 
   const matches = html.match(/class="[^"]+"/g) || [];
 

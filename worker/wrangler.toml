@@ -5,3 +5,6 @@ compatibility_date = "2025-01-01"
 routes = [
   { pattern = "heatmap.matmanna.dev/*", zone_name = "matmanna.dev" }
 ]
+
+[triggers]
+crons = ["0 6 * * *"]
