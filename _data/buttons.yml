@@ -13,15 +13,18 @@
 - image: /assets/images/badges/catppuccin.webp
   url: https://catppuccin.com
   alt: Catppuccin
-- image: /assets/images/badges/penguins.gif
-  url: https://kernel.org
-  alt: Powered by Penguins
+# - image: /assets/images/badges/penguins.gif
+#   url: https://kernel.org
+#   alt: Powered by Penguins
 - image: /assets/images/badges/powered_by_nixos.gif
   url: https://nixos.org/
   alt: Powered by NixOS
 - image: /assets/images/badges/made-with-neovim.avif
   url: https://neovim.io
   alt: Made with Neovim
+- image: /assets/images/badges/green-team.gif
+  url: https://512kb.club/
+  alt: 512kB Club Green Team
 - image: /assets/images/badges/friends/gideon.webp
   url: https://gideon.sh
   alt: Friend of Gideon
