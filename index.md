@@ -9,6 +9,9 @@ permalink: /
   <a href="https://linkedin.com/in/matmanna" data-no-external-icon rel="nofollow">
     <img src="/assets/images/badges/social/linkedin-badge.svg" alt="LinkedIn badge" width="37" height="20">
   </a>
+  <a href="https://github.com/matmanna" data-no-external-icon rel="nofollow">
+    <img src="/assets/images/badges/social/github-badge.svg" alt="GitHub badge" width="46" height="20">
+  </a>
   <a href="https://devpost.com/matmanna" data-no-external-icon rel="nofollow">
     <img src="/assets/images/badges/social/devpost-badge.svg" alt="Devpost badge" width="51" height="20">
   </a>
@@ -23,6 +26,9 @@ permalink: /
   </a>
   <a href="https://gitlab.com/matmanna" data-no-external-icon rel="nofollow">
     <img src="/assets/images/badges/social/gitlab-badge.svg" alt="GitLab badge" width="45" height="20">
+  </a>
+  <a href="https://tangled.sh/matmanna" data-no-external-icon rel="nofollow">
+    <img src="/assets/images/badges/social/tangled-badge.svg" alt="Tangled badge" width="57" height="20">
   </a>
   <p>(<code>:places</code>)</p>
 </div>
