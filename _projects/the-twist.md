@@ -12,12 +12,12 @@ links:
     icon: fa-brands fa-github
   - title: Video
     url: https://github.com/user-attachments/assets/ab2fa6d3-ed6a-48c6-a2fd-b2e2458a9679
-    icon: fa-solid fa-film
+    icon: fa-solid fa-up-right-from-square
 tags:
   - Nix
   - Module
   - Remote Control
-  - Audio
+  - RPi
 skills:
   - name: Nix
     icon: fa-solid fa-cubes

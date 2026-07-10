@@ -1,7 +1,7 @@
 ---
 layout: project
 title: "Operation: Falcon Nation"
-description: Industrial-tech-enabled life-sized board game built for philanthropic outreach and competition(s).
+description: Industrial-tech-automated life-sized board game built for philanthropic outreach and competition(s).
 image: /assets/images/projects/o-fn.webp
 start_date: 2024-12-07
 end_date: 2025-04-15
@@ -23,7 +23,7 @@ tags:
   - Hardware
   - PLC
   - Competition
-  - Outreach
+  - Team Coordination
 skills:
   - name: Industrial Controls
     icon: fa-solid fa-industry

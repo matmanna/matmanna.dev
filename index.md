@@ -157,11 +157,29 @@ Since being exposed to computer programming on [Scratch](https://scratch.mit.edu
 }
 </style>
 
-_Here are some more orgs & projects I've contributed to... (<a href="/projects">all</a>)_
+_Here are some more initiatives & projects I've contributed to both collaboratively and independently... (<a href="/projects">all</a>)_
 
 <ul class="projects-width-breakout px-0 flex mt-3 flex-col gap-3 not-prose">
   {% assign projects_without_end = site.projects | where_exp: "project", "project.end_date == nil or project.end_date == ''" %}
   {% assign projects_with_end = site.projects | where_exp: "project", "project.end_date != nil and project.end_date != ''" | sort: "end_date" | reverse %}
+  {% assign recent_projects = projects_without_end | concat: projects_with_end %}
+  {% assign project_count = 0 %}
+  {% for project in recent_projects %}
+  {% unless project.org contains 'hack club' or project.org contains 'Hack Club' %}
+  {% include post-card.html entry=project kind='project' %}
+  {% assign project_count = project_count | plus: 1 %}
+  {% if project_count >= 8 %}
+  {% break %}
+  {% endif %}
+  {% endunless %}
+  {% endfor %}
+</ul>
+
+_and through my various roles and projects within and at Hack Club..._
+
+<ul class="projects-width-breakout px-0 flex mt-3 flex-col gap-3 not-prose">
+  {% assign projects_without_end = site.projects | where_exp: "project", "project.end_date == nil or project.end_date == ''" | where_exp: "project", "project.org contains 'hack club' or project.org contains 'Hack Club'" | sort: "start_date" | reverse %}
+  {% assign projects_with_end = site.projects | where_exp: "project", "project.end_date != nil and project.end_date != ''" | where_exp: "project", "project.org contains 'hack club' or project.org contains 'Hack Club'" | sort: "start_date" | reverse %}
   {% assign recent_projects = projects_without_end | concat: projects_with_end %}
   {% for project in recent_projects limit:8 %}
   {% include post-card.html entry=project kind='project' %}

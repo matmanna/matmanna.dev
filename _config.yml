@@ -36,6 +36,8 @@ redcarpet:
 collections:
   projects:
     output: true
+  posts:
+    output: true
   pages:
     permalink: /:title/
     output: true
