@@ -42,7 +42,7 @@ an aspiring engineer focused on open protocols, automation, and rapid prototypin
 
 A decade of technical experience has shaped me into an indie maker who builds engaging, accessible, and secure tools<small>I see my projects as tools meant to serve, not products to exploit. I prefer to use tools which align with this.</small>[^1] for real people. I am especially passionate about search UX, crafting interfaces with the real world, and decentralized infrastructure. 
 
-Outside of computing, I’m also a guitarist, competition aficionado, and linguaphile<small>English, Spanish, and Esperanto so far</small>[^2].
+Outside of computing, I’m also a guitarist, competition aficionado, and linguaphile<small>I speak and (sometimes) understand English, Spanish, and Esperanto so far</small>[^2].
 
 
 
@@ -202,9 +202,9 @@ _...and here are some thoughts I've had and shared... (<a href="/blog">all</a>)_
 
 <!-- _.. and some ways to use the site or reach out:_ -->
 
-## Footnotes 
+## Footnotes
 [^1]: I see my projects as tools meant to serve humans, not exploit them. I prefer to use products which align with this.
-[^2]: English, Spanish, and Esperanto so far
+[^2]: I speak and (sometimes) understand English, Spanish, and Esperanto so far
 [^3]: I've also contributed code in infrastructure (such as [Hackatime](https://hackatime.hackclub.com), [Revoker](https://revoke.hackclub.com), & [site](https://hackclub.com?uwu)), and reported data leaks through the security [program](https://security.hackclub.com).
 
 <hr class="not-prose">

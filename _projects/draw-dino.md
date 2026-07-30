@@ -2,7 +2,7 @@
 layout: project
 title: Draw a Dino
 description: Brought Hack Club's interactive PR workshop back from extinction & refactored the codebase with TS, Bun, Coolify, OIDC, Octokit, and CI.
-image: /assets/images/projects/draw-dino.png
+image: /assets/images/projects/draw-dino.webp
 start_date: 2026-04-12
 org: [ "hack club" ]
 links:
