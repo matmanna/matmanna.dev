@@ -95,9 +95,43 @@ function minifyInlineScripts(html) {
   // Minify inline script blocks (strip comments and excess whitespace)
   return html.replace(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi, (match, content) => {
     if (content.length < 50) return match; // Skip tiny scripts
-    const minified = content
-      .replace(/\/\*[\s\S]*?\*\//g, '') // strip block comments
-      .replace(/\/\/[^\n]*/g, '') // strip line comments
+    // Strip comments only when they occur outside JavaScript strings. A regex
+    // for // would also match the protocol in URLs such as https://example.com.
+    let withoutComments = '';
+    let quote = null;
+    let escaped = false;
+
+    for (let i = 0; i < content.length; i++) {
+      const char = content[i];
+      const next = content[i + 1];
+
+      if (quote) {
+        withoutComments += char;
+        if (escaped) {
+          escaped = false;
+        } else if (char === '\\') {
+          escaped = true;
+        } else if (char === quote) {
+          quote = null;
+        }
+        continue;
+      }
+
+      if (char === '"' || char === "'" || char === '`') {
+        quote = char;
+        withoutComments += char;
+      } else if (char === '/' && next === '*') {
+        const end = content.indexOf('*/', i + 2);
+        i = end === -1 ? content.length : end + 1;
+      } else if (char === '/' && next === '/') {
+        const end = content.indexOf('\n', i + 2);
+        i = end === -1 ? content.length : end - 1;
+      } else {
+        withoutComments += char;
+      }
+    }
+
+    const minified = withoutComments
       .replace(/\s+/g, ' ') // collapse whitespace
       .replace(/\s*([{}();,])\s*/g, '$1') // remove space around punctuation
       .trim();
