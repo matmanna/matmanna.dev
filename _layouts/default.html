@@ -6,6 +6,30 @@ layout: compress
 <html lang="en">
 {% include head.html %}
 
+<style>
+    @media (prefers-color-scheme: dark) {
+        [data-trophy-link],
+        .dark [data-trophy-link] {
+            color: #d6cbbc;
+            background-color: #442f0c;
+            border-color: #f59e0b;    
+        }
+    }
+
+    [data-trophy-link] {
+        color: rgb(41 37 36/var(--tw-text-opacity,1));
+        background-color: #fef3c7;
+        border-color: #f59e0b;
+    }
+
+
+    .dark [data-trophy-link] {
+        color: #d6cbbc;
+        background-color: #442f0c;
+        border-color: #f59e0b;
+    }
+</style>
+
 <body
     class="dark:text-primary-300 text-primary-700 dark:bg-primary-900 bg-primary-100 font-display flex flex-col items-center md:items-center lg:items-center ">
     <div class="absolute top-0" id="top"></div>
