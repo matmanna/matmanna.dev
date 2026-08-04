@@ -13,16 +13,16 @@ links:
     icon: fa-solid fa-up-right-from-square
   - title: Wiki
     url: https://github.com/regresado/regreso/wiki
-    icon: fa-solid fa-book
+    icon: fa-brands fa-github
   - title: src
     url: https://github.com/regresado/regreso
     icon: fa-brands fa-github
   - title: Client Utils
     url: https://www.npmjs.com/package/@regreso/utils
-    icon: fa-brands fa-npm
+    icon: fa-solid fa-up-right-from-square
   - title: Raycast
     url: https://github.com/regresado/raycasting
-    icon: fa-solid fa-github
+    icon: fa-brands fa-github
 tags:
   - TypeScript
   - Next.js

@@ -403,6 +403,14 @@ function updateCSS(filePath) {
   let css = fs.readFileSync(filePath, 'utf8');
   let modified = false;
 
+  // The inline page CSS already drops this embedded font in stripPalette().
+  // Remove it from the copied stylesheet too; the site uses system monospace.
+  const withoutEmbeddedFonts = css.replace(/@font-face\s*\{[\s\S]*?\}\s*/g, '');
+  if (withoutEmbeddedFonts !== css) {
+    css = withoutEmbeddedFonts;
+    modified = true;
+  }
+
   // Replace --tw-* variables in CSS
   Object.entries(varMap).forEach(([orig, short]) => {
     const varRegex = new RegExp(orig.replace(/[-]/g, '\\-'), 'g');

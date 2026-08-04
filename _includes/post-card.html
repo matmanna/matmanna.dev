@@ -8,6 +8,19 @@ adjust based on kind so the same template can render posts, projects, pages, etc
 {%- assign kind_raw = include.kind | default: entry.collection | default: entry.type | default: 'post' -%}
 {%- assign kind = kind_raw | downcase -%}
 {%- assign card_image = entry.card_image | default: entry.image -%}
+{%- assign external_href = nil -%}
+{%- if entry.external and entry.external != true -%}
+{%- assign external_href = entry.external -%}
+{%- elsif entry.external == true and entry.external_url -%}
+{%- assign external_href = entry.external_url -%}
+{%- endif -%}
+{%- assign entry_href = external_href | default: entry.url | relative_url -%}
+{%- assign entry_target = '' -%}
+{%- assign entry_rel = '' -%}
+{%- if external_href -%}
+{%- assign entry_target = ' target="_blank"' -%}
+{%- assign entry_rel = ' rel="noopener noreferrer"' -%}
+{%- endif -%}
 
 {%- assign icon_class = 'fa-solid fa-file-lines' -%}
 {%- if kind == 'post' or kind == 'posts' -%}
@@ -24,7 +37,7 @@ adjust based on kind so the same template can render posts, projects, pages, etc
         {%- if (kind == 'project' or kind == 'projects') and card_image -%}
         <div
             class="w-full h-36 min-w-0 self-center overflow-hidden rounded-md border-0 border-primary-500/40 md:w-36 md:h-24 md:min-w-36 lg:w-48 lg:h-36 lg:min-w-44">
-            <a href="{{ entry.url | relative_url }}" class="no-underline block w-full h-full">
+            <a href="{{ entry_href }}" class="no-underline block w-full h-full"{{ entry_target }}{{ entry_rel }}>
                 <img src="{{ card_image | relative_url }}" alt="{{ entry.title }} image"
                     class="w-full h-full object-cover border-0" loading="lazy">
             </a>
@@ -37,7 +50,7 @@ adjust based on kind so the same template can render posts, projects, pages, etc
                 class="flex flex-row gap-2 w-full rounded-md items-center px-2 py-1.5 bg-primary-300 dark:bg-primary-800">
                 <h4 class="my-0 items-center text-md flex-1">
                     {% include icon.html name=icon_class class="w-4 h-4 mr-2 inline-block text-primary-800 dark:text-primary-600" %}
-                    <a href="{{ entry.url | relative_url }}" class="no-external-icon">{{ entry.title }}</a>
+                    <a href="{{ entry_href }}" class="no-external-icon"{{ entry_target }}{{ entry_rel }}>{{ entry.title }}</a>
                 </h4>
 
                 {%- if kind == 'post' or kind == 'posts' -%}
@@ -84,7 +97,7 @@ adjust based on kind so the same template can render posts, projects, pages, etc
                     {% for link in entry.links %}
                     <a href="{{ link.url }}" class="no-underline no-external-icon">
                         <div
-                            class="bg-primary-100 dark:bg-primary-900 border border-primary-500 py-1 px-2 rounded-md text-xs flex flex-row items-center gap-2">
+                            {% if link.icon and link.icon contains 'fa-trophy' %}data-trophy-link {% endif %}class="bg-primary-100 dark:bg-primary-900 border border-primary-500 py-1 px-2 rounded-md text-xs flex flex-row items-center gap-2">
                             {% include icon.html name=link.icon class="w-3 h-3" %}{{ link.title }}
                         </div>
                     </a>
@@ -140,14 +153,14 @@ adjust based on kind so the same template can render posts, projects, pages, etc
                 {%- endif -%}
 
                 {%- if kind == 'post' or kind == 'posts' -%}
-                <a href="{{ entry.url | relative_url }}"
-                    class="text-primary-600 dark:text-primary-400 hover:underline mt-3 no-external-icon">Keep
+                <a href="{{ entry_href }}"
+                    class="text-primary-600 dark:text-primary-400 hover:underline mt-3 no-external-icon"{{ entry_target }}{{ entry_rel }}>Keep
                     reading...</a>
                 {%- elsif kind == 'project' or kind == 'projects' -%}
 
                 {%- else -%}
-                <a href="{{ entry.url | relative_url }}"
-                    class="text-primary-600 dark:text-primary-400 hover:underline mt-3 no-external-icon">Open</a>
+                <a href="{{ entry_href }}"
+                    class="text-primary-600 dark:text-primary-400 hover:underline mt-3 no-external-icon"{{ entry_target }}{{ entry_rel }}>Open</a>
                 {%- endif -%}
             </div>
         </div>

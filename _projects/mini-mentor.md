@@ -11,14 +11,20 @@ links:
   - title: Live app
     url: https://mini-mentor.netlify.app
     icon: fa-solid fa-up-right-from-square
+  - title: PennApps XXVI
+    url: https://pennapps.com/
+    icon: fas fa-trophy
+  - title: Devpost
+    url: https://devpost.com/software/minimentor
+    icon: fa-solid fa-up-right-from-square
   - title: src
     url: https://github.com/matmanna/mini-mentor
     icon: fa-brands fa-github
 tags:
-  - TypeScript
   - Next.js
   - Supabase
   - EdTech
+  - Team Coordination
 skills:
   - name: Product Design
     icon: fa-solid fa-compass-drafting

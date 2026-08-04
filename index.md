@@ -9,6 +9,9 @@ permalink: /
   <a href="https://linkedin.com/in/matmanna" data-no-external-icon rel="nofollow">
     <img src="/assets/images/badges/social/linkedin-badge.svg" alt="LinkedIn badge" width="37" height="20">
   </a>
+  <a href="https://github.com/matmanna" data-no-external-icon rel="nofollow">
+    <img src="/assets/images/badges/social/github-badge.svg" alt="GitHub badge" width="46" height="20">
+  </a>
   <a href="https://devpost.com/matmanna" data-no-external-icon rel="nofollow">
     <img src="/assets/images/badges/social/devpost-badge.svg" alt="Devpost badge" width="51" height="20">
   </a>
@@ -24,6 +27,9 @@ permalink: /
   <a href="https://gitlab.com/matmanna" data-no-external-icon rel="nofollow">
     <img src="/assets/images/badges/social/gitlab-badge.svg" alt="GitLab badge" width="45" height="20">
   </a>
+  <a href="https://tangled.sh/matmanna" data-no-external-icon rel="nofollow">
+    <img src="/assets/images/badges/social/tangled-badge.svg" alt="Tangled badge" width="57" height="20">
+  </a>
   <p>(<code>:places</code>)</p>
 </div>
 
@@ -31,18 +37,15 @@ an aspiring engineer focused on open protocols, automation, and rapid prototypin
 
 <hr class="not-prose">
 
-
 ## a lil' <code>:about</code> me
 
-A decade of technical experience has shaped me into an indie maker who builds engaging, accessible, and secure tools<small>I see my projects as tools meant to serve, not products to exploit. I prefer to use tools which align with this.</small>[^1] for real people. I am especially passionate about search UX, crafting interfaces with the real world, and decentralized infrastructure. 
+A decade of technical experience has shaped me into an indie maker who builds engaging, accessible, and secure tools<small>I see my projects as tools meant to serve, not products to exploit. I prefer to use tools which align with this.</small>[^1] for real people. I am especially passionate about search UX, crafting interfaces with the real world, and decentralized infrastructure.
 
-Outside of computing, I’m also a guitarist, competition aficionado, and linguaphile<small>English, Spanish, and Esperanto so far</small>[^2].
-
-
+Outside of computing, I’m also a guitarist, competition aficionado, and linguaphile<small>I speak and (sometimes) understand English, Spanish, and Esperanto so far</small>[^2].
 
 ### what i'm up to <code>:now</code>
 
-Recently, I've been shipping,<sub> (expand for stats!)</sub> but also: 
+Recently, I've been shipping,<sub> (expand for stats!)</sub> but also:
 
   <a class="no-external-icon heatmap-link" href="https://heatmap.shymike.dev?id=U07VA44DNBA&timezone=America%2FNew_York&standalone=true" title="Click to view detailed data for each day!" style="display: inline-block;">
     <img id="heatmap-image" class="heatmap-image my-0" alt="Hackatime activity heatmap" width="689" height="91" fetchpriority="high" src="https://heatmap.matmanna.dev/light?v=1781229188" data-light-src="https://heatmap.matmanna.dev/light?v=1781229188" data-dark-src="https://heatmap.matmanna.dev/dark?v=1781229188">
@@ -68,7 +71,7 @@ Recently, I've been shipping,<sub> (expand for stats!)</sub> but also:
       if (!lightSrc) return;
       const root = document.documentElement;
       const updateSrc = () => {
-        const isDark = root.classList.contains('dark') || 
+        const isDark = root.classList.contains('dark') ||
           (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches) ||
           localStorage.theme === 'dark';
         const target = isDark ? darkSrc : lightSrc;
@@ -117,10 +120,10 @@ Recently, I've been shipping,<sub> (expand for stats!)</sub> but also:
 
 <hr class="not-prose">
 
-
 ### formative <code>:experiences</code>
 
 Since being exposed to computer programming on [Scratch](https://scratch.mit.edu) a decade ago, I’ve:
+
 - built a life-sized [board game](https://github.com/ldnano/o-fn) using industrial tech which supports community outreach & won:
   - 1st in the 2025 **PLCNext Innovation Contest Nationals**
   - 1st at the 2026 **Pennsylvania Invention Convention**
@@ -157,11 +160,31 @@ Since being exposed to computer programming on [Scratch](https://scratch.mit.edu
 }
 </style>
 
-_Here are some more orgs & projects I've contributed to... (<a href="/projects">all</a>)_
+_Some initiatives & projects I've worked on independently or with competition teams... (<a href="/projects">all</a>)_
 
 <ul class="projects-width-breakout px-0 flex mt-3 flex-col gap-3 not-prose">
-  {% assign projects_without_end = site.projects | where_exp: "project", "project.end_date == nil or project.end_date == ''" %}
-  {% assign projects_with_end = site.projects | where_exp: "project", "project.end_date != nil and project.end_date != ''" | sort: "end_date" | reverse %}
+  {% assign visible_projects = site.projects | where_exp: "project", "project.hidden != true" %}
+  {% assign projects_without_end = visible_projects | where_exp: "project", "project.end_date == nil or project.end_date == ''" %}
+  {% assign projects_with_end = visible_projects | where_exp: "project", "project.end_date != nil and project.end_date != ''" | sort: "end_date" | reverse %}
+  {% assign recent_projects = projects_without_end | concat: projects_with_end %}
+  {% assign project_count = 0 %}
+  {% for project in recent_projects %}
+  {% unless project.org contains 'hack club' or project.org contains 'Hack Club' %}
+  {% include post-card.html entry=project kind='project' %}
+  {% assign project_count = project_count | plus: 1 %}
+  {% if project_count >= 8 %}
+  {% break %}
+  {% endif %}
+  {% endunless %}
+  {% endfor %}
+</ul>
+
+_...and through my various roles and responsibilities at Hack Club..._
+
+<ul class="projects-width-breakout px-0 flex mt-3 flex-col gap-3 not-prose">
+  {% assign visible_projects = site.projects | where_exp: "project", "project.hidden != true" %}
+  {% assign projects_without_end = visible_projects | where_exp: "project", "project.end_date == nil or project.end_date == ''" | where_exp: "project", "project.org contains 'hack club' or project.org contains 'Hack Club'" | sort: "start_date" | reverse %}
+  {% assign projects_with_end = visible_projects | where_exp: "project", "project.end_date != nil and project.end_date != ''" | where_exp: "project", "project.org contains 'hack club' or project.org contains 'Hack Club'" | sort: "start_date" | reverse %}
   {% assign recent_projects = projects_without_end | concat: projects_with_end %}
   {% for project in recent_projects limit:8 %}
   {% include post-card.html entry=project kind='project' %}
@@ -178,9 +201,9 @@ _...and here are some thoughts I've had and shared... (<a href="/blog">all</a>)_
 
 <!-- _.. and some ways to use the site or reach out:_ -->
 
-## Footnotes 
+## Footnotes
+
 [^1]: I see my projects as tools meant to serve humans, not exploit them. I prefer to use products which align with this.
-[^2]: English, Spanish, and Esperanto so far
-[^3]: I've also contributed code in infrastructure (such as [Hackatime](https://hackatime.hackclub.com), [Revoker](https://revoke.hackclub.com), & [site](https://hackclub.com?uwu)), and reported data leaks through the security [program](https://security.hackclub.com).
+[^2]: I speak and (sometimes) understand English, Spanish, and Esperanto so far
 
 <hr class="not-prose">
