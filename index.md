@@ -160,7 +160,9 @@ Since being exposed to computer programming on [Scratch](https://scratch.mit.edu
 }
 </style>
 
-_Some initiatives & projects I've worked on independently or with competition teams... (<a href="/projects">all</a>)_
+<strong>I recommend <sub>(not biased at all)</sub> that you check out...</strong>
+
+_...some initiatives & projects I've worked on independently or with competition teams, (<a href="/projects">all</a>)_
 
 <ul class="projects-width-breakout px-0 flex mt-3 flex-col gap-3 not-prose">
   {% assign visible_projects = site.projects | where_exp: "project", "project.hidden != true" %}
@@ -179,7 +181,7 @@ _Some initiatives & projects I've worked on independently or with competition te
   {% endfor %}
 </ul>
 
-_...and through my various roles and responsibilities at Hack Club..._
+_...my various roles and responsibilities at Hack Club,_
 
 <ul class="projects-width-breakout px-0 flex mt-3 flex-col gap-3 not-prose">
   {% assign visible_projects = site.projects | where_exp: "project", "project.hidden != true" %}
@@ -191,7 +193,7 @@ _...and through my various roles and responsibilities at Hack Club..._
   {% endfor %}
 </ul>
 
-_...and here are some thoughts I've had and shared... (<a href="/blog">all</a>)_
+_...and some thoughts I've had or shared, (<a href="/blog">all</a>)_
 
 <ul class="px-0 flex mt-3 flex-col gap-3 not-prose">
   {% for post in site.posts limit:3 %}

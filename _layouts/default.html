@@ -48,14 +48,27 @@ layout: compress
 
     {% if site.data.buttons.size > 0 %}
 
-    <div class="max-w-[85ch] justify-center items-center w-full not-prose flex flex-row flex-wrap gap-2 items-center no-external-icon mb-4"
+    <div class="max-w-[85ch] w-full mb-4 relative"
         style="max-width: 85ch;">
-
-        {% for button in site.data.buttons %}
-        <a class="no-external-icon" href="{{ button.url }}"><img width="88" height="31" src="{{ button.image }}"
+      <div class="block absolute w-full" style="max-width: 80ch; bottom: 0;">
+        <small>you can add my button to your site with
+          <div class="flex flex-row gap-4 mt-4">
+        <a class="no-external-icon" href="https://matmanna.dev"><img style="image-rendering: pixelated;" width="88" height="31" src="/assets/badge.png" alt="mat!"></a>
+        <button 
+          class="g-primary-100 dark:bg-primary-900 border border-primary-500 py-1 px-2 rounded-md text-xs"
+          onclick='prompt("ctrl+c & ctrl+v this into your text editor!", `&lt;a href="https://matmanna.dev">&lt;img width="88" src="https://matmanna.dev/badge.png" alt="mat manna!">&lt;/a>`)'>
+          copy html!
+        </button>
+        </div>
+    </small></div>
+  <div class="flex flex-row flex-wrap gap-2 not-prose justify-center w-full items-center no-external-icon"
+        >
+          {% for button in site.data.buttons %}
+        <a class="no-external-icon" href="{{ button.url }}"><img style="image-rendering: pixelated;" width="88" height="31" src="{{ button.image }}"
                 alt="{{ button.alt }}"></a>
-        {% endfor %}
-    </div>
+        {% endfor %}  
+  </div>
+  </div>
     {% endif %}
 
     <footer
