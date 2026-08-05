@@ -10,5 +10,12 @@ tags:
   - Hono
   - oRPC
   - Drizzle
+links:
+  - title: Live app
+    url: https://indigest.matmanna.dev/
+    icon: fa-solid fa-up-right-from-square
+  - title: src
+    url: https://github.com/matmanna/indigest
+    icon: fa-brands fa-github
 ---
 

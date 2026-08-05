@@ -10,5 +10,12 @@ tags:
   - OIDC
   - Email
   - Postgres
+links:
+  - title: Live app
+    url: https://marmalade.hackclub.dev/
+    icon: fa-solid fa-up-right-from-square
+  - title: src
+    url: https://github.com/hackclub/marmalade
+    icon: fa-brands fa-github
 ---
 

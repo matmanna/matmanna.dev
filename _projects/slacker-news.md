@@ -10,4 +10,11 @@ tags:
   - MDX
   - Payload CMS
   - OIDC
+links:
+  - title: Visit site
+    url: https://news.hackclub.dev/
+    icon: fa-solid fa-up-right-from-square
+  - title: src
+    url: https://github.com/hackclub/slacker-news
+    icon: fa-brands fa-github
 ---

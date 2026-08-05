@@ -9,4 +9,8 @@ tags:
   - Data Analysis
   - Team Coordination
   - Support Ticketing
+links:
+  - title: Simulate being banned
+    url: https://fraud.hackclub.com/
+    icon: fa-solid fa-up-right-from-square
 ---
