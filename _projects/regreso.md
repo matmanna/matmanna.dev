@@ -5,6 +5,7 @@ description: Open-source tool for creating, finding, and managing links, files, 
 image: /assets/images/projects/regreso.webp
 card_image: /assets/images/projects/cards/regreso-card.webp
 start_date: 2024-11-28
+end_date: 2025-07-01
 activity_percent: 72
 activity_status: active
 links:
