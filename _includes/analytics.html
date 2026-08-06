@@ -2,4 +2,12 @@
   import { count } from "https://cdn.jsdelivr.net/npm/diet-goat@3/+esm";
 
   count("https://matmanna.goatcounter.com");
+  const params = new URLSearchParams(window.location.search);
+const invert = params.get("invert");
+
+if (invert !== null && (invert === "" || invert.toLowerCase() === "true")) {
+  document.documentElement.style.filter = "invert(1)";
+      document.documentElement.classList.toggle("dark");
+}
+
 </script>
