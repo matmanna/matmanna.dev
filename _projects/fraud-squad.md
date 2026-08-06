@@ -10,7 +10,7 @@ tags:
   - Team Coordination
   - Support Ticketing
 links:
-  - title: Simulate being banned
+  - title: Simulate getting banned by me
     url: https://fraud.hackclub.com/
     icon: fa-solid fa-up-right-from-square
 ---
