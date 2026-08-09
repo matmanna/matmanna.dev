@@ -203,6 +203,8 @@ _...and some thoughts I've had or shared, (<a href="/blog">all</a>)_
 
 <!-- _.. and some ways to use the site or reach out:_ -->
 
+_thank you for reading to the end of my little page! i'm guessing that probably means you like interesting things, so have this mysterious <a href="/?invert"><button class="g-primary-100 dark:bg-primary-900 border border-primary-500 py-1 px-2 rounded-md text-xs">button</button></a> as a token of my gratitude :D_
+
 ## Footnotes
 
 [^1]: I see my projects as tools meant to serve humans, not exploit them. I prefer to use products which align with this.
