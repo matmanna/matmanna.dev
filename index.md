@@ -209,5 +209,6 @@ _thank you for reading to the end of my little page! i'm guessing that probably 
 
 [^1]: I see my projects as tools meant to serve humans, not exploit them. I prefer to use products which align with this.
 [^2]: I speak and (sometimes) understand English, Spanish, and Esperanto so far
+[^3]: I've also contributed code to systems (such as Hackatime, Revoker, & site), and reported data leaks through the security program.
 
 <hr class="not-prose">

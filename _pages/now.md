@@ -1,8 +1,8 @@
 ---
 layout: page
 title: Now
-description: What I'm doing now
+description: the future is
 footnotes: false
 ---
 
-soon trademark
+
