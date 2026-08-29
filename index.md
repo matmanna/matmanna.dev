@@ -30,6 +30,9 @@ permalink: /
   <a href="https://tangled.sh/matmanna" data-no-external-icon rel="nofollow">
     <img src="/assets/images/badges/social/tangled-badge.svg" alt="Tangled badge" width="57" height="20">
   </a>
+  <a href="https://last.fm/user/matmanna" data-no-external-icon rel="nofollow">
+    <img src="/assets/images/badges/social/lastfm-badge.svg" alt="Last.fm badge" width="43" height="20">
+  </a>
   <p>(<code>:places</code>)</p>
 </div>
 
