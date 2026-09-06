@@ -1,0 +1,20 @@
+{% capture file %}main.{{ include.palette }}.html{% endcapture %}
+{% include palettes/{{ file }} %}
+<style>
+    h3 {
+        display: block;
+        gap: 0;
+    }
+
+    .prose>h3 {
+        display: flex;
+        gap: 8px;
+    }
+
+    .prose h2 a[href^="#"],
+    .prose h3 a[href^="#"] {
+        display: inline-flex;
+        align-items: center;
+        vertical-align: middle;
+    }
+</style>

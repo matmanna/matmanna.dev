@@ -80,7 +80,7 @@
     }
 
     .prose>h2,
-    h3 {
+    .prose>h3 {
         gap: 8px;
         display: flex;
     }
