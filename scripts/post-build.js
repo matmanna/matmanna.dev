@@ -209,7 +209,7 @@ function processFile(filePath) {
 
     // 1. Base class: .flex-row → .c6
     const basePattern = String.raw`\.` + escaped;
-    const baseRegex = new RegExp(basePattern + '(?=[{:, >])', 'g');
+    const baseRegex = new RegExp(basePattern + '(?=[{:, >.])', 'g');
     html = html.replace(baseRegex, '.' + short);
 
     // 2. Dark variant: .dark\:flex-row → .c6  
@@ -217,7 +217,7 @@ function processFile(filePath) {
       const baseClass = orig.slice(5);
       let baseEscaped = baseClass.replace(/-/g, String.raw`\-`);
       const darkPattern = String.raw`\.dark\\:` + baseEscaped;
-      const darkRegex = new RegExp(darkPattern + '(?=[{:, >])', 'g');
+      const darkRegex = new RegExp(darkPattern + '(?=[{:, >.])', 'g');
       html = html.replace(darkRegex, '.' + short);
     }
 
@@ -228,7 +228,7 @@ function processFile(filePath) {
       const baseEscaped = baseClass.replace(/-/g, String.raw`\-`);
 
       const respPattern = String.raw`\.` + prefix + String.raw`\\:` + baseEscaped;
-      const respRegex = new RegExp(respPattern + '(?=[{:, >])', 'g');
+      const respRegex = new RegExp(respPattern + '(?=[{:, >.])', 'g');
       html = html.replace(respRegex, '.' + short);
     }
 
@@ -241,7 +241,7 @@ function processFile(filePath) {
       // But in JS string, that's '\\\\[' (two backslashes in string = one in regex)
       const cssClass = orig.replace(/\[/g, '\\\\[').replace(/\]/g, '\\\\]').replace(/%/g, '\\\\%');
       const arbiPattern = '.' + cssClass;
-      const arbiRegex = new RegExp(arbiPattern + '(?=[{:, >])', 'g');
+      const arbiRegex = new RegExp(arbiPattern + '(?=[{:, >.])', 'g');
       html = html.replace(arbiRegex, '.' + short);
 
       // Dark + arbitrary
@@ -249,7 +249,7 @@ function processFile(filePath) {
         const baseClass = orig.slice(5);
         const cssClass2 = baseClass.replace(/\[/g, '\\\\[').replace(/\]/g, '\\\\]').replace(/%/g, '\\\\%');
         const darkArbiPattern = '.dark\\\\:' + cssClass2;
-        const darkArbiRegex = new RegExp(darkArbiPattern + '(?=[{:, >])', 'g');
+        const darkArbiRegex = new RegExp(darkArbiPattern + '(?=[{:, >.])', 'g');
         html = html.replace(darkArbiRegex, '.' + short);
       }
 
@@ -259,7 +259,7 @@ function processFile(filePath) {
         const prefix = orig.match(/^(sm|md|lg|xl|2xl):/)[1];
         const cssClass2 = baseClass.replace(/\[/g, '\\\\[').replace(/\]/g, '\\\\]').replace(/%/g, '\\\\%');
         const respArbiPattern = '.' + prefix + '\\\\:' + cssClass2;
-        const respArbiRegex = new RegExp(respArbiPattern + '(?=[{:, >])', 'g');
+        const respArbiRegex = new RegExp(respArbiPattern + '(?=[{:, >.])', 'g');
         html = html.replace(respArbiRegex, '.' + short);
       }
     }
