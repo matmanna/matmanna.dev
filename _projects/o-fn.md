@@ -13,12 +13,6 @@ links:
   - title: CAC Cert
     url: http://congressional.hackclub.com/
     icon: fas fa-certificate
-  - title: 1st - PLCnext '25
-    url: http://congressional.hackclub.com/
-    icon: fas fa-trophy
-  - title: 1st - PA Invention '26
-    url: http://congressional.hackclub.com/
-    icon: fas fa-trophy
 tags:
   - Hardware
   - PLC

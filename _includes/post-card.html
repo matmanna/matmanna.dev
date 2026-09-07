@@ -37,10 +37,8 @@ adjust based on kind so the same template can render posts, projects, pages, etc
         {%- if (kind == 'project' or kind == 'projects') and card_image -%}
         <div
             class="w-full h-36 min-w-0 self-center overflow-hidden rounded-md border-0 border-primary-500/40 md:w-36 md:h-24 md:min-w-36 lg:w-48 lg:h-36 lg:min-w-44">
-            <a href="{{ entry_href }}" class="no-underline block w-full h-full"{{ entry_target }}{{ entry_rel }}>
-                <img src="{{ card_image | relative_url }}" alt="{{ entry.title }} image"
-                    class="w-full h-full object-cover border-0" loading="lazy">
-            </a>
+            <img src="{{ card_image | relative_url }}" alt=""
+                class="w-full h-full object-cover border-0" loading="lazy" aria-hidden="true">
         </div>
         {%- endif -%}
 
@@ -48,13 +46,13 @@ adjust based on kind so the same template can render posts, projects, pages, etc
         <div class="project-card__content flex flex-col gap-2 w-full min-w-0">
             <div
                 class="flex flex-row gap-2 w-full rounded-md items-center px-2 py-1.5 bg-primary-300 dark:bg-primary-800">
-                <h4 class="my-0 items-center text-md flex-1">
+                <h2 class="my-0 items-center text-md flex-1">
                     {% include icon.html name=icon_class class="w-4 h-4 mr-2 inline-block text-primary-800 dark:text-primary-600" %}
                     <a href="{{ entry_href }}" class="no-external-icon"{{ entry_target }}{{ entry_rel }}>{{ entry.title }}</a>
-                </h4>
+                </h2>
 
                 {%- if kind == 'post' or kind == 'posts' -%}
-                <p class="text-xs text-primary-500 my-0">
+                <p class="text-xs text-primary-700 dark:text-primary-400 my-0">
                     {{ entry.date | date: "%m-%d-%Y" }}
                 </p>
                 {%- elsif (kind == 'project' or kind == 'projects') and (entry.start_date or entry.end_date or
