@@ -202,7 +202,8 @@ _...and some thoughts I've had or shared, (<a href="/blog">all</a>)_
   {% for post in site.posts limit:3 %}
   {% include post-card.html entry=post kind='post' %}
   {% endfor %}
-  <hr class="not-prose">
+  </li>
+  <hr class="not-prose"><hr>
 <li class="project-card rounded-md p-0 w-full flex flex-col gap-1 bg-primary-200 dark:bg-primary-950 outline-primary-200 dark:outline-primary-900 overflow-hidden">
     <div class="project-card__layout flex flex-col sm:flex-row items-stretch gap-3 w-full px-3 py-2">
       <div class="project-card__content flex flex-col gap-2 w-full min-w-0">
