@@ -672,9 +672,12 @@ function updateCSS(filePath) {
 
 function ensureUtf8Meta() {
   // Guarantee a <meta charset="utf-8"> within the first 1024 bytes of every page.
-  // Plugins can prepend a <head>/<style> before the doctype (e.g. GFM admonitions
-  // CSS), pushing the real meta tag past the browser encoding-sniff window, which
-  // makes UAs fall back to windows-1252 and mangle UTF-8 smart punctuation.
+  // jekyll-gfm-admonitions prepends a <head><style>.markdown-alert{…}</style></head>
+  // before the doctype when the compress layout has stripped all <head> tags.
+  // Left there, it pushes the real <meta charset> past the browser encoding-sniff
+  // window, so the page decodes as windows-1252 and UTF-8 smart punctuation
+  // renders as â€™/ï¬. Relocate that style into the real head (right after the
+  // charset meta) and, for any remaining page, inject a charset meta early.
   const files = [];
   (function collect(dir) {
     if (!fs.existsSync(dir)) return;
@@ -689,17 +692,37 @@ function ensureUtf8Meta() {
   for (const f of files) {
     const b = fs.readFileSync(f);
     const prefix = b.subarray(0, 1024).toString('latin1');
-    if (/charset\s*=/.test(prefix)) continue;
-    let out = b.toString('utf8');
-    const headTag = out.match(/<head[\s>]/);
-    const meta = '<meta charset="utf-8">';
-    if (headTag) {
-      const close = out.indexOf('>', headTag.index);
-      out = out.slice(0, close + 1) + meta + out.slice(close + 1);
-    } else {
-      out = meta + out;
+    const hasCharset = /charset\s*=/.test(prefix);
+    const original = b.toString('utf8');
+    let out = original;
+
+    const preDoctype = out.match(/^<head>(<style>[\s\S]*?<\/style>)<\/head>(?=\s*<!DOCTYPE)/);
+    let extraStyle = '';
+    if (preDoctype) {
+      extraStyle = preDoctype[1];
+      out = out.slice(preDoctype[0].length);
     }
-    fs.writeFileSync(f, out);
+
+    if (!hasCharset) {
+      const meta = out.indexOf('<meta charset') === -1 ? '<meta charset="utf-8">' : '';
+      if (meta) {
+        const headTag = out.match(/<head[\s>]/);
+        const htmlTag = out.match(/<html[^>]*>/);
+        const anchor = headTag || htmlTag;
+        if (anchor) {
+          const close = out.indexOf('>', anchor.index);
+          out = out.slice(0, close + 1) + meta + out.slice(close + 1);
+        } else {
+          out = meta + out;
+        }
+      }
+    }
+
+    if (extraStyle) {
+      out = out.replace(/<meta charset[^>]*>/, m => m + extraStyle);
+    }
+
+    if (out !== original) fs.writeFileSync(f, out);
   }
 }
 
@@ -719,3 +742,5 @@ if (comboStats && comboStats.groups > 0) {
   console.log('  top groups by occurrence:');
   comboStats.top.forEach(g => console.log('    ' + g.qName + ' [' + g.raw + '] x' + g.count + ' decl(' + g.decl.length + ')'));
 }
+
+ensureUtf8Meta();
