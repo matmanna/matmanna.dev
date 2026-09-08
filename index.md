@@ -203,6 +203,56 @@ _...and some thoughts I've had or shared, (<a href="/blog">all</a>)_
   {% include post-card.html entry=post kind='post' %}
   {% endfor %}
 </ul>
+  <hr class="not-prose">
+<ul class="px-0 flex mt-3 flex-col gap-3 not-prose">
+  <li class="project-card rounded-md p-0 w-full flex flex-col gap-1 bg-primary-200 dark:bg-primary-950 outline-primary-200 dark:outline-primary-900 overflow-hidden">
+    <div class="project-card__layout flex flex-col sm:flex-row items-stretch gap-3 w-full px-3 py-2">
+      <div class="project-card__content flex flex-col gap-2 w-full min-w-0">
+<div class="flex flex-row gap-2 w-full rounded-md items-center px-2 py-1.5 bg-primary-300 dark:bg-primary-800"><p class="my-0 items-center text-md flex-1 flex flex-row items-center gap-2 text-primary-800 dark:text-primary-400">{% include icon.html name="fa-solid fa-paper-plane" class="w-4 h-4 inline-block text-primary-800 dark:text-primary-600" %} <a href="https://news.hackclub.com/changelogs/responses-and-followups/" class="no-external-icon" target="_blank" rel="noopener noreferrer">Find out when I post by:</a></p></div>
+          <ul style="list-style-type: disc; margin-left: 16px;" class="flex flex-col gap-2">
+              <li>
+               <div class="flex flex-row flex-wrap items-center gap-2">
+       <strong class="text-sm"> adding to your feedreader:</strong>
+
+              <a href="/rss.xml" class="no-underline no-external-icon">
+                       <div class="bg-primary-100 dark:bg-primary-900 border border-primary-500 py-1 px-2 rounded-md text-xs flex flex-row items-center gap-2">{% include icon.html name="fa-solid fa-rss" class="w-3 h-3" %}RSS</div>
+          </a>
+          <a href="/atom.xml" class="no-underline no-external-icon">
+            <div class="bg-primary-100 dark:bg-primary-900 border border-primary-500 py-1 px-2 rounded-md text-xs flex flex-row items-center gap-2">{% include icon.html name="fa-solid fa-atom" class="w-3 h-3" %}Atom</div>
+          </a>
+        </div></li>
+                 <li ><strong class="text-sm mb-2 ">
+          or subscribing to my newsletter:</strong></li>
+
+   
+  
+    </ul>
+           <form
+            action="https://buttondown.com/api/emails/embed-subscribe/matmanna"
+            method="post"
+            class="embeddable-buttondown-form flex flex-col w-full gap-2 items-stretch "
+          >
+                <div class="flex flex-row flex-wrap gap-3 w-full">      <input
+              type="email"
+              name="email"
+              id="bd-email"
+              placeholder="Your email goes here"
+              class="flex-grow border border-primary-500 bg-primary-200 dark:bg-primary-950 text-primary-800 dark:text-primary-300 rounded-md px-3 py-2 text-sm"
+            />
+            <input
+              type="submit"
+              value="Subscribe"
+              class="border border-primary-500 bg-primary-300 dark:bg-primary-800 text-primary-800 dark:text-primary-200 hover:bg-primary-200 dark:hover:bg-primary-700 rounded-md px-3 py-2 text-sm items-center"
+            />
+  </div>
+            <p class="text-xs text-primary-600 dark:text-primary-400 my-0">
+         This list is managed through <a href="https://buttondown.com/refer/matmanna" target="_blank" rel="noopener noreferrer" class="no-external-icon">Buttondown</a> and I'll never send spam :D
+            </p>
+          </form>
+      </div>
+    </div>
+  </li>
+</ul>
 
 <!-- _.. and some ways to use the site or reach out:_ -->
 
@@ -212,6 +262,5 @@ _thank you for reading to the end of my little page! i'm guessing that probably 
 
 [^1]: I see my projects as tools meant to serve humans, not exploit them. I prefer to use products which align with this.
 [^2]: I speak and (sometimes) understand English, Spanish, and Esperanto so far
-[^3]: I've also contributed code to systems (such as Hackatime, Revoker, & site), and reported data leaks through the security program.
 
 <hr class="not-prose">
