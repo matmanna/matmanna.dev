@@ -7,7 +7,7 @@ start_date: 2026-04-12
 org: [ "hack club" ]
 links:
   - title: Live workshop
-    url: https://github.com/benderhq/the-twist/tree/nix
+    url: https://draw-dino.hackclub.com
     icon: fa-solid fa-up-right-from-square
   - title: src
     url: https://github.com/hackclub/draw-dino
