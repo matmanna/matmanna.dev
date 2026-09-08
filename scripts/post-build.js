@@ -165,21 +165,14 @@ function processFile(filePath) {
     });
   });
 
-  // Also create dark: mappings (e.g., dark:text-primary-300 → same cXX as text-primary-300)
-  Object.keys(classMap).forEach(orig => {
-    const darkVer = 'dark:' + orig;
-    classMap[darkVer] = classMap[orig];
-  });
-
-  // Also create responsive mappings (sm:, md:, lg: → same cXX as base)
-  ['sm:', 'md:', 'lg:', 'xl:', '2xl:'].forEach(prefix => {
-    Object.keys(classMap).forEach(orig => {
-      if (!orig.includes(':') && classMap[orig]) {
-        const respVer = prefix + orig;
-        classMap[respVer] = classMap[orig];
-      }
-    });
-  });
+  // NOTE: do NOT alias dark:/responsive variants onto their base class token.
+  // Sharing a token makes an element that carries the base class also match the
+  // variant's CSS rule (equal specificity, source-order decides), and an aliased
+  // `dark:` rule can sort AFTER an element's real dark variant — e.g. an element
+  // with `text-primary-700 dark:text-primary-300` matches both
+  // `.cX:where(.dark){#d6d3d1}` (real) and `.cY:where(.dark){#44403c}` (aliased
+  // dark:text-primary-700) and keeps its light ink in dark. Every class —
+  // including prefixed variants — gets its own unique index from the first pass.
 
   // Second pass: replace classes in HTML
   matches.forEach(m => {
