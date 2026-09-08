@@ -10,9 +10,6 @@ links:
   - title: Demo
     url: https://doctored.matmanna.dev/
     icon: fa-solid fa-up-right-from-square
-  - title: RubyGems
-    url: https://github.com/matmanna/doctored
-    icon: fa-solid fa-up-right-from-square
   - title: src
     url: https://github.com/matmanna/doctored
     icon: fa-brands fa-github
