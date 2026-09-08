@@ -278,106 +278,310 @@ function processFile(filePath) {
     }
   });
 
-  // 5. Combine frequent class pairs (disabled — too many regressions from dark mode and responsive conflicts)
-  // html = combineClasses(html);
+  // 5. Class-combination merging runs as a separate global pass (combineClassesAcrossSite)
+  // at the end of the script, after every file is minified.
 
   if (modified) fs.writeFileSync(filePath, html);
 }
 
-function combineClasses(html) {
-  // Find all class="..." attributes and their class lists
-  const classAttrRegex = /class="([^"]*)"/g;
-  const pairCounts = {};
-  const allClasses = new Set();
-  let cm;
-  while ((cm = classAttrRegex.exec(html)) !== null) {
-    const classes = cm[1].split(/\s+/).filter(c => c && !c.startsWith('dark:') && !c.match(/^(sm|md|lg|xl|2xl):/) && !c.startsWith('not-'));
-    classes.forEach(c => allClasses.add(c));
-    // Count pairs
-    for (let i = 0; i < classes.length; i++) {
-      for (let j = i + 1; j < classes.length; j++) {
-        const pair = [classes[i], classes[j]].sort().join(' ');
-        pairCounts[pair] = (pairCounts[pair] || 0) + 1;
-      }
-    }
-  }
+// ===========================================================================
+// Global class-combination merging.
+//
+// Runs after per-file minification. The minifier has already produced short
+// per-class tokens (cN) and minified the inline CSS. Many pages repeat the same
+// *combination* of classes (cards, pills, nav rows). We:
+//   1. Mine frequent contiguous combinations of plain .cN{} utility tokens
+//      (2..6 classes) across every page's class="..." attribute.
+//   2. For each candidate compute the byte economics per page:
+//      replacing  k tokens (length L) with one qN token saves (L - qLen) per
+//      occurrence, at the cost of one appended `.qN{decls}` rule per page that
+//      uses it. Only apply groups whose per-page net is positive.
+//   3. Rewrite those occurrences to the qN token, append the merged rule to the
+//      page's CSS, and delete the now-unused plain `.cN{...}` member rules.
+//
+// Safety gates (the reasons the old pair-based pass regressed):
+//   - Only tokens whose CSS rule is exactly a plain `.cN{...}` (single selector,
+//     top-level, not inside @media, not referenced by any other selector such as
+//     :hover, .dark  , dark:, or .cN :where(descendant) prose selectors) may
+//     participate. Variant classes now get their own distinct cN token (the
+//     minifier no longer aliases dark:/responsive onto the base token), so
+//     merging a base utility never duplicates a variant rule.
+//   - Members must not repeat the same property (order-ambiguous union).
+//   - Per occurrence, a merged group is skipped if any OTHER surviving class on
+//     that element declares a property also declared by a member — injecting the
+//     merged rule after the plain rules would otherwise change the cascade
+//     winner for that element.
+//   - A member rule is only deleted when the token is fully unused on the page
+//     AND its declaration declares no CSS variables (vars like --ba/--bd are
+//     referenced cross-token by other rules, e.g. color/bg tokens).
+// ===========================================================================
 
-  // Find classes that have responsive or dark mode variants
-  const responsiveClasses = new Set();
-  const darkClasses = new Set();
-  ['sm:', 'md:', 'lg:', 'xl:', '2xl:'].forEach(prefix => {
-    allClasses.forEach(c => {
-      if (allClasses.has(prefix + c)) responsiveClasses.add(c);
+function combineClassesAcrossSite() {
+  const files = [];
+  (function collect(dir) {
+    if (!fs.existsSync(dir)) return;
+    fs.readdirSync(dir).forEach(name => {
+      const full = path.join(dir, name);
+      const stat = fs.statSync(full);
+      if (stat.isDirectory()) collect(full);
+      else if (name.endsWith('.html')) files.push(full);
     });
-  });
-  allClasses.forEach(c => {
-    if (allClasses.has('dark:' + c)) darkClasses.add(c);
-  });
+  })('_site');
 
-  // Find the CSS rule for a class by searching the inline CSS
-  function getCSSRule(className) {
-    const escaped = className.replace(/[-]/g, '\\-');
-    const regex = new RegExp('\\.' + escaped + '\\{([^}]*)\\}');
-    const match = html.match(regex);
-    return match ? match[1] : null;
-  }
+  if (files.length === 0) return null;
 
-  // Find pairs that would save bytes
-  const candidates = [];
-  Object.entries(pairCounts).forEach(([pair, count]) => {
-    if (count < 3) return;
-    const [a, b] = pair.split(' ');
-    // Skip pairs where either class has a responsive or dark mode variant
-    if (responsiveClasses.has(a) || responsiveClasses.has(b)) return;
-    if (darkClasses.has(a) || darkClasses.has(b)) return;
-    const ruleA = getCSSRule(a);
-    const ruleB = getCSSRule(b);
-    if (!ruleA || !ruleB) return;
-    // Skip pairs that set flex-direction (conflicts with sm:flex-row responsive)
-    if (ruleA.includes('flex-direction') || ruleB.includes('flex-direction')) return;
+  // ---- Global CSS facts ----
+  const plainDecl = new Map();   // token -> rule decl (identical everywhere -> else AMBIG)
+  const inSelector = new Set();  // token referenced by a compound/descendant selector
+  const inMedia = new Set();     // token's .cN{} rule lives inside @media
+  const pageHtml = new Map();    // file -> { html, css }
 
-    const originalPerOccurrence = a.length + 1 + b.length;
-    const combinedPerOccurrence = 2;
-    const ruleCost = 2 + 2 + ruleA.length + ruleB.length + 1;
-    const savedPerOccurrence = originalPerOccurrence - combinedPerOccurrence;
-    const totalSaved = savedPerOccurrence * count - ruleCost;
+  for (const f of files) {
+    const html = fs.readFileSync(f, 'utf8');
+    const css = [...html.matchAll(/<style>([\s\S]*?)<\/style>/g)].map(m => m[1]).join('\n');
+    pageHtml.set(f, { html, css });
 
-    if (totalSaved > 0) {
-      candidates.push({ pair, a, b, ruleA, ruleB, count, totalSaved });
-    }
-  });
-
-  candidates.sort((a, b) => b.totalSaved - a.totalSaved);
-
-  let combinedIdx = 0;
-  let applied = 0;
-  for (const cand of candidates) {
-    if (applied >= 10) break;
-
-    const combinedName = 'q' + combinedIdx;
-    combinedIdx++;
-
-    const combinedRule = '.' + combinedName + '{' + cand.ruleA + ';' + cand.ruleB + '}';
-    const escA = cand.a.replace(/[-]/g, '\\-');
-    const escB = cand.b.replace(/[-]/g, '\\-');
-    const pairRegex = new RegExp('\\b' + escA + '\\s+' + escB + '\\b', 'g');
-    const pairRegexReverse = new RegExp('\\b' + escB + '\\s+' + escA + '\\b', 'g');
-
-    const before = html.length;
-    html = html.replace(pairRegex, combinedName);
-    html = html.replace(pairRegexReverse, combinedName);
-
-    if (html.length < before) {
-      const firstStyleEnd = html.indexOf('</style>');
-      if (firstStyleEnd >= 0) {
-        html = html.substring(0, firstStyleEnd) + combinedRule + html.substring(firstStyleEnd);
+    const re = /\.c\d{1,4}\{[^}]*\}/g;
+    let m;
+    while ((m = re.exec(css)) !== null) {
+      const before = css.slice(0, m.index);
+      let depth = 0;
+      for (const ch of before) { if (ch === '{') depth++; else if (ch === '}') depth--; }
+      if (depth === 0) {
+        const bb = css.indexOf('{', m.index);
+        const tok = css.slice(m.index + 1, bb);
+        const decl = css.slice(bb + 1, css.indexOf('}', bb));
+        if (!plainDecl.has(tok)) plainDecl.set(tok, decl);
+        else if (plainDecl.get(tok) !== decl) plainDecl.set(tok, '(AMBIG)');
+      } else {
+        // rule sits inside @media or another nested block — variant context, not mergeable
+        inMedia.add(m[0].slice(1, m[0].indexOf('{')));
       }
-      applied++;
-      console.log('Combined "' + cand.pair + '" -> .' + combinedName + ' (saved ' + cand.totalSaved + ' bytes, ' + cand.count + ' occurrences)');
+    }
+
+    const selRe = /([^}]*)\{/g;
+    let sm;
+    while ((sm = selRe.exec(css)) !== null) {
+      const sel = sm[1].trim();
+      const toks = sel.match(/\.c\d{1,4}/g);
+      if (toks && !/^\.c\d{1,4}$/.test(sel)) toks.forEach(t => inSelector.add(t.slice(1)));
     }
   }
 
-  return html;
+  // ---- Tokenize class attributes ----
+  const pageAttrs = new Map(); // file -> [{ start, end, raw, toks }]
+  for (const f of files) {
+    const { html } = pageHtml.get(f);
+    const attrs = [];
+    for (const m of html.matchAll(/class="([^"]+)"/g)) attrs.push({ start: m.index, end: m.index + m[0].length, raw: m[1], toks: m[1].split(/\s+/).filter(Boolean) });
+    pageAttrs.set(f, attrs);
+  }
+
+  const mergeable = t => /^c\d{1,4}$/.test(t) && plainDecl.has(t) && plainDecl.get(t) !== '(AMBIG)' && !inSelector.has(t) && !inMedia.has(t);
+
+  // ---- Enumerate candidate groups (contiguous mergeable runs, len 2..6) ----
+  const seqCount = new Map();
+  const MAXLEN = 6, MIN_COUNT = 3;
+  for (const attrs of pageAttrs.values()) {
+    for (const a of attrs) {
+      let runs = [], cur = [];
+      for (const t of a.toks) { if (mergeable(t)) cur.push(t); else { if (cur.length) runs.push(cur); cur = []; } }
+      if (cur.length) runs.push(cur);
+      for (const run of runs) {
+        for (let len = 2; len <= Math.min(MAXLEN, run.length); len++) {
+          for (let s = 0; s + len <= run.length; s++) {
+            const seq = run.slice(s, s + len).join(' ');
+            if (!seqCount.has(len)) seqCount.set(len, new Map());
+            const mm = seqCount.get(len); mm.set(seq, (mm.get(seq) || 0) + 1);
+          }
+        }
+      }
+    }
+  }
+
+  const groups = [];
+  for (const [len, mm] of seqCount) {
+    for (const [seq, count] of mm) {
+      if (count < MIN_COUNT) continue;
+      const toks = seq.split(' ');
+      if (!toks.every(mergeable)) continue;
+      const decls = toks.map(t => plainDecl.get(t));
+      const props = new Set();
+      let conflict = false;
+      for (const d of decls) for (const pd of d.split(';')) {
+        const p = pd.split(':')[0];
+        if (props.has(p)) { conflict = true; break; }
+        props.add(p);
+      }
+      if (conflict) continue;
+      const attrCost = toks.reduce((a, t) => a + t.length, 0) + (toks.length - 1);
+      groups.push({ seq, toks, count, decls, attrCost });
+    }
+  }
+
+  function pageCounts(toks) {
+    const need = toks.length;
+    const pc = new Map();
+    for (const [f, attrs] of pageAttrs) {
+      let c = 0;
+      for (const a of attrs) for (let i = 0; i + need <= a.toks.length; i++)
+        if (a.toks.slice(i, i + need).join(' ') === toks.join(' ')) { c++; break; }
+      if (c) pc.set(f, c);
+    }
+    return pc;
+  }
+  for (const g of groups) g.pc = pageCounts(g.toks);
+
+  const propsOf = decl => {
+    const out = new Map();
+    for (const pd of decl.split(';')) {
+      const i = pd.indexOf(':');
+      if (i >= 0) out.set(pd.slice(0, i), pd.slice(i + 1));
+    }
+    return out;
+  };
+  function overlapsSurvivor(attrToks, i, need, memberProps) {
+    for (let k = 0; k < attrToks.length; k++) {
+      if (k >= i && k < i + need) continue;
+      const t = attrToks[k];
+      if (!/^c\d{1,4}$/.test(t)) continue;
+      const d = plainDecl.get(t);
+      if (!d || d === '(AMBIG)') continue;
+      for (const p of propsOf(d).keys()) if (memberProps.has(p)) return true;
+    }
+    return false;
+  }
+
+  // ---- Greedy apply ----
+  const reverseMap = new Map();
+  Object.entries(classMap).forEach(([raw, tok]) => reverseMap.set(tok, raw));
+
+  let qIdx = 0;
+  const appliedInfo = [];        // group report
+  const usedQPerFile = new Map();// file -> Set(qN)
+  let attrSaved = 0;
+  let ruleAdded = 0;
+
+  for (let iter = 0; iter < 400; iter++) {
+    const qLen = 2 + (qIdx >= 10 ? 1 : 0);
+    let best = null, bestNet = 0;
+    for (const g of groups) {
+      const ruleLen = g.decls.join(';').length + 3 + qLen;
+      let net = 0;
+      for (const occ of g.pc.values()) { const s = (g.attrCost - qLen) * occ - ruleLen; if (s > 0) net += s; }
+      if (net > bestNet) { bestNet = net; best = g; }
+    }
+    if (!best || bestNet <= 0) break;
+
+    const qName = 'q' + qIdx++;
+    const len = qName.length;
+    const ruleLen = best.decls.join(';').length + 3 + len;
+    const memberProps = new Set();
+    for (const d of best.decls) for (const p of propsOf(d).keys()) memberProps.add(p);
+    const need = best.toks.length;
+
+    for (const [f, occ] of best.pc) {
+      if ((best.attrCost - len) * occ - ruleLen <= 0) continue;
+      const attrs = pageAttrs.get(f);
+      let appliedHere = false;
+      for (const a of attrs) {
+        for (let i = 0; i + need <= a.toks.length; i++) {
+          if (a.toks.slice(i, i + need).join(' ') === best.seq) {
+            if (overlapsSurvivor(a.toks, i, need, memberProps)) break;
+            attrSaved += best.attrCost - len;
+            a.toks.splice(i, need, qName);
+            appliedHere = true;
+            break;
+          }
+        }
+      }
+      if (appliedHere) {
+        ruleAdded += ruleLen;
+        if (!usedQPerFile.has(f)) usedQPerFile.set(f, new Set());
+        usedQPerFile.get(f).add(qName);
+      }
+    }
+    appliedInfo.push({ qName, seq: best.seq, toks: best.toks, count: best.count, decl: best.decls.join(';'), raw: best.toks.map(t => reverseMap.get(t) || t).join(' ') });
+    groups.splice(groups.indexOf(best), 1);
+  }
+
+  // ---- Rebuild pages: rewrite attrs, delete dead member rules, append qN rules ----
+  let deadRemoved = 0;
+  const skipDead = process.env.COMPOSE_SKIP_DEAD === '1';
+  const skipMerge = process.env.COMPOSE_SKIP_MERGE === '1';
+  let afterBytes = 0;
+  let beforeBytes = 0;
+
+  for (const f of files) {
+    const { html } = pageHtml.get(f);
+    beforeBytes += Buffer.byteLength(html, 'utf8');
+
+    let out = html;
+    const attrs = pageAttrs.get(f);
+    // rewrite from the end so earlier offsets stay valid
+    if (!skipMerge) {
+      for (let i = attrs.length - 1; i >= 0; i--) {
+        const a = attrs[i];
+        const newStr = a.toks.join(' ');
+        if (newStr !== a.raw) out = out.slice(0, a.start + 7) + newStr + out.slice(a.end - 1);
+      }
+    }
+
+    // append merged rules used by this page at their members' original slot so the
+    // original cascade order (incl. responsive @media variants) is preserved
+    const qs = usedQPerFile.get(f);
+    if (qs && qs.size) {
+      const toAdd = [];
+      for (const ai of appliedInfo) {
+        if (!qs.has(ai.qName)) continue;
+        let pos = -1;
+        for (const m of ai.toks) {
+          const rule = '.' + m + '{' + plainDecl.get(m) + '}';
+          const p = out.indexOf(rule);
+          if (p >= 0 && (pos < 0 || p < pos)) pos = p;
+        }
+        if (pos < 0) continue;
+        toAdd.push({ pos, rule: '.' + ai.qName + '{' + ai.decl + '}' });
+      }
+      toAdd.sort((x, y) => y.pos - x.pos);
+      for (const { pos, rule } of toAdd) out = out.slice(0, pos) + rule + out.slice(pos);
+    }
+
+    // which cN tokens are still used on this page (for dead-rule removal)
+    const used = new Set();
+    for (const a of attrs) for (const t of a.toks) if (/^c\d{1,4}$/.test(t)) used.add(t);
+
+    // delete plain rules of fully-unused, var-free mergeable tokens
+    if (!skipDead) {
+      for (const [tok, decl] of plainDecl) {
+        if (used.has(tok) || !mergeable(tok)) continue;
+        if (/--[a-z0-9]+:/.test(decl)) continue; // declares a CSS var (cross-token refs)
+        const rule = '.' + tok + '{' + decl + '}';
+        if (out.includes(rule)) {
+          const lenBefore = out.length;
+          out = out.split(rule).join('');
+          deadRemoved += lenBefore - out.length;
+        }
+      }
+    }
+
+    afterBytes += Buffer.byteLength(out, 'utf8');
+    if (out !== html) fs.writeFileSync(f, out);
+  }
+
+  const net = afterBytes - beforeBytes;
+  return {
+    files: files.length,
+    beforeBytes,
+    afterBytes,
+    net,
+    attrSaved,
+    ruleAdded,
+    deadRemoved,
+    groups: appliedInfo.length,
+    hist: appliedInfo.reduce((h, a) => { const n = a.seq.split(' ').length; h[n] = (h[n] || 0) + 1; return h; }, {}),
+    top: appliedInfo.slice(0, 8),
+  };
 }
 
 function walkDir(dir) {
@@ -466,6 +670,77 @@ function updateCSS(filePath) {
   if (modified) fs.writeFileSync(filePath, css);
 }
 
+function ensureUtf8Meta() {
+  // Guarantee a <meta charset="utf-8"> within the first 1024 bytes of every page.
+  // jekyll-gfm-admonitions prepends a <head><style>.markdown-alert{…}</style></head>
+  // before the doctype when the compress layout has stripped all <head> tags.
+  // Left there, it pushes the real <meta charset> past the browser encoding-sniff
+  // window, so the page decodes as windows-1252 and UTF-8 smart punctuation
+  // renders as â€™/ï¬. Relocate that style into the real head (right after the
+  // charset meta) and, for any remaining page, inject a charset meta early.
+  const files = [];
+  (function collect(dir) {
+    if (!fs.existsSync(dir)) return;
+    fs.readdirSync(dir).forEach(name => {
+      const f = path.join(dir, name);
+      const s = fs.statSync(f);
+      if (s.isDirectory()) collect(f);
+      else if (name.endsWith('.html')) files.push(f);
+    });
+  })('_site');
+
+  for (const f of files) {
+    const b = fs.readFileSync(f);
+    const prefix = b.subarray(0, 1024).toString('latin1');
+    const hasCharset = /charset\s*=/.test(prefix);
+    const original = b.toString('utf8');
+    let out = original;
+
+    const preDoctype = out.match(/^<head>(<style>[\s\S]*?<\/style>)<\/head>(?=\s*<!DOCTYPE)/);
+    let extraStyle = '';
+    if (preDoctype) {
+      extraStyle = preDoctype[1];
+      out = out.slice(preDoctype[0].length);
+    }
+
+    if (!hasCharset) {
+      const meta = out.indexOf('<meta charset') === -1 ? '<meta charset="utf-8">' : '';
+      if (meta) {
+        const headTag = out.match(/<head[\s>]/);
+        const htmlTag = out.match(/<html[^>]*>/);
+        const anchor = headTag || htmlTag;
+        if (anchor) {
+          const close = out.indexOf('>', anchor.index);
+          out = out.slice(0, close + 1) + meta + out.slice(close + 1);
+        } else {
+          out = meta + out;
+        }
+      }
+    }
+
+    if (extraStyle) {
+      out = out.replace(/<meta charset[^>]*>/, m => m + extraStyle);
+    }
+
+    if (out !== original) fs.writeFileSync(f, out);
+  }
+}
+
 walkDir('_site');
 updateCSS('_site/assets/css/tailwind.css');
 console.log('Minified ' + idx + ' classes, ' + varIdx + ' CSS variables');
+
+const comboStats = process.env.COMPOSE_OFF === '1' ? null : combineClassesAcrossSite();
+if (comboStats && comboStats.groups > 0) {
+  const histTxt = Object.entries(comboStats.hist).map(([k, v]) => k + '-class: ' + v).join(', ');
+  console.log('Combined classes: ' + comboStats.groups + ' groups (' + histTxt + ')');
+  console.log('  character delta: ' + (comboStats.attrSaved - comboStats.ruleAdded) + ' bytes from attrs&rules (' +
+    comboStats.attrSaved + ' attr savings, +' + comboStats.ruleAdded + ' merged rules)');
+  console.log('  removed ' + comboStats.deadRemoved + ' bytes of dead member rules');
+  console.log('  NET: ' + comboStats.net + ' bytes across ' + comboStats.files + ' pages (' +
+    (comboStats.net / comboStats.beforeBytes * 100).toFixed(2) + '%)');
+  console.log('  top groups by occurrence:');
+  comboStats.top.forEach(g => console.log('    ' + g.qName + ' [' + g.raw + '] x' + g.count + ' decl(' + g.decl.length + ')'));
+}
+
+ensureUtf8Meta();
