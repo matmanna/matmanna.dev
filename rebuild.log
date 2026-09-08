@@ -1,0 +1,10 @@
+Configuration file: /home/matmanna/projects/matmanna.dev/_config.yml
+            Source: /home/matmanna/projects/matmanna.dev
+       Destination: /home/matmanna/projects/matmanna.dev/_site
+ Incremental build: disabled. Enable with --incremental
+      Generating... 
+              GFMA: Converted admonitions in 1 file(s).
+       Jekyll Feed: Generating feed for posts
+              GFMA: Injecting admonition CSS in 1 page(s).
+                    done in 0.639 seconds.
+ Auto-regeneration: disabled. Use --watch to enable.

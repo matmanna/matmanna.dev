@@ -202,9 +202,10 @@ _...and some thoughts I've had or shared, (<a href="/blog">all</a>)_
   {% for post in site.posts limit:3 %}
   {% include post-card.html entry=post kind='post' %}
   {% endfor %}
-  </li>
+</ul>
   <hr class="not-prose"><hr>
-<li class="project-card rounded-md p-0 w-full flex flex-col gap-1 bg-primary-200 dark:bg-primary-950 outline-primary-200 dark:outline-primary-900 overflow-hidden">
+<ul class="px-0 flex mt-3 flex-col gap-3 not-prose">
+  <li class="project-card rounded-md p-0 w-full flex flex-col gap-1 bg-primary-200 dark:bg-primary-950 outline-primary-200 dark:outline-primary-900 overflow-hidden">
     <div class="project-card__layout flex flex-col sm:flex-row items-stretch gap-3 w-full px-3 py-2">
       <div class="project-card__content flex flex-col gap-2 w-full min-w-0">
 <div class="flex flex-row gap-2 w-full rounded-md items-center px-2 py-1.5 bg-primary-300 dark:bg-primary-800"><p class="my-0 items-center text-md flex-1 flex flex-row items-center gap-2 text-primary-800 dark:text-primary-400">{% include icon.html name="fa-solid fa-paper-plane" class="w-4 h-4 inline-block text-primary-800 dark:text-primary-600" %} <a href="https://news.hackclub.com/changelogs/responses-and-followups/" class="no-external-icon" target="_blank" rel="noopener noreferrer">Find out when I post by:</a></p></div>
