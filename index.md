@@ -205,8 +205,10 @@ _...and some thoughts I've had or shared, (<a href="/blog">all</a>)_
 <li class="project-card rounded-md p-0 w-full flex flex-col gap-1 bg-primary-200 dark:bg-primary-950 outline-primary-200 dark:outline-primary-900 overflow-hidden">
     <div class="project-card__layout flex flex-col sm:flex-row items-stretch gap-3 w-full px-3 py-2">
       <div class="project-card__content flex flex-col gap-2 w-full min-w-0">
-<div class="flex flex-row gap-2 w-full rounded-md items-center px-2 py-1.5 bg-primary-300 dark:bg-primary-800"><p class="my-0 items-center text-md flex-1 flex flex-row items-center gap-2">{% include icon.html name="fa-solid fa-bell" class="w-4 h-4 inline-block" %} <a href="https://news.hackclub.com/changelogs/responses-and-followups/" class="no-external-icon" target="_blank" rel="noopener noreferrer">Find out about new articles by</a></p></div>
-          <ul style="list-style-type: disc; margin-left: 16px;" class="flex flex-col gap-4">     <li> <div class="flex flex-row flex-wrap items-center gap-2">
+<div class="flex flex-row gap-2 w-full rounded-md items-center px-2 py-1.5 bg-primary-300 dark:bg-primary-800"><p class="my-0 items-center text-sm flex-1 flex flex-row items-center gap-2 text-primary-800 dark:text-primary-400">{% include icon.html name="fa-solid fa-paper-plane" class="w-4 h-4 inline-block text-primary-800 dark:text-primary-600" %} <a href="https://news.hackclub.com/changelogs/responses-and-followups/" class="no-external-icon" target="_blank" rel="noopener noreferrer">Find out when I post by:</a></p></div>
+          <ul style="list-style-type: disc; margin-left: 16px;" class="flex flex-col gap-2"> 
+              <li>
+               <div class="flex flex-row flex-wrap items-center gap-2">
        <strong class="text-sm"> adding to your feedreader:</strong>
 
               <a href="/rss.xml" class="no-underline no-external-icon">
@@ -216,12 +218,16 @@ _...and some thoughts I've had or shared, (<a href="/blog">all</a>)_
             <div class="bg-primary-100 dark:bg-primary-900 border border-primary-500 py-1 px-2 rounded-md text-xs flex flex-row items-center gap-2">{% include icon.html name="fa-solid fa-atom" class="w-3 h-3" %}Atom</div>
           </a>
         </div></li>
-        <div class=" rounded-md p-3 flex flex-col gap-2 text-sm">
-         <li><strong>
-          or subscribing to my newsletter:</strong></li> <form
+                 <li ><strong class="text-sm mb-2 ">
+          or subscribing to my newsletter:</strong></li>
+
+   
+  
+    </ul>
+           <form
             action="https://buttondown.com/api/emails/embed-subscribe/matmanna"
             method="post"
-            class="embeddable-buttondown-form flex flex-col w-full gap-2 items-stretch"
+            class="embeddable-buttondown-form flex flex-col w-full gap-2 items-stretch "
           >
                 <div class="flex flex-row flex-wrap gap-3 w-full">      <input
               type="email"
@@ -240,8 +246,6 @@ _...and some thoughts I've had or shared, (<a href="/blog">all</a>)_
          This list is managed through <a href="https://buttondown.com/refer/matmanna" target="_blank" rel="noopener noreferrer" class="no-external-icon">Buttondown</a> and I'll never send spam :D
             </p>
           </form>
-        </div>
-    </ul>
       </div>
     </div>
   </li>
