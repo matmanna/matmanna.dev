@@ -152,7 +152,7 @@ adjust based on kind so the same template can render posts, projects, pages, etc
 
                 {%- if kind == 'post' or kind == 'posts' -%}
                 <a href="{{ entry_href }}"
-                    class="text-primary-600 dark:text-primary-400 hover:underline mt-3 no-external-icon"{{ entry_target }}{{ entry_rel }}>Keep
+                    class="text-primary-600 dark:text-primary-400 hover:underline mt-1 no-external-icon"{{ entry_target }}{{ entry_rel }}>Keep
                     reading...</a>
                 {%- elsif kind == 'project' or kind == 'projects' -%}
 

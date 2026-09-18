@@ -236,7 +236,7 @@ _...and some thoughts I've had or shared, (<a href="/blog">all</a>)_
               type="email"
               name="email"
               id="bd-email"
-              placeholder="Your email goes here"
+              placeholder="Put your email here!"
               class="flex-grow border border-primary-500 bg-primary-200 dark:bg-primary-950 text-primary-800 dark:text-primary-300 rounded-md px-3 py-2 text-sm"
             />
             <input
