@@ -469,3 +469,6 @@ function updateCSS(filePath) {
 walkDir('_site');
 updateCSS('_site/assets/css/tailwind.css');
 console.log('Minified ' + idx + ' classes, ' + varIdx + ' CSS variables');
+
+// Merge classes that appear together into short combo classes (cached in .cache/)
+require('./combine-classes').run({ siteDir: '_site' });
