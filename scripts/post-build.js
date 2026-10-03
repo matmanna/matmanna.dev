@@ -466,6 +466,69 @@ function updateCSS(filePath) {
   if (modified) fs.writeFileSync(filePath, css);
 }
 
+function ensureUtf8Meta() {
+  // Guarantee a <meta charset="utf-8"> within the first 1024 bytes of every page.
+  // jekyll-gfm-admonitions prepends a <head><style>.markdown-alert{…}</style></head>
+  // before the doctype when the compress layout has stripped all <head> tags.
+  // Left there, it pushes the real <meta charset> past the browser encoding-sniff
+  // window, so the page decodes as windows-1252 and UTF-8 smart punctuation
+  // renders as â€™/ï¬. Relocate that style into the real head (right after the
+  // charset meta) and, for any remaining page, inject a charset meta early.
+  const files = [];
+  (function collect(dir) {
+    if (!fs.existsSync(dir)) return;
+    fs.readdirSync(dir).forEach(name => {
+      const f = path.join(dir, name);
+      const s = fs.statSync(f);
+      if (s.isDirectory()) collect(f);
+      else if (name.endsWith('.html')) files.push(f);
+    });
+  })('_site');
+
+  for (const f of files) {
+    const b = fs.readFileSync(f);
+    const prefix = b.subarray(0, 1024).toString('latin1');
+    const hasCharset = /charset\s*=/.test(prefix);
+    const original = b.toString('utf8');
+    let out = original;
+
+    const preDoctype = out.match(/^<head>(<style>[\s\S]*?<\/style>)<\/head>(?=\s*<!DOCTYPE)/);
+    let extraStyle = '';
+    if (preDoctype) {
+      extraStyle = preDoctype[1];
+      out = out.slice(preDoctype[0].length);
+    }
+
+    if (!hasCharset) {
+      const meta = out.indexOf('<meta charset') === -1 ? '<meta charset="utf-8">' : '';
+      if (meta) {
+        const headTag = out.match(/<head[\s>]/);
+        const htmlTag = out.match(/<html[^>]*>/);
+        const anchor = headTag || htmlTag;
+        if (anchor) {
+          const close = out.indexOf('>', anchor.index);
+          out = out.slice(0, close + 1) + meta + out.slice(close + 1);
+        } else {
+          out = meta + out;
+        }
+      }
+    }
+
+    if (extraStyle) {
+      out = out.replace(/<meta charset[^>]*>/, m => m + extraStyle);
+    }
+
+    if (out !== original) fs.writeFileSync(f, out);
+  }
+}
+
 walkDir('_site');
 updateCSS('_site/assets/css/tailwind.css');
 console.log('Minified ' + idx + ' classes, ' + varIdx + ' CSS variables');
+
+// Must run before combining: it moves the pre-doctype <style> into <head>,
+// which puts pages in standards mode (case-sensitive class names).
+ensureUtf8Meta();
+
+// Merge classes that appear together into short combo classes (cached in .cache/)
+require('./combine-classes').run({ siteDir: '_site' });
