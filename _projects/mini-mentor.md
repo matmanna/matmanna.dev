@@ -3,7 +3,7 @@ layout: project
 title: MiniMentor
 description: Micromentorship platform for connecting learners and mentors through personalized, skill-building lessons.
 image: /assets/images/projects/mini-mentor.webp
-card_image: /assets/images/projects/cards/mini-mentor-card.webp
+card_image: /assets/images/projects/cards/mini-mentor-card.avif
 start_date: 2025-09-20
 end_date: 2025-09-20
 activity_status: paused
@@ -11,15 +11,15 @@ links:
   - title: Live app
     url: https://mini-mentor.netlify.app
     icon: fa-solid fa-up-right-from-square
-  - title: PennApps XXVI
-    url: https://pennapps.com/
-    icon: fas fa-trophy
   - title: Devpost
     url: https://devpost.com/software/minimentor
     icon: fa-solid fa-up-right-from-square
   - title: src
     url: https://github.com/matmanna/mini-mentor
     icon: fa-brands fa-github
+  - title: PennApps XXVI
+    url: https://pennapps.com/
+    icon: fas fa-trophy
 tags:
   - Next.js
   - Supabase

@@ -11,7 +11,7 @@ links:
   - title: Play on itch.io
     url: https://matmanna.itch.io/harmonic-heights
     icon: fas fa-gamepad
-  - title: GMTK 2024 submission
+  - title: GMTK 2024 jam 
     url: https://itch.io/jam/gmtk-2024/rate/2903045
     icon: fas fa-trophy
 tags:

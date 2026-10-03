@@ -11,7 +11,7 @@ links:
   - title: Play on itch.io
     url: https://matmanna.itch.io/oliver-the-dice-master
     icon: fas fa-gamepad
-  - title: GMTK 2022 submission
+  - title: GMTK 2022 jam
     url: https://itch.io/jam/gmtk-jam-2022/rate/1610145
     icon: fas fa-trophy
 tags:

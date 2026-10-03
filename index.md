@@ -177,7 +177,7 @@ _...some initiatives & projects I've worked on independently or with competition
   {% unless project.org contains 'hack club' or project.org contains 'Hack Club' %}
   {% include post-card.html entry=project kind='project' %}
   {% assign project_count = project_count | plus: 1 %}
-  {% if project_count >= 8 %}
+  {% if project_count >= 10 %}
   {% break %}
   {% endif %}
   {% endunless %}
