@@ -18,6 +18,13 @@
 // into a new rule at the end of the stylesheet, which changed which rule won
 // against dark: and responsive variants.
 //
+// Every page inlines the whole site's CSS, so selectors that cannot match
+// anything on the page are dropped, and rules left without selectors are
+// deleted. This also counts toward a combo's gain: once a combo replaces the
+// last use of `.c8` on a page, `.c8,.a{...}` becomes `.a{...}` and the combo
+// costs no CSS at all. Classes that scripts may add at runtime (`dark`) and
+// classes inside :not() are never treated as missing.
+//
 // Results are cached in .cache/class-combos.json. On the next build a page is
 // only re-analysed for the class lists that changed since the cached run; a
 // page whose class lists and CSS are both unchanged reuses its cached combos.
@@ -31,7 +38,7 @@ const crypto = require('crypto');
 const postcss = require('postcss');
 const selectorParser = require('postcss-selector-parser');
 
-const CACHE_VERSION = 1;
+const CACHE_VERSION = 2;
 // Elements with more eligible classes than this only get subsets up to
 // LARGE_ELEMENT_MAX_SUBSET in size, so the subset count stays bounded.
 const FULL_ENUM_LIMIT = 16;
@@ -55,6 +62,7 @@ function sha1(s) {
 // literal text and class occurrences, grouped into compounds.
 function analyseCSS(styleTexts) {
   const selectors = [];
+  const rules = [];
   const cssClasses = new Set();
   const negatedClasses = new Set();
   const attrClassValues = new Set();
@@ -80,6 +88,9 @@ function analyseCSS(styleTexts) {
       } catch (e) {
         return;
       }
+      const ruleId = rules.length;
+      const info = { blockIdx, ruleIdx: myRuleIdx, texts: complexTexts, selIds: [], len: rule.toString().length };
+      rules.push(info);
 
       complexTexts.forEach(text => {
         const occurrences = [];
@@ -89,8 +100,11 @@ function analyseCSS(styleTexts) {
           });
           r.walkClasses(c => {
             let negated = false;
+            let nested = false;
             for (let p = c.parent; p; p = p.parent) {
-              if (p.type === 'pseudo' && p.value.toLowerCase() === ':not') negated = true;
+              if (p.type !== 'pseudo') continue;
+              nested = true;
+              if (p.value.toLowerCase() === ':not') negated = true;
             }
             const raw = '.' + ((c.raws && c.raws.value) || c.value);
             if (text.slice(c.sourceIndex, c.sourceIndex + raw.length) !== raw) {
@@ -99,7 +113,11 @@ function analyseCSS(styleTexts) {
               return;
             }
             cssClasses.add(c.value);
-            if (negated) negatedClasses.add(c.value);
+            if (negated) {
+              // Stays literal text: a negated class never makes a selector dead.
+              negatedClasses.add(c.value);
+              return;
+            }
             // A compound is the run of simple selectors between combinators
             // inside one Selector container.
             let combinatorsBefore = 0;
@@ -114,10 +132,11 @@ function analyseCSS(styleTexts) {
               rawLen: raw.length,
               compoundKey: c.parent, // object identity, mapped below
               compoundIdx: combinatorsBefore,
+              nested,
             });
           });
         }).processSync(text);
-        if (!occurrences.length) return;
+        if (!occurrences.length) return info.selIds.push(-1);
         occurrences.sort((a, b) => a.start - b.start);
 
         // Split selector text into literal parts and class slots.
@@ -133,7 +152,9 @@ function analyseCSS(styleTexts) {
           if (cIdx === undefined) {
             cIdx = compounds.length;
             byIdx.set(o.compoundIdx, cIdx);
-            compounds.push({ slots: [], classes: new Set() });
+            // Compounds inside :is()/:where()/:has() may be one branch of a
+            // list, so they never decide on their own that a selector is dead.
+            compounds.push({ slots: [], classes: new Set(), optional: o.nested });
           }
           const slot = parts.length;
           parts.push({ cls: o.cls, raw: text.slice(o.start, o.end), compound: cIdx });
@@ -142,12 +163,13 @@ function analyseCSS(styleTexts) {
           pos = o.end;
         });
         parts.push(text.slice(pos));
-        selectors.push({ blockIdx, ruleIdx: myRuleIdx, text, parts, compounds });
+        info.selIds.push(selectors.length);
+        selectors.push({ ruleId, text, parts, compounds });
       });
     });
   });
 
-  return { selectors, cssClasses, negatedClasses, attrClassValues };
+  return { selectors, rules, cssClasses, negatedClasses, attrClassValues };
 }
 
 function extractPage(html) {
@@ -244,14 +266,16 @@ function addSignatureSubsets(subsetCounts, signature, table, delta) {
 // Greedy selection
 // ---------------------------------------------------------------------------
 
-function* comboNames(taken) {
-  // Lowercase only: pages that render in quirks mode match class selectors
-  // case-insensitively, so `a` and `A` would collide.
-  const first = 'abcdefghijklmnopqrstuvwxyz';
+function* comboNames(taken, caseSensitive) {
+  // Pages in quirks mode match class selectors case-insensitively, so `a`
+  // and `A` would collide there; only standards-mode pages get uppercase.
+  const lower = 'abcdefghijklmnopqrstuvwxyz';
+  const first = caseSensitive ? lower + lower.toUpperCase() : lower;
   const rest = first + '0123456789';
-  for (const a of first) if (!taken.has(a)) yield a;
-  for (const a of first) for (const b of rest) if (!taken.has(a + b)) yield a + b;
-  for (const a of first) for (const b of rest) for (const c of rest) if (!taken.has(a + b + c)) yield a + b + c;
+  const free = n => !taken.has(caseSensitive ? n : n.toLowerCase());
+  for (const a of first) if (free(a)) yield a;
+  for (const a of first) for (const b of rest) if (free(a + b)) yield a + b;
+  for (const a of first) for (const b of rest) for (const c of rest) if (free(a + b + c)) yield a + b + c;
 }
 
 // Ties break on the class list so a cached run and a full run pick the same
@@ -296,9 +320,11 @@ class MaxHeap {
   }
 }
 
-// Per-page model of which token each element shows for each class, and how
-// many selector variants that forces in the CSS.
-function buildModel(sigCounts, eligible, css) {
+// Per-page model of which token each element shows for each class, which
+// selector variants that forces in the CSS, and which selectors can no longer
+// match anything on the page (those are dropped, and a rule left with no
+// selectors is deleted).
+function buildModel(sigCounts, eligible, css, dynamic) {
   const sigs = Object.entries(sigCounts).map(([signature, mult]) => {
     const all = new Set(signature.split(' ').filter(Boolean));
     return {
@@ -316,13 +342,18 @@ function buildModel(sigCounts, eligible, css) {
   css.selectors.forEach((sel, selIdx) => {
     sel.compoundRefs = sel.compounds.map(comp => {
       const id = compounds.length;
+      // Classes that scripts may add at runtime (e.g. `dark`) cannot be
+      // matched statically, so their compounds always keep the original text.
+      const statics = [...comp.classes].filter(c => !dynamic.has(c));
+      const optional = comp.optional || statics.length !== comp.classes.size;
       const matching = [];
-      sigs.forEach((s, i) => {
-        for (const c of comp.classes) if (!s.all.has(c)) return;
-        matching.push(i);
-      });
-      const entry = { selIdx, slots: comp.slots, classes: comp.classes, matching, alts: null };
-      compounds.push(entry);
+      if (statics.length) {
+        sigs.forEach((s, i) => {
+          for (const c of statics) if (!s.all.has(c)) return;
+          matching.push(i);
+        });
+      }
+      compounds.push({ selIdx, slots: comp.slots, classes: comp.classes, optional, matching, alts: null });
       comp.classes.forEach(c => {
         if (!compoundsByClass.has(c)) compoundsByClass.set(c, []);
         compoundsByClass.get(c).push(id);
@@ -331,17 +362,31 @@ function buildModel(sigCounts, eligible, css) {
     });
   });
 
-  const model = { sigs, compounds, compoundsByClass, selectors: css.selectors };
+  const model = { sigs, compounds, compoundsByClass, selectors: css.selectors, rules: css.rules };
   compounds.forEach(comp => (comp.alts = compoundAlts(model, comp, null)));
-  model.selCost = css.selectors.map((sel, i) => selectorCost(model, i, null));
+  model.selState = css.selectors.map((sel, i) => selectorState(model, i, null));
+  model.ruleCost = css.rules.map((rule, i) => ruleCost(model, i, null));
+  model.baseCost = model.ruleCost.reduce((t, c) => t + c, 0);
+
+  // Most CSS a combo touching a class could ever remove: every rule that
+  // mentions the class. Keeps the greedy queue's keys upper bounds.
+  model.removable = new Map();
+  compoundsByClass.forEach((ids, c) => {
+    const ruleIds = new Set(ids.map(id => css.selectors[compounds[id].selIdx].ruleId));
+    let total = 0;
+    ruleIds.forEach(r => (total += css.rules[r].len));
+    model.removable.set(c, total);
+  });
   return model;
 }
 
 // Distinct rewrites of one compound that some element actually needs,
-// as Map(tupleKey -> length difference vs. the original text).
+// as Map(tupleKey -> length difference vs. the original text). The key ''
+// is the original text; it is only kept while some element still needs it.
 function compoundAlts(model, comp, override) {
   const sel = model.selectors[comp.selIdx];
-  const alts = new Map([['', 0]]);
+  const alts = new Map();
+  if (comp.optional) alts.set('', 0);
   comp.matching.forEach(i => {
     const map = (override && override.has(i)) ? override.get(i) : model.sigs[i].map;
     let key = '';
@@ -354,15 +399,15 @@ function compoundAlts(model, comp, override) {
         diff += name.length + 1 - part.raw.length;
       }
     });
-    if (key && !alts.has(key)) alts.set(key, diff);
+    if (!alts.has(key)) alts.set(key, diff);
   });
   return alts;
 }
 
-// Characters appended to one rule for all variants of one complex selector:
-// every combination of compound rewrites except the original, each with a
-// leading comma.
-function selectorCost(model, selIdx, altOverride) {
+// Change in characters for one complex selector: every combination of
+// compound rewrites replaces the original text (each with a comma). A
+// selector with a compound no element can match is dead.
+function selectorState(model, selIdx, altOverride) {
   const sel = model.selectors[selIdx];
   let n = 1;
   const stats = sel.compoundRefs.map(id => {
@@ -372,15 +417,24 @@ function selectorCost(model, selIdx, altOverride) {
     n *= alts.size;
     return { size: alts.size, d };
   });
-  if (n === 1) return 0;
-  if (n > MAX_VARIANTS_PER_SELECTOR) return Infinity;
-  let cost = (n - 1) * (sel.text.length + 1);
+  const base = sel.text.length + 1;
+  if (n === 0) return { cost: -base, dead: true };
+  if (n > MAX_VARIANTS_PER_SELECTOR) return { cost: Infinity, dead: false };
+  let cost = n * base - base;
   stats.forEach(s => (cost += s.d * (n / s.size)));
+  return { cost, dead: false };
+}
+
+function ruleCost(model, ruleId, stateOverride) {
+  const rule = model.rules[ruleId];
+  const state = id => (stateOverride && stateOverride.has(id)) ? stateOverride.get(id) : model.selState[id];
+  if (rule.selIds.every(id => id >= 0 && state(id).dead)) return -rule.len;
+  let cost = 0;
+  rule.selIds.forEach(id => { if (id >= 0) cost += state(id).cost; });
   return cost;
 }
 
 function evaluate(model, classes, name) {
-  const set = new Set(classes);
   const hit = [];
   let htmlSaved = 0;
   const perElement = classes.reduce((t, c) => t + c.length, 0) + classes.length - 1 - name.length;
@@ -398,19 +452,22 @@ function evaluate(model, classes, name) {
     override.set(i, m);
   });
   const altOverride = new Map();
-  const touchedSels = new Set();
+  const stateOverride = new Map();
+  const touchedRules = new Set();
   classes.forEach(c => (model.compoundsByClass.get(c) || []).forEach(id => {
     if (altOverride.has(id)) return;
     const comp = model.compounds[id];
     if (!comp.matching.some(i => override.has(i))) return;
     altOverride.set(id, compoundAlts(model, comp, override));
-    touchedSels.add(comp.selIdx);
+    stateOverride.set(comp.selIdx, null);
   }));
-  let cssAdded = 0;
-  touchedSels.forEach(selIdx => {
-    cssAdded += selectorCost(model, selIdx, altOverride) - model.selCost[selIdx];
+  stateOverride.forEach((v, selIdx) => {
+    stateOverride.set(selIdx, selectorState(model, selIdx, altOverride));
+    touchedRules.add(model.selectors[selIdx].ruleId);
   });
-  return { gain: htmlSaved - cssAdded, htmlSaved, cssAdded, hit, override, altOverride, touchedSels };
+  let cssAdded = 0;
+  touchedRules.forEach(r => (cssAdded += ruleCost(model, r, stateOverride) - model.ruleCost[r]));
+  return { gain: htmlSaved - cssAdded, htmlSaved, cssAdded, hit, override, altOverride, stateOverride, touchedRules };
 }
 
 function applyCombo(model, classes, name, ev) {
@@ -421,17 +478,19 @@ function applyCombo(model, classes, name, ev) {
     s.combos.push(name);
   });
   ev.altOverride.forEach((alts, id) => (model.compounds[id].alts = alts));
-  ev.touchedSels.forEach(selIdx => (model.selCost[selIdx] = selectorCost(model, selIdx, null)));
+  ev.stateOverride.forEach((state, selIdx) => (model.selState[selIdx] = state));
+  ev.touchedRules.forEach(r => (model.ruleCost[r] = ruleCost(model, r, null)));
 }
 
-function chooseCombos(model, subsetCounts, table, takenNames) {
-  const names = comboNames(takenNames);
+function chooseCombos(model, subsetCounts, table, takenNames, caseSensitive) {
+  const names = comboNames(takenNames, caseSensitive);
   let nextName = names.next().value;
   const heap = new MaxHeap();
   const perElementBound = classes => classes.reduce((t, c) => t + c.length, 0) + classes.length - 2;
   Object.entries(subsetCounts).forEach(([key, count]) => {
     const classes = key.split('.').map(id => table.list[parseInt(id, 36)]);
-    const bound = count * perElementBound(classes);
+    const bound = count * perElementBound(classes) +
+      classes.reduce((t, c) => t + (model.removable.get(c) || 0), 0);
     if (bound > 0) heap.push({ key: bound, id: key, classes });
   });
 
@@ -467,26 +526,27 @@ function replayCombos(model, combos) {
 // Rewriting
 // ---------------------------------------------------------------------------
 
+// Every selector text the rule needs in place of one complex selector,
+// original first when some element still needs it.
 function selectorVariants(model, selIdx) {
   const sel = model.selectors[selIdx];
-  const altLists = sel.compoundRefs.map(id => [...model.compounds[id].alts.keys()]);
-  let combos = [[]];
+  if (model.selState[selIdx].dead) return [];
+  const altLists = sel.compoundRefs.map(id =>
+    [...model.compounds[id].alts.keys()].sort((a, b) => (a === '' ? -1 : b === '' ? 1 : 0)));
+  let choices = [[]];
   altLists.forEach(list => {
     const next = [];
-    combos.forEach(prefix => list.forEach(k => next.push(prefix.concat(k))));
-    combos = next;
+    choices.forEach(prefix => list.forEach(k => next.push(prefix.concat(k))));
+    choices = next;
   });
-  const variants = [];
-  combos.forEach(choice => {
-    if (choice.every(k => k === '')) return;
+  return choices.map(choice => {
     const replace = new Map();
     choice.forEach(k => k.split(';').filter(Boolean).forEach(pair => {
       const [slot, name] = pair.split('=');
       replace.set(Number(slot), name);
     }));
-    variants.push(sel.parts.map((p, i) => typeof p === 'string' ? p : '.' + (replace.get(i) || p.raw.slice(1))).join(''));
+    return sel.parts.map((p, i) => typeof p === 'string' ? p : '.' + (replace.get(i) || p.raw.slice(1))).join('');
   });
-  return variants;
 }
 
 function rewritePage(html, model) {
@@ -509,13 +569,16 @@ function rewritePage(html, model) {
     return pre + out.join(' ') + post;
   });
 
-  // Group appended selector variants by rule.
-  const additions = new Map(); // "block:rule" -> [variant]
-  model.selectors.forEach((sel, i) => {
-    if (model.selCost[i] === 0) return;
-    const key = sel.blockIdx + ':' + sel.ruleIdx;
-    if (!additions.has(key)) additions.set(key, []);
-    additions.get(key).push(...selectorVariants(model, i));
+  // New selector list per rule ("block:rule" -> [selector]; [] deletes it).
+  const lists = new Map();
+  model.rules.forEach(rule => {
+    const list = [];
+    rule.texts.forEach((text, j) => {
+      const id = rule.selIds[j];
+      if (id < 0) list.push(text);
+      else list.push(...selectorVariants(model, id));
+    });
+    if (list.join(',') !== rule.texts.join(',')) lists.set(rule.blockIdx + ':' + rule.ruleIdx, list);
   });
 
   let blockIdx = 0;
@@ -527,15 +590,29 @@ function rewritePage(html, model) {
     } catch (e) {
       return m;
     }
-    let ruleIdx = 0;
+    const all = [];
+    root.walkRules(rule => all.push(rule));
     let changed = false;
-    root.walkRules(rule => {
-      const extra = additions.get(myBlock + ':' + ruleIdx++);
-      if (!extra) return;
-      rule.selector = rule.selector.trim() + ',' + extra.join(',');
+    all.forEach((rule, ruleIdx) => {
+      const list = lists.get(myBlock + ':' + ruleIdx);
+      if (!list) return;
       changed = true;
+      if (list.length) rule.selector = list.join(',');
+      else rule.remove();
     });
-    return changed ? open + root.toString() + close : m;
+    if (!changed) return m;
+    // Drop @media/@supports blocks emptied by the removals.
+    let emptied;
+    do {
+      emptied = false;
+      root.walkAtRules(at => {
+        if (at.nodes && at.nodes.length === 0) {
+          at.remove();
+          emptied = true;
+        }
+      });
+    } while (emptied);
+    return root.nodes.length ? open + root.toString() + close : '';
   });
 
   return html;
@@ -568,7 +645,9 @@ function processPage(html, cached) {
   // Anything that changes which selectors exist or which classes may be
   // merged invalidates the whole page entry.
   const table = classTable(eligible);
-  const cssKey = sha1(JSON.stringify([page.styleTexts, table.list]));
+  const dynamic = new Set([...css.cssClasses].filter(c => page.scriptWords.has(c)));
+  const caseSensitive = /^\s*<!DOCTYPE html>/i.test(html);
+  const cssKey = sha1(JSON.stringify([page.styleTexts, table.list, [...dynamic].sort(), caseSensitive]));
 
   let mode;
   let subsetCounts;
@@ -591,8 +670,9 @@ function processPage(html, cached) {
   }
   const t1 = process.hrtime.bigint();
 
-  const model = buildModel(sigCounts, eligible, css);
-  const takenNames = new Set([...page.htmlClasses, ...css.cssClasses, ...page.scriptWords].map(n => n.toLowerCase()));
+  const model = buildModel(sigCounts, eligible, css, dynamic);
+  const taken = [...page.htmlClasses, ...css.cssClasses, ...page.scriptWords];
+  const takenNames = new Set(caseSensitive ? taken : taken.map(n => n.toLowerCase()));
 
   let combos;
   if (mode === 'cached' && replayCombos(model, cached.combos)) {
@@ -602,11 +682,11 @@ function processPage(html, cached) {
       mode = 'full';
       return processPage(html, null);
     }
-    combos = chooseCombos(model, subsetCounts, table, takenNames);
+    combos = chooseCombos(model, subsetCounts, table, takenNames, caseSensitive);
   }
   const t2 = process.hrtime.bigint();
 
-  const out = combos.length ? rewritePage(html, model) : html;
+  const out = (combos.length || model.baseCost) ? rewritePage(html, model) : html;
   const t3 = process.hrtime.bigint();
 
   return {
@@ -622,6 +702,7 @@ function processPage(html, cached) {
       combos: combos.length,
       htmlSaved: combos.reduce((t, c) => t + c.htmlSaved, 0),
       cssAdded: combos.reduce((t, c) => t + c.cssAdded, 0),
+      deadRemoved: -model.baseCost,
       bytesBefore: Buffer.byteLength(html),
       bytesAfter: Buffer.byteLength(out),
       ms: {
