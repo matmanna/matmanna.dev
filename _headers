@@ -37,8 +37,3 @@
 /*.svg
   Cache-Control: public, max-age=31536000, immutable
 
-/li/
-  X-Robots-Tag: noindex
-
-/li/*
-  X-Robots-Tag: noindex

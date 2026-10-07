@@ -9,6 +9,7 @@ image:
   alt: An animated GIF scrolling through matmanna.dev, with a marquee reading check out my site and matmanna.dev
 permalink: /li/
 sitemap: false
+noindex: true
 ---
 
 {% include home.md %}
