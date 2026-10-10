@@ -36,6 +36,15 @@
   <a href="https://youtube.com/@matmannadev" data-no-external-icon rel="nofollow">
     <img src="/assets/images/badges/social/youtube-badge.svg" alt="YouTube badge" width="49" height="20">
   </a>
+  <a href="https://x.com/matmanna_" data-no-external-icon rel="nofollow">
+    <img src="/assets/images/badges/social/x-badge.svg" alt="X badge" width="49" height="20">
+  </a>
+  <a href="mailto:yo@matmanna.dev" data-no-external-icon>
+    <img src="/assets/images/badges/social/mail-badge.svg" alt="Email badge" width="51" height="20">
+  </a>
+  <span title="@matmanna on Discord">
+    <img src="/assets/images/badges/social/discord-badge.svg" alt="Discord badge (@matmanna)" width="41" height="20">
+  </span>
   <p>(<code>:places</code>)</p>
 </div>
 
