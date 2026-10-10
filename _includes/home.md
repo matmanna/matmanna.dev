@@ -1,5 +1,5 @@
 
-<div class="flex flex-row gap-2 not-prose flex-wrap" style="height: 30.33px;">
+<div class="flex flex-row gap-2 not-prose flex-wrap items-center" style="min-height: 30.33px;">
   <a href="https://linkedin.com/in/matmanna" data-no-external-icon rel="nofollow">
     <img src="/assets/images/badges/social/linkedin-badge.svg" alt="LinkedIn badge" width="37" height="20">
   </a>
@@ -26,6 +26,15 @@
   </a>
   <a href="https://last.fm/user/matmanna" data-no-external-icon rel="nofollow">
     <img src="/assets/images/badges/social/lastfm-badge.svg" alt="Last.fm badge" width="43" height="20">
+  </a>
+  <a href="https://instagram.com/matmanna" data-no-external-icon rel="nofollow">
+    <img src="/assets/images/badges/social/instagram-badge.svg" alt="Instagram badge" width="57" height="20">
+  </a>
+  <a href="https://bsky.app/profile/matmanna.dev" data-no-external-icon rel="nofollow">
+    <img src="/assets/images/badges/social/bluesky-badge.svg" alt="Bluesky badge" width="47" height="20">
+  </a>
+  <a href="https://youtube.com/@matmannadev" data-no-external-icon rel="nofollow">
+    <img src="/assets/images/badges/social/youtube-badge.svg" alt="YouTube badge" width="49" height="20">
   </a>
   <p>(<code>:places</code>)</p>
 </div>
