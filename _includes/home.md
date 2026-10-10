@@ -28,7 +28,7 @@
     <img src="/assets/images/badges/social/lastfm-badge.svg" alt="Last.fm badge" width="43" height="20">
   </a>
   <a href="https://instagram.com/matmanna" data-no-external-icon rel="nofollow">
-    <img src="/assets/images/badges/social/instagram-badge.svg" alt="Instagram badge" width="57" height="20">
+    <img src="/assets/images/badges/social/instagram-badge.svg" alt="Instagram badge" width="37" height="20">
   </a>
   <a href="https://bsky.app/profile/matmanna.dev" data-no-external-icon rel="nofollow">
     <img src="/assets/images/badges/social/bluesky-badge.svg" alt="Bluesky badge" width="47" height="20">
@@ -37,7 +37,7 @@
     <img src="/assets/images/badges/social/youtube-badge.svg" alt="YouTube badge" width="49" height="20">
   </a>
   <a href="https://x.com/matmanna_" data-no-external-icon rel="nofollow">
-    <img src="/assets/images/badges/social/x-badge.svg" alt="X badge" width="49" height="20">
+    <img src="/assets/images/badges/social/x-badge.svg" alt="X badge" width="35" height="20">
   </a>
   <a href="mailto:yo@matmanna.dev" data-no-external-icon>
     <img src="/assets/images/badges/social/mail-badge.svg" alt="Email badge" width="51" height="20">
