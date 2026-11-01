@@ -9,18 +9,15 @@ end_date: 2026-10-22
 activity_status: completed
 competition: true
 links:
-  - title: Devpost
+  - title: National Renaissance Hackathon
     url: https://devpost.com/software/pointmaxx
-    icon: fa-solid fa-up-right-from-square
+    icon: fa-solid fa-flag-checkered
   - title: pointmaxx.ing
     url: https://pointmaxx.ing/
     icon: fa-solid fa-play
   - title: src
     url: https://github.com/matmanna/pointmaxx
     icon: fa-brands fa-github
-  - title: National Renaissance Hackathon
-    url: https://national-renaissance-hackathon.devpost.com/
-    icon: fa-solid fa-flag-checkered
 tags:
   - Browser Extension
   - Privacy

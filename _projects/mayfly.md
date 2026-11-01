@@ -9,9 +9,9 @@ end_date: 2026-10-25
 activity_status: completed
 competition: true
 links:
-  - title: Devpost
+  - title: Cal Hacks 13.0
     url: https://devpost.com/software/mayfly-7m5fwo
-    icon: fa-solid fa-up-right-from-square
+    icon: fa-solid fa-flag-checkered
   - title: Live console
     url: https://mayfly.matmanna.dev/
     icon: fa-solid fa-play
@@ -21,9 +21,6 @@ links:
   - title: src
     url: https://github.com/monpon/mayfly
     icon: fa-brands fa-github
-  - title: Cal Hacks 13.0
-    url: https://cal-hacks-13-0.devpost.com/
-    icon: fa-solid fa-flag-checkered
 tags:
   - Drones
   - ESP32

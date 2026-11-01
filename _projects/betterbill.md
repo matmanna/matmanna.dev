@@ -9,21 +9,18 @@ end_date: 2026-10-18
 activity_status: completed
 competition: true
 links:
-  - title: Devpost
+  - title: 1st - LA Hacks Visa
     url: https://devpost.com/software/betterbill
-    icon: fa-solid fa-up-right-from-square
+    icon: fas fa-trophy
+  - title: 1st - Photon
+    url: https://devpost.com/software/betterbill
+    icon: fas fa-trophy
   - title: Demo
     url: https://betterbill.matmanna.dev/
     icon: fa-solid fa-play
   - title: Watch
     url: https://vimeo.com/1236972348
     icon: fa-solid fa-play
-  - title: 1st - LA Hacks Visa
-    url: https://la-ai-hackathon-2026.devpost.com/
-    icon: fas fa-trophy
-  - title: 1st - Photon
-    url: https://la-ai-hackathon-2026.devpost.com/
-    icon: fas fa-trophy
 tags:
   - Voice AI
   - Gemini

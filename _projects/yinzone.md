@@ -9,6 +9,9 @@ end_date: 2026-09-27
 activity_status: production
 competition: true
 links:
+  - title: Pittsburgh AI Horizons
+    url: https://ai-horizons-2026-ai-for-housing-hackathon.brandon831577.chatgpt.site/
+    icon: fa-solid fa-flag-checkered
   - title: yin.zone
     url: https://yin.zone
     icon: fa-solid fa-up-right-from-square
@@ -18,9 +21,6 @@ links:
   - title: src
     url: https://github.com/matmanna/yinzone
     icon: fa-brands fa-github
-  - title: Pittsburgh AI Horizons
-    url: https://ai-horizons-2026-ai-for-housing-hackathon.brandon831577.chatgpt.site/
-    icon: fa-solid fa-flag-checkered
 tags:
   - GIS
   - Zoning
