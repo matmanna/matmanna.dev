@@ -18,9 +18,6 @@ links:
   - title: Watch
     url: https://vimeo.com/1236972348
     icon: fa-solid fa-play
-  - title: src
-    url: https://github.com/matmanna/betterbill
-    icon: fa-brands fa-github
   - title: 1st - LA Hacks Visa
     url: https://la-ai-hackathon-2026.devpost.com/
     icon: fas fa-trophy
