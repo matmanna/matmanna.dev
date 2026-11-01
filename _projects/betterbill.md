@@ -15,16 +15,16 @@ links:
   - title: Live demo
     url: https://betterbill.matmanna.dev/
     icon: fa-solid fa-play
-  - title: Watch the demo
+  - title: Video
     url: https://vimeo.com/1236972348
     icon: fa-solid fa-play
   - title: src
     url: https://github.com/matmanna/betterbill
     icon: fa-brands fa-github
-  - title: Winner - LA Hacks AI · Visa
+  - title: 1st - LA Hacks Visa
     url: https://la-ai-hackathon-2026.devpost.com/
     icon: fas fa-trophy
-  - title: Winner - LA Hacks AI · Photon Voice Agent
+  - title: 1st - LA Hacks Voice
     url: https://la-ai-hackathon-2026.devpost.com/
     icon: fas fa-trophy
 tags:

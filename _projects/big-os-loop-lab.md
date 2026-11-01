@@ -14,7 +14,7 @@ links:
     icon: fas fa-gamepad
   - title: GMTK 2025 jam
     url: https://itch.io/jam/gmtk-2025
-    icon: fas fa-trophy
+    icon: fa-solid fa-flag-checkered
 tags:
   - Puzzle
   - Pixel Art

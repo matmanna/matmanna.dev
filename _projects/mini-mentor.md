@@ -20,7 +20,7 @@ links:
     icon: fa-brands fa-github
   - title: PennApps XXVI
     url: https://pennapps.com/
-    icon: fas fa-trophy
+    icon: fa-solid fa-flag-checkered
 tags:
   - Next.js
   - Supabase

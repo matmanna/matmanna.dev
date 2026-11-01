@@ -20,7 +20,7 @@ links:
     icon: fa-brands fa-github
   - title: Pittsburgh AI Horizons
     url: https://ai-horizons-2026-ai-for-housing-hackathon.brandon831577.chatgpt.site/
-    icon: fas fa-trophy
+    icon: fa-solid fa-flag-checkered
 tags:
   - GIS
   - Zoning

@@ -23,7 +23,7 @@ links:
     icon: fa-brands fa-github
   - title: Cal Hacks 13.0
     url: https://cal-hacks-13-0.devpost.com/
-    icon: fas fa-trophy
+    icon: fa-solid fa-flag-checkered
 tags:
   - Drones
   - ESP32

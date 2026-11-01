@@ -20,7 +20,7 @@ links:
     icon: fa-brands fa-github
   - title: National Renaissance Hackathon
     url: https://national-renaissance-hackathon.devpost.com/
-    icon: fas fa-trophy
+    icon: fa-solid fa-flag-checkered
 tags:
   - Browser Extension
   - Privacy

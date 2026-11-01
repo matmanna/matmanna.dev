@@ -14,7 +14,7 @@ links:
     icon: fas fa-gamepad
   - title: GMTK 2022 jam
     url: https://itch.io/jam/gmtk-jam-2022/rate/1610145
-    icon: fas fa-trophy
+    icon: fa-solid fa-flag-checkered
 tags:
   - Platformer
   - RPG

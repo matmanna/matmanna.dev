@@ -14,7 +14,7 @@ links:
     icon: fas fa-gamepad
   - title: GMTK 2024 jam 
     url: https://itch.io/jam/gmtk-2024/rate/2903045
-    icon: fas fa-trophy
+    icon: fa-solid fa-flag-checkered
 tags:
   - Music
   - Pixel Art
