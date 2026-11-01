@@ -1,5 +1,5 @@
 
-<div class="flex flex-row gap-2 not-prose flex-wrap items-center" style="min-height: 30.33px;">
+<div class="social-badges flex flex-row gap-2 not-prose flex-wrap items-center" style="min-height: 30.33px;">
   <a href="https://linkedin.com/in/matmanna" data-no-external-icon rel="nofollow">
     <img src="/assets/images/badges/social/linkedin-badge.svg" alt="LinkedIn badge" width="37" height="20">
   </a>
@@ -153,6 +153,17 @@ Since being exposed to computer programming on [Scratch](https://scratch.mit.edu
   </details>
 
 <style>
+
+  @media (min-width: 768px) {
+    .social-badges {
+        --badges-width: calc(100vw - 4rem);
+        width: var(--badges-width);
+        max-width: none;
+        margin-left: calc((85ch - var(--badges-width)) / 2);
+        margin-right: calc((85ch - var(--badges-width)) / 2);
+        justify-content: space-between;
+    }
+}
 
   @media (min-width: 170ch) {
     .projects-width-breakout {
