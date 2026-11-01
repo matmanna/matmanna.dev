@@ -189,7 +189,7 @@ _...some initiatives & projects I've worked on independently, (<a href="/project
   {% unless project.org contains 'hack club' or project.org contains 'Hack Club' or project.org contains 'penn state' %}
   {% include post-card.html entry=project kind='project' %}
   {% assign project_count = project_count | plus: 1 %}
-  {% if project_count >= 10 %}
+  {% if project_count >= 12 %}
   {% break %}
   {% endif %}
   {% endunless %}
