@@ -161,7 +161,7 @@ Since being exposed to computer programming on [Scratch](https://scratch.mit.edu
         max-width: none;
         margin-left: calc((85ch - var(--badges-width)) / 2);
         margin-right: calc((85ch - var(--badges-width)) / 2);
-        justify-content: space-between;
+        justify-content: center;
     }
 }
 
