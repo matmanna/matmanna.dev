@@ -60,6 +60,36 @@ Outside of computing, I’m also a guitarist, competition aficionado, and lingua
 
 ### what i'm up to <code>:now</code>
 
+<figure class="location-map not-prose">
+  <img id="location-image" alt="Map of where I am right now" width="742" height="200" loading="lazy" src="https://location.matmanna.dev/light" data-light-src="https://location.matmanna.dev/light" data-dark-src="https://location.matmanna.dev/dark">
+  <figcaption id="location-caption"></figcaption>
+</figure>
+<style>
+  .location-map img {
+    width: 100%;
+    height: auto;
+    max-width: 742px;
+    border-radius: 6px;
+  }
+  .location-map figcaption {
+    font-size: 0.875em;
+    opacity: 0.7;
+  }
+</style>
+<script>
+  (function () {
+    const caption = document.getElementById('location-caption');
+    fetch('https://location.matmanna.dev/json')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((loc) => {
+        if (!loc || !caption) return;
+        const place = [loc.city, loc.region || loc.country].filter(Boolean).join(', ');
+        caption.textContent = `currently around ${place}`;
+      })
+      .catch(() => {});
+  })();
+</script>
+
 Recently, I've been shipping,<sub> (expand for stats!)</sub> but also:
 
   <a class="no-external-icon heatmap-link" href="https://heatmap.shymike.dev?id=U07VA44DNBA&timezone=America%2FNew_York&standalone=true" title="Click to view detailed data for each day!" style="display: inline-block;">
@@ -79,20 +109,18 @@ Recently, I've been shipping,<sub> (expand for stats!)</sub> but also:
   </style>
   <script>
     (function () {
-      const img = document.getElementById('heatmap-image');
-      if (!img) return;
-      const lightSrc = img.dataset.lightSrc;
-      const darkSrc = img.dataset.darkSrc;
-      if (!lightSrc) return;
       const root = document.documentElement;
       const updateSrc = () => {
         const isDark = root.classList.contains('dark') ||
           (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches) ||
           localStorage.theme === 'dark';
-        const target = isDark ? darkSrc : lightSrc;
-        if (img.getAttribute('src') !== target) {
-          img.setAttribute('src', target);
-        }
+        // Covers the heatmap and the location map
+        document.querySelectorAll('img[data-light-src]').forEach((img) => {
+          const target = isDark ? img.dataset.darkSrc : img.dataset.lightSrc;
+          if (img.getAttribute('src') !== target) {
+            img.setAttribute('src', target);
+          }
+        });
       };
       const runAfterDoctored = () => {
         updateSrc();

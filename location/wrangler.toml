@@ -1,0 +1,14 @@
+name = "matmanna-location"
+main = "index.js"
+compatibility_date = "2025-01-01"
+
+routes = [
+  { pattern = "location.matmanna.dev", custom_domain = true }
+]
+
+# Create with: wrangler kv namespace create LOCATION
+[[kv_namespaces]]
+binding = "LOCATION"
+id = "3f828ecf8a174c9aa7728fd88f1967d9"
+
+# Secrets: wrangler secret put MAPBOX_TOKEN / wrangler secret put UPDATE_TOKEN
