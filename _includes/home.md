@@ -165,6 +165,17 @@ Since being exposed to computer programming on [Scratch](https://scratch.mit.edu
     }
 }
 
+  /* Wide enough that the row fits to the right of the heading: line up with it instead of centering. */
+  @media (min-width: 1200px) {
+    .social-badges {
+        width: max-content;
+        margin-left: 0;
+        margin-right: 0;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+    }
+}
+
   @media (min-width: 170ch) {
     .projects-width-breakout {
         --projects-breakout-width: min(170ch, calc(100vw - 2rem));
