@@ -9,7 +9,10 @@ end_date: 2026-09-20
 activity_status: completed
 competition: true
 links:
-  - title: 2nd - SteelHacks XIII · Out Loud!
+  - title: SteelHacks XIII
+    url: https://devpost.com/software/psu-bc
+    icon: fa-solid fa-flag-checkered
+  - title: 2nd - Out Loud!
     url: https://devpost.com/software/psu-bc
     icon: fas fa-trophy
   - title: Live demo

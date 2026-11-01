@@ -9,7 +9,10 @@ end_date: 2026-10-18
 activity_status: completed
 competition: true
 links:
-  - title: 1st - LA Hacks Visa
+  - title: LA Hacks AI
+    url: https://devpost.com/software/betterbill
+    icon: fa-solid fa-flag-checkered
+  - title: 1st - Visa
     url: https://devpost.com/software/betterbill
     icon: fas fa-trophy
   - title: 1st - Photon
