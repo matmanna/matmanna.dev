@@ -21,7 +21,7 @@ links:
   - title: 1st - LA Hacks Visa
     url: https://la-ai-hackathon-2026.devpost.com/
     icon: fas fa-trophy
-  - title: 1st - LA Hacks Voice
+  - title: 1st - LA Voice
     url: https://la-ai-hackathon-2026.devpost.com/
     icon: fas fa-trophy
 tags:
