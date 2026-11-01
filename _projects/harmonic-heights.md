@@ -15,6 +15,9 @@ links:
   - title: GMTK 2024 jam 
     url: https://itch.io/jam/gmtk-2024/rate/2903045
     icon: fa-solid fa-flag-checkered
+  - title: Top 30% - GMTK 2024
+    url: https://itch.io/jam/gmtk-2024/rate/2903045
+    icon: fas fa-trophy
 tags:
   - Music
   - Pixel Art

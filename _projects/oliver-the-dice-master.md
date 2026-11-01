@@ -15,6 +15,9 @@ links:
   - title: GMTK 2022 jam
     url: https://itch.io/jam/gmtk-jam-2022/rate/1610145
     icon: fa-solid fa-flag-checkered
+  - title: Top 15% - GMTK 2022
+    url: https://itch.io/jam/gmtk-jam-2022/rate/1610145
+    icon: fas fa-trophy
 tags:
   - Platformer
   - RPG
