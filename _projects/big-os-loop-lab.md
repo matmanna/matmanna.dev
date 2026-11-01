@@ -7,6 +7,7 @@ start_date: 2025-08-15
 end_date: 2025-08-15
 activity_percent: 30
 activity_status: low
+competition: true
 links:
   - title: Play on itch.io
     url: https://matmanna.itch.io/big-o-s-loop-lab

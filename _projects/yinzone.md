@@ -7,6 +7,7 @@ card_image: /assets/images/projects/cards/yinzone-card.webp
 start_date: 2026-09-26
 end_date: 2026-09-27
 activity_status: production
+competition: true
 links:
   - title: yin.zone
     url: https://yin.zone

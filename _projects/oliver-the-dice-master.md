@@ -7,6 +7,7 @@ start_date: 2022-07-15
 end_date: 2022-07-17
 activity_percent: 8
 activity_status: archived
+competition: true
 links:
   - title: Play on itch.io
     url: https://matmanna.itch.io/oliver-the-dice-master

@@ -7,6 +7,7 @@ card_image: /assets/images/projects/cards/mini-mentor-card.avif
 start_date: 2025-09-20
 end_date: 2025-09-20
 activity_status: paused
+competition: true
 links:
   - title: Live app
     url: https://mini-mentor.netlify.app

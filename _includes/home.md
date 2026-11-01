@@ -177,22 +177,40 @@ Since being exposed to computer programming on [Scratch](https://scratch.mit.edu
 
 <strong>I recommend <sub>(not biased at all)</sub> that you check out...</strong>
 
-_...some initiatives & projects I've worked on independently or with competition teams, (<a href="/projects">all</a>)_
+_...some initiatives & projects I've worked on independently, (<a href="/projects">all</a>)_
 
 <ul class="projects-width-breakout px-0 flex mt-3 flex-col gap-3 not-prose">
-  {% assign visible_projects = site.projects | where_exp: "project", "project.hidden != true" %}
+  {% assign visible_projects = site.projects | where_exp: "project", "project.hidden != true" | where_exp: "project", "project.competition != true" %}
   {% assign projects_without_end = visible_projects | where_exp: "project", "project.end_date == nil or project.end_date == ''" %}
   {% assign projects_with_end = visible_projects | where_exp: "project", "project.end_date != nil and project.end_date != ''" | sort: "end_date" | reverse %}
   {% assign recent_projects = projects_without_end | concat: projects_with_end %}
   {% assign project_count = 0 %}
   {% for project in recent_projects %}
-  {% unless project.org contains 'hack club' or project.org contains 'Hack Club' %}
+  {% unless project.org contains 'hack club' or project.org contains 'Hack Club' or project.org contains 'penn state' %}
   {% include post-card.html entry=project kind='project' %}
   {% assign project_count = project_count | plus: 1 %}
   {% if project_count >= 10 %}
   {% break %}
   {% endif %}
   {% endunless %}
+  {% endfor %}
+</ul>
+
+_...my hackathon and competition submissions,_
+
+<ul class="projects-width-breakout px-0 flex mt-3 flex-col gap-3 not-prose">
+  {% assign competition_projects = site.projects | where_exp: "project", "project.hidden != true" | where_exp: "project", "project.competition == true" | sort: "end_date" | reverse %}
+  {% for project in competition_projects limit:10 %}
+  {% include post-card.html entry=project kind='project' %}
+  {% endfor %}
+</ul>
+
+_...as a student at The Pennsylvania State University and engineer for the Builders Collective org,_
+
+<ul class="projects-width-breakout px-0 flex mt-3 flex-col gap-3 not-prose">
+  {% assign psu_projects = site.projects | where_exp: "project", "project.hidden != true" | where_exp: "project", "project.org contains 'penn state'" | sort: "start_date" | reverse %}
+  {% for project in psu_projects %}
+  {% include post-card.html entry=project kind='project' %}
   {% endfor %}
 </ul>
 
@@ -274,5 +292,6 @@ _thank you for reading to the end of my little page! i'm guessing that probably 
 
 [^1]: I see my projects as tools meant to serve humans, not exploit them. I prefer to use products which align with this.
 [^2]: I speak and (sometimes) understand English, Spanish, and Esperanto so far
+[^3]: I've also contributed code to systems (such as [Hackatime](https://hackatime.hackclub.com), [Revoker](https://revoke.hackclub.com), & [site](https://hackclub.com?uwu)), and reported data leaks through the security [program](https://security.hackclub.com).
 
 <hr class="not-prose">

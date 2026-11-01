@@ -6,6 +6,7 @@ image: /assets/images/projects/o-fn.webp
 start_date: 2024-12-07
 end_date: 2025-04-15
 activity_status: production
+competition: true
 links:
   - title: src
     url: https://github.com/ldnano/o-fn

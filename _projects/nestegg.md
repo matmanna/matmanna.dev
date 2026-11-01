@@ -7,6 +7,7 @@ card_image: /assets/images/projects/cards/nestegg-card.avif
 start_date: 2026-09-20
 end_date: 2026-09-20
 activity_status: completed
+competition: true
 links:
   - title: Devpost
     url: https://devpost.com/software/psu-bc
