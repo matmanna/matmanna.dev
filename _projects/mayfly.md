@@ -15,7 +15,7 @@ links:
   - title: Live console
     url: https://mayfly.matmanna.dev/
     icon: fa-solid fa-play
-  - title: Watch the demo
+  - title: Watch
     url: https://vimeo.com/1239251813
     icon: fa-solid fa-play
   - title: src
