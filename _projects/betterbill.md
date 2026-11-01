@@ -32,7 +32,6 @@ tags:
   - Gemini
   - React Native
   - Healthcare
-  - Hackathon
 skills:
   - name: Voice AI
     icon: fa-solid fa-plug

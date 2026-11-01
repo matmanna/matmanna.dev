@@ -26,7 +26,6 @@ tags:
   - Privacy
   - TanStack
   - Personal Finance
-  - Hackathon
 skills:
   - name: Browser Extensions
     icon: fa-solid fa-puzzle-piece

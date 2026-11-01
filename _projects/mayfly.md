@@ -29,7 +29,6 @@ tags:
   - ESP32
   - Rust
   - Computer Vision
-  - Hackathon
 skills:
   - name: Robotics
     icon: fa-solid fa-microchip

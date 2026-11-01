@@ -26,7 +26,6 @@ tags:
   - Zoning
   - React
   - Gemini
-  - Hackathon
 skills:
   - name: Cartography
     icon: fa-solid fa-compass-drafting
