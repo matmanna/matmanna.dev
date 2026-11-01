@@ -7,8 +7,8 @@ card_image: /assets/images/projects/cards/omnifork-card.webp
 start_date: 2026-10-30
 activity_status: active
 links:
-  - title: Live app
-    url: https://omnifork.vercel.app
+  - title: Demo
+    url: https://git.bugdex.org
     icon: fa-solid fa-up-right-from-square
 tags:
   - Open Protocols

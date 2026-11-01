@@ -12,10 +12,10 @@ links:
   - title: Devpost
     url: https://devpost.com/software/betterbill
     icon: fa-solid fa-up-right-from-square
-  - title: Live demo
+  - title: Demo
     url: https://betterbill.matmanna.dev/
     icon: fa-solid fa-play
-  - title: Video
+  - title: Watch
     url: https://vimeo.com/1236972348
     icon: fa-solid fa-play
   - title: src
