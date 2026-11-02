@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# Sends this machine's location to location.matmanna.dev.
+# Uses GeoClue when available, otherwise the worker geolocates the request IP.
+set -euo pipefail
+
+ENDPOINT="${LOCATION_ENDPOINT:-https://location.matmanna.dev/update}"
+TOKEN_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/matmanna-location/token"
+WHERE_AM_I=/usr/lib/geoclue-2.0/demos/where-am-i
+
+token=$(<"$TOKEN_FILE")
+body='{}'
+
+if [[ -x $WHERE_AM_I ]]; then
+  fix=$(timeout 20 "$WHERE_AM_I" -t 15 2>/dev/null || true)
+  lat=$(awk '/^Latitude:/ { sub("°", "", $2); print $2; exit }' <<<"$fix")
+  lng=$(awk '/^Longitude:/ { sub("°", "", $2); print $2; exit }' <<<"$fix")
+  if [[ -n $lat && -n $lng ]]; then
+    body="{\"lat\":$lat,\"lng\":$lng}"
+  fi
+fi
+
+curl -fsS -X POST "$ENDPOINT" \
+  -H "Authorization: Bearer $token" \
+  -H "Content-Type: application/json" \
+  --data "$body"
+echo
