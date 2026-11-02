@@ -71,6 +71,11 @@ Outside of computing, I’m also a guitarist, competition aficionado, and lingua
     max-width: 742px;
     border-radius: 6px;
   }
+  @media (min-width: 1024px) and (max-width: 1279px) {
+    .location-map img {
+      width: 94%;
+    }
+  }
 </style>
 <script>
   (function () {
