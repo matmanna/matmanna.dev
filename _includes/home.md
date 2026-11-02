@@ -62,7 +62,6 @@ Outside of computing, I’m also a guitarist, competition aficionado, and lingua
 
 <figure class="location-map not-prose">
   <img id="location-image" alt="Map of where I am right now" width="742" height="200" loading="lazy" src="https://location.matmanna.dev/light" data-light-src="https://location.matmanna.dev/light" data-dark-src="https://location.matmanna.dev/dark">
-  <figcaption><span id="location-caption"></span><span class="location-credit"> · map © <a class="no-external-icon" href="https://www.mapbox.com/about/maps/">Mapbox</a> © <a class="no-external-icon" href="https://www.openstreetmap.org/copyright">OpenStreetMap</a></span></figcaption>
 </figure>
 <style>
   .location-map img {
@@ -71,26 +70,30 @@ Outside of computing, I’m also a guitarist, competition aficionado, and lingua
     max-width: 742px;
     border-radius: 6px;
   }
-  .location-map figcaption {
-    font-size: 0.875em;
-    opacity: 0.7;
-  }
 </style>
 <script>
   (function () {
-    const caption = document.getElementById('location-caption');
+    const slot = () => document.getElementById('shipping-from');
     fetch('https://location.matmanna.dev/json')
       .then((r) => (r.ok ? r.json() : null))
       .then((loc) => {
-        if (!loc || !caption) return;
-        const place = [loc.city, loc.region || loc.country].filter(Boolean).join(', ');
-        caption.textContent = `currently around ${place}`;
+        const target = slot();
+        if (!loc || !target) return;
+        const label = loc.city || loc.region || loc.country;
+        if (!label) return;
+        const slug = (name) => name.replace(/ /g, '_');
+        const page = loc.city && loc.region ? slug(loc.city) + ',_' + slug(loc.region) : slug(label);
+        const link = document.createElement('a');
+        link.className = 'no-external-icon';
+        link.href = 'https://en.wikipedia.org/wiki/' + encodeURIComponent(page);
+        link.textContent = label;
+        target.append(' from ', link);
       })
       .catch(() => {});
   })();
 </script>
 
-Recently, I've been shipping,<sub> (expand for stats!)</sub> but also:
+Recently, I've been shipping<span id="shipping-from"></span>,<sub> (expand for stats!)</sub> but also:
 
   <a class="no-external-icon heatmap-link" href="https://heatmap.shymike.dev?id=U07VA44DNBA&timezone=America%2FNew_York&standalone=true" title="Click to view detailed data for each day!" style="display: inline-block;">
     <img id="heatmap-image" class="heatmap-image my-0" alt="Hackatime activity heatmap" width="689" height="91" fetchpriority="high" src="https://heatmap.matmanna.dev/light?v=1781229188" data-light-src="https://heatmap.matmanna.dev/light?v=1781229188" data-dark-src="https://heatmap.matmanna.dev/dark?v=1781229188">
