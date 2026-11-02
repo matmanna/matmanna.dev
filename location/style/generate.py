@@ -29,14 +29,14 @@ PAL = {
  "stone-light": dict(
   land="#f5f5f4", grass="#e7e5e4", wood="#d6d3d1", park="#e7e5e4", water="#a8a29e", waterline="#a8a29e",
   building="#e7e5e4", aero="#e7e5e4", pitch="#d6d3d1", hospital="#e7e5e4", school="#e7e5e4", industrial="#e7e5e4", sand="#f5f5f4",
-  minor="#fafaf9", minor_c="#d6d3d1", sec="#fafaf9", sec_c="#a8a29e", pri="#e7e5e4", pri_c="#78716c",
-  mot="#a8a29e", mot_c="#57534e", path="#d6d3d1", rail="#a8a29e", pedestrian="#fafaf9",
+  minor="#fafaf9", minor_c="#d6d3d1", sec="#fafaf9", sec_c="#d6d3d1", pri="#fafaf9", pri_c="#a8a29e",
+  mot="#e7e5e4", mot_c="#a8a29e", path="#d6d3d1", rail="#a8a29e", pedestrian="#fafaf9",
   text="#292524", halo="#f5f5f4", wtext="#44403c", boundary="#a8a29e", ferry="#78716c"),
  "stone-dark": dict(
   land="#1c1917", grass="#292524", wood="#292524", park="#292524", water="#0c0a09", waterline="#0c0a09",
   building="#292524", aero="#292524", pitch="#44403c", hospital="#292524", school="#292524", industrial="#292524", sand="#1c1917",
-  minor="#44403c", minor_c="#0c0a09", sec="#57534e", sec_c="#0c0a09", pri="#78716c", pri_c="#0c0a09",
-  mot="#a8a29e", mot_c="#44403c", path="#44403c", rail="#44403c", pedestrian="#44403c",
+  minor="#44403c", minor_c="#0c0a09", sec="#44403c", sec_c="#0c0a09", pri="#57534e", pri_c="#0c0a09",
+  mot="#57534e", mot_c="#0c0a09", path="#44403c", rail="#44403c", pedestrian="#44403c",
   text="#e7e5e4", halo="#1c1917", wtext="#a8a29e", boundary="#57534e", ferry="#78716c"),
 }
 
