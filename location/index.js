@@ -1,8 +1,7 @@
 const MAPBOX_API = "https://api.mapbox.com";
-// Colourful, Apple Maps-like styles: green parks, blue water, soft roads
-const STYLES = { light: "streets-v12", dark: "navigation-night-v1" };
-// Bump when STYLES or ZOOM change so edge-cached maps are regenerated
-const STYLE_VERSION = 2;
+// Map styles as "owner/style-id". Defaults are Mapbox's colourful ready-made styles;
+// set STYLE_LIGHT / STYLE_DARK (see location/style) to use the site-palette cartoon styles
+const STYLES = { light: "mapbox/streets-v12", dark: "mapbox/navigation-night-v1" };
 const ZOOM = 11;
 const CORS = { "Access-Control-Allow-Origin": "*" };
 
@@ -31,18 +30,19 @@ function clamp(value, fallback, min, max) {
 }
 
 async function mapImage(request, env, ctx, theme, location) {
+  const style = (theme === "dark" ? env.STYLE_DARK : env.STYLE_LIGHT) || STYLES[theme];
   const url = new URL(request.url);
   const width = clamp(url.searchParams.get("w"), 742, 100, 1280);
   const height = clamp(url.searchParams.get("h"), 200, 100, 1280);
 
   // Versioned by the last update, so a new location never serves a stale map
   const cache = caches.default;
-  const cacheKey = new Request(`https://location.matmanna.dev/${theme}?w=${width}&h=${height}&v=${location.updated}-${STYLE_VERSION}`);
+  const cacheKey = new Request(`https://location.matmanna.dev/${theme}?w=${width}&h=${height}&s=${encodeURIComponent(style)}&v=${location.updated}`);
   const cached = await cache.match(cacheKey);
   if (cached) return cached;
 
   const { lat, lng } = location;
-  const target = `${MAPBOX_API}/styles/v1/mapbox/${STYLES[theme]}/static/pin-s+ef4444(${lng},${lat})/${lng},${lat},${ZOOM},0/${width}x${height}@2x?access_token=${env.MAPBOX_TOKEN}`;
+  const target = `${MAPBOX_API}/styles/v1/${style}/static/pin-s+ef4444(${lng},${lat})/${lng},${lat},${ZOOM},0/${width}x${height}@2x?access_token=${env.MAPBOX_TOKEN}`;
   const upstream = await fetch(target);
   if (!upstream.ok) return new Response("Map unavailable", { status: 502 });
 
