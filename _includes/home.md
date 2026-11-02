@@ -114,7 +114,7 @@ Recently, I've been shipping,<sub> (expand for stats!)</sub> but also:
         const isDark = root.classList.contains('dark') ||
           (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches) ||
           localStorage.theme === 'dark';
-        // Covers the heatmap and the location map
+        /* Covers the heatmap and the location map */
         document.querySelectorAll('img[data-light-src]').forEach((img) => {
           const target = isDark ? img.dataset.darkSrc : img.dataset.lightSrc;
           if (img.getAttribute('src') !== target) {
