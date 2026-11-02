@@ -1,6 +1,9 @@
 const MAPBOX_API = "https://api.mapbox.com";
-const STYLES = { light: "light-v11", dark: "dark-v11" };
-const ZOOM = 10;
+// Colourful, Apple Maps-like styles: green parks, blue water, soft roads
+const STYLES = { light: "streets-v12", dark: "navigation-night-v1" };
+// Bump when STYLES or ZOOM change so edge-cached maps are regenerated
+const STYLE_VERSION = 2;
+const ZOOM = 11;
 const CORS = { "Access-Control-Allow-Origin": "*" };
 
 // Only the city's centre is stored, never the exact coordinates sent by the widget
@@ -34,7 +37,7 @@ async function mapImage(request, env, ctx, theme, location) {
 
   // Versioned by the last update, so a new location never serves a stale map
   const cache = caches.default;
-  const cacheKey = new Request(`https://location.matmanna.dev/${theme}?w=${width}&h=${height}&v=${location.updated}`);
+  const cacheKey = new Request(`https://location.matmanna.dev/${theme}?w=${width}&h=${height}&v=${location.updated}-${STYLE_VERSION}`);
   const cached = await cache.match(cacheKey);
   if (cached) return cached;
 
