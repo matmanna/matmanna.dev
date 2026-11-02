@@ -1,5 +1,5 @@
 
-<div class="social-badges flex flex-row gap-2 not-prose flex-wrap items-center" style="min-height: 30.33px;">
+<div id="social-badges" class="social-badges flex flex-row gap-2 not-prose flex-wrap items-center" style="min-height: 30.33px;">
   <a href="https://linkedin.com/in/matmanna" data-no-external-icon rel="nofollow">
     <img src="/assets/images/badges/social/linkedin-badge.svg" alt="LinkedIn badge" width="37" height="20">
   </a>
@@ -24,25 +24,26 @@
   <a href="https://tangled.sh/matmanna" data-no-external-icon rel="nofollow">
     <img src="/assets/images/badges/social/tangled-badge.svg" alt="Tangled badge" width="57" height="20">
   </a>
-  <a href="https://last.fm/user/matmanna" data-no-external-icon rel="nofollow">
+  <button type="button" id="social-more" class="social-more" aria-expanded="false">more &#9656;</button>
+  <a class="social-extra" href="https://last.fm/user/matmanna" data-no-external-icon rel="nofollow">
     <img src="/assets/images/badges/social/lastfm-badge.svg" alt="Last.fm badge" width="43" height="20">
   </a>
-  <a href="https://instagram.com/matmanna" data-no-external-icon rel="nofollow">
+  <a class="social-extra" href="https://instagram.com/matmanna" data-no-external-icon rel="nofollow">
     <img src="/assets/images/badges/social/instagram-badge.svg" alt="Instagram badge" width="37" height="20">
   </a>
-  <a href="https://bsky.app/profile/matmanna.dev" data-no-external-icon rel="nofollow">
+  <a class="social-extra" href="https://bsky.app/profile/matmanna.dev" data-no-external-icon rel="nofollow">
     <img src="/assets/images/badges/social/bluesky-badge.svg" alt="Bluesky badge" width="47" height="20">
   </a>
-  <a href="https://youtube.com/@matmannadev" data-no-external-icon rel="nofollow">
+  <a class="social-extra" href="https://youtube.com/@matmannadev" data-no-external-icon rel="nofollow">
     <img src="/assets/images/badges/social/youtube-badge.svg" alt="YouTube badge" width="49" height="20">
   </a>
-  <a href="https://x.com/matmanna_" data-no-external-icon rel="nofollow">
+  <a class="social-extra" href="https://x.com/matmanna_" data-no-external-icon rel="nofollow">
     <img src="/assets/images/badges/social/x-badge.svg" alt="X badge" width="35" height="20">
   </a>
-  <a href="mailto:yo@matmanna.dev" data-no-external-icon>
+  <a class="social-extra" href="mailto:yo@matmanna.dev" data-no-external-icon>
     <img src="/assets/images/badges/social/mail-badge.svg" alt="Email badge" width="51" height="20">
   </a>
-  <span title="@matmanna on Discord">
+  <span class="social-extra" title="@matmanna on Discord">
     <img src="/assets/images/badges/social/discord-badge.svg" alt="Discord badge (@matmanna)" width="41" height="20">
   </span>
   <p>(<code>:places</code>)</p>
@@ -226,7 +227,44 @@ Since being exposed to computer programming on [Scratch](https://scratch.mit.edu
 [class~=not-prose] *)):after {
   content:""
 }
+  .social-badges:not([data-open]) .social-extra {
+    display: none;
+  }
+  #social-badges[data-open] {
+    width: auto;
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+  .social-more {
+    font: inherit;
+    line-height: 20px;
+    padding: 0 2px;
+    background: none;
+    border: 0;
+    color: inherit;
+    cursor: pointer;
+    text-decoration: underline dotted;
+    white-space: nowrap;
+  }
 </style>
+
+<noscript><style>.social-badges .social-extra { display: inline-block !important; } .social-more { display: none; }</style></noscript>
+<script>
+  (function () {
+    /* Ids and data attributes only: the build renames CSS classes but not names used in scripts */
+    const row = document.getElementById('social-badges');
+    const button = document.getElementById('social-more');
+    if (!row || !button) return;
+    button.addEventListener('click', () => {
+      const open = row.toggleAttribute('data-open');
+      button.setAttribute('aria-expanded', String(open));
+      button.textContent = open ? 'less \u25C2' : 'more \u25B8';
+    });
+  })();
+</script>
 
 <strong>I recommend <sub>(not biased at all)</sub> that you check out...</strong>
 
