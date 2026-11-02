@@ -7,19 +7,20 @@ card_image: /assets/images/projects/cards/nestegg-card.avif
 start_date: 2026-09-20
 end_date: 2026-09-20
 activity_status: completed
+competition: true
 links:
-  - title: Devpost
+  - title: SteelHacks XIII
     url: https://devpost.com/software/psu-bc
-    icon: fa-solid fa-up-right-from-square
+    icon: fa-solid fa-flag-checkered
+  - title: 2nd - Out Loud!
+    url: https://devpost.com/software/psu-bc
+    icon: fas fa-trophy
   - title: Live demo
     url: https://nestegg.bugdex.org/
     icon: fa-solid fa-play
   - title: src
     url: https://github.com/matmanna/nestegg
     icon: fa-brands fa-github
-  - title: 2nd - SteelHacks XIII · Out Loud!
-    url: https://steelhacksxiii.devpost.com/
-    icon: fas fa-trophy
 tags:
   - Twilio
   - Gemini

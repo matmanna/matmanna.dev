@@ -7,13 +7,14 @@ start_date: 2025-08-15
 end_date: 2025-08-15
 activity_percent: 30
 activity_status: low
+competition: true
 links:
   - title: Play on itch.io
     url: https://matmanna.itch.io/big-o-s-loop-lab
     icon: fas fa-gamepad
   - title: GMTK 2025 jam
     url: https://itch.io/jam/gmtk-2025
-    icon: fas fa-trophy
+    icon: fa-solid fa-flag-checkered
 tags:
   - Puzzle
   - Pixel Art

@@ -1,5 +1,5 @@
 
-<div class="flex flex-row gap-2 not-prose flex-wrap" style="height: 30.33px;">
+<div class="social-badges flex flex-row gap-2 not-prose flex-wrap items-center" style="min-height: 30.33px;">
   <a href="https://linkedin.com/in/matmanna" data-no-external-icon rel="nofollow">
     <img src="/assets/images/badges/social/linkedin-badge.svg" alt="LinkedIn badge" width="37" height="20">
   </a>
@@ -27,6 +27,24 @@
   <a href="https://last.fm/user/matmanna" data-no-external-icon rel="nofollow">
     <img src="/assets/images/badges/social/lastfm-badge.svg" alt="Last.fm badge" width="43" height="20">
   </a>
+  <a href="https://instagram.com/matmanna" data-no-external-icon rel="nofollow">
+    <img src="/assets/images/badges/social/instagram-badge.svg" alt="Instagram badge" width="37" height="20">
+  </a>
+  <a href="https://bsky.app/profile/matmanna.dev" data-no-external-icon rel="nofollow">
+    <img src="/assets/images/badges/social/bluesky-badge.svg" alt="Bluesky badge" width="47" height="20">
+  </a>
+  <a href="https://youtube.com/@matmannadev" data-no-external-icon rel="nofollow">
+    <img src="/assets/images/badges/social/youtube-badge.svg" alt="YouTube badge" width="49" height="20">
+  </a>
+  <a href="https://x.com/matmanna_" data-no-external-icon rel="nofollow">
+    <img src="/assets/images/badges/social/x-badge.svg" alt="X badge" width="35" height="20">
+  </a>
+  <a href="mailto:yo@matmanna.dev" data-no-external-icon>
+    <img src="/assets/images/badges/social/mail-badge.svg" alt="Email badge" width="51" height="20">
+  </a>
+  <span title="@matmanna on Discord">
+    <img src="/assets/images/badges/social/discord-badge.svg" alt="Discord badge (@matmanna)" width="41" height="20">
+  </span>
   <p>(<code>:places</code>)</p>
 </div>
 
@@ -136,6 +154,28 @@ Since being exposed to computer programming on [Scratch](https://scratch.mit.edu
 
 <style>
 
+  @media (min-width: 768px) {
+    .social-badges {
+        --badges-width: calc(100vw - 4rem);
+        width: var(--badges-width);
+        max-width: none;
+        margin-left: calc((85ch - var(--badges-width)) / 2);
+        margin-right: calc((85ch - var(--badges-width)) / 2);
+        justify-content: center;
+    }
+}
+
+  /* Wide enough that the row fits to the right of the heading: line up with it instead of centering. */
+  @media (min-width: 1200px) {
+    .social-badges {
+        width: max-content;
+        margin-left: 0;
+        margin-right: 0;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+    }
+}
+
   @media (min-width: 170ch) {
     .projects-width-breakout {
         --projects-breakout-width: min(170ch, calc(100vw - 2rem));
@@ -159,22 +199,40 @@ Since being exposed to computer programming on [Scratch](https://scratch.mit.edu
 
 <strong>I recommend <sub>(not biased at all)</sub> that you check out...</strong>
 
-_...some initiatives & projects I've worked on independently or with competition teams, (<a href="/projects">all</a>)_
+_...some initiatives & projects I've worked on independently, (<a href="/projects">all</a>)_
 
 <ul class="projects-width-breakout px-0 flex mt-3 flex-col gap-3 not-prose">
-  {% assign visible_projects = site.projects | where_exp: "project", "project.hidden != true" %}
+  {% assign visible_projects = site.projects | where_exp: "project", "project.hidden != true" | where_exp: "project", "project.competition != true" %}
   {% assign projects_without_end = visible_projects | where_exp: "project", "project.end_date == nil or project.end_date == ''" %}
   {% assign projects_with_end = visible_projects | where_exp: "project", "project.end_date != nil and project.end_date != ''" | sort: "end_date" | reverse %}
   {% assign recent_projects = projects_without_end | concat: projects_with_end %}
   {% assign project_count = 0 %}
   {% for project in recent_projects %}
-  {% unless project.org contains 'hack club' or project.org contains 'Hack Club' %}
+  {% unless project.org contains 'hack club' or project.org contains 'Hack Club' or project.org contains 'penn state' %}
   {% include post-card.html entry=project kind='project' %}
   {% assign project_count = project_count | plus: 1 %}
-  {% if project_count >= 10 %}
+  {% if project_count >= 12 %}
   {% break %}
   {% endif %}
   {% endunless %}
+  {% endfor %}
+</ul>
+
+_...my hackathon and competition submissions,_
+
+<ul class="projects-width-breakout px-0 flex mt-3 flex-col gap-3 not-prose">
+  {% assign competition_projects = site.projects | where_exp: "project", "project.hidden != true" | where_exp: "project", "project.competition == true" | sort: "end_date" | reverse %}
+  {% for project in competition_projects limit:10 %}
+  {% include post-card.html entry=project kind='project' %}
+  {% endfor %}
+</ul>
+
+_...as a student at The Pennsylvania State University and engineer for the Builders Collective org,_
+
+<ul class="projects-width-breakout px-0 flex mt-3 flex-col gap-3 not-prose">
+  {% assign psu_projects = site.projects | where_exp: "project", "project.hidden != true" | where_exp: "project", "project.org contains 'penn state'" | sort: "start_date" | reverse %}
+  {% for project in psu_projects %}
+  {% include post-card.html entry=project kind='project' %}
   {% endfor %}
 </ul>
 
@@ -256,5 +314,6 @@ _thank you for reading to the end of my little page! i'm guessing that probably 
 
 [^1]: I see my projects as tools meant to serve humans, not exploit them. I prefer to use products which align with this.
 [^2]: I speak and (sometimes) understand English, Spanish, and Esperanto so far
+[^3]: I've also contributed code to systems (such as [Hackatime](https://hackatime.hackclub.com), [Revoker](https://revoke.hackclub.com), & [site](https://hackclub.com?uwu)), and reported data leaks through the security [program](https://security.hackclub.com).
 
 <hr class="not-prose">

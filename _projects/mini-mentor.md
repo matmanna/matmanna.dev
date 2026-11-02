@@ -7,19 +7,17 @@ card_image: /assets/images/projects/cards/mini-mentor-card.avif
 start_date: 2025-09-20
 end_date: 2025-09-20
 activity_status: paused
+competition: true
 links:
+  - title: PennApps XXVI
+    url: https://devpost.com/software/minimentor
+    icon: fa-solid fa-flag-checkered
   - title: Live app
     url: https://mini-mentor.netlify.app
-    icon: fa-solid fa-up-right-from-square
-  - title: Devpost
-    url: https://devpost.com/software/minimentor
     icon: fa-solid fa-up-right-from-square
   - title: src
     url: https://github.com/matmanna/mini-mentor
     icon: fa-brands fa-github
-  - title: PennApps XXVI
-    url: https://pennapps.com/
-    icon: fas fa-trophy
 tags:
   - Next.js
   - Supabase

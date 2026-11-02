@@ -7,11 +7,15 @@ start_date: 2022-07-15
 end_date: 2022-07-17
 activity_percent: 8
 activity_status: archived
+competition: true
 links:
   - title: Play on itch.io
     url: https://matmanna.itch.io/oliver-the-dice-master
     icon: fas fa-gamepad
   - title: GMTK 2022 jam
+    url: https://itch.io/jam/gmtk-jam-2022/rate/1610145
+    icon: fa-solid fa-flag-checkered
+  - title: Top 15% - GMTK 2022
     url: https://itch.io/jam/gmtk-jam-2022/rate/1610145
     icon: fas fa-trophy
 tags:

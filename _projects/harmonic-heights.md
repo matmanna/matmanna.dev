@@ -7,11 +7,15 @@ start_date: 2024-08-16
 end_date: 2024-08-20
 activity_percent: 18
 activity_status: dormant
+competition: true
 links:
   - title: Play on itch.io
     url: https://matmanna.itch.io/harmonic-heights
     icon: fas fa-gamepad
   - title: GMTK 2024 jam 
+    url: https://itch.io/jam/gmtk-2024/rate/2903045
+    icon: fa-solid fa-flag-checkered
+  - title: Top 30% - GMTK 2024
     url: https://itch.io/jam/gmtk-2024/rate/2903045
     icon: fas fa-trophy
 tags:
