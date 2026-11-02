@@ -11,6 +11,9 @@ routes = [
 [vars]
 STYLE_LIGHT = "matmanna/cmvyoa5di00e401s7f5zq89mf"
 STYLE_DARK = "matmanna/cmvyo8vr300e101qpds8sbl9d"
+# Optional: unthemed cartoon styles for ?style=plain (location/style/cartoon-light.json, cartoon-dark.json)
+# STYLE_LIGHT_PLAIN = "owner/style-id"
+# STYLE_DARK_PLAIN = "owner/style-id"
 
 # Create with: wrangler kv namespace create LOCATION
 [[kv_namespaces]]
