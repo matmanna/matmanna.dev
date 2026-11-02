@@ -287,11 +287,14 @@ _...some initiatives & projects I've worked on independently, (<a href="/project
   {% endfor %}
 </ul>
 
-_...my hackathon and competition submissions,_
+_...my various roles and responsibilities at Hack Club,_
 
 <ul class="projects-width-breakout px-0 flex mt-3 flex-col gap-3 not-prose">
-  {% assign competition_projects = site.projects | where_exp: "project", "project.hidden != true" | where_exp: "project", "project.competition == true" | sort: "end_date" | reverse %}
-  {% for project in competition_projects limit:10 %}
+  {% assign visible_projects = site.projects | where_exp: "project", "project.hidden != true" %}
+  {% assign projects_without_end = visible_projects | where_exp: "project", "project.end_date == nil or project.end_date == ''" | where_exp: "project", "project.org contains 'hack club' or project.org contains 'Hack Club'" | sort: "start_date" | reverse %}
+  {% assign projects_with_end = visible_projects | where_exp: "project", "project.end_date != nil and project.end_date != ''" | where_exp: "project", "project.org contains 'hack club' or project.org contains 'Hack Club'" | sort: "start_date" | reverse %}
+  {% assign recent_projects = projects_without_end | concat: projects_with_end %}
+  {% for project in recent_projects limit:8 %}
   {% include post-card.html entry=project kind='project' %}
   {% endfor %}
 </ul>
@@ -305,14 +308,11 @@ _...as a student at The Pennsylvania State University and engineer for the Build
   {% endfor %}
 </ul>
 
-_...my various roles and responsibilities at Hack Club,_
+_...my hackathon and competition submissions,_
 
 <ul class="projects-width-breakout px-0 flex mt-3 flex-col gap-3 not-prose">
-  {% assign visible_projects = site.projects | where_exp: "project", "project.hidden != true" %}
-  {% assign projects_without_end = visible_projects | where_exp: "project", "project.end_date == nil or project.end_date == ''" | where_exp: "project", "project.org contains 'hack club' or project.org contains 'Hack Club'" | sort: "start_date" | reverse %}
-  {% assign projects_with_end = visible_projects | where_exp: "project", "project.end_date != nil and project.end_date != ''" | where_exp: "project", "project.org contains 'hack club' or project.org contains 'Hack Club'" | sort: "start_date" | reverse %}
-  {% assign recent_projects = projects_without_end | concat: projects_with_end %}
-  {% for project in recent_projects limit:8 %}
+  {% assign competition_projects = site.projects | where_exp: "project", "project.hidden != true" | where_exp: "project", "project.competition == true" | sort: "end_date" | reverse %}
+  {% for project in competition_projects limit:10 %}
   {% include post-card.html entry=project kind='project' %}
   {% endfor %}
 </ul>
