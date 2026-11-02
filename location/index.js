@@ -5,6 +5,27 @@ const STYLES = { light: "mapbox/streets-v12", dark: "mapbox/navigation-night-v1"
 // Bump when the rendered image changes (zoom, overlays) so edge-cached maps are regenerated
 const RENDER_VERSION = 3;
 const ZOOM = 11;
+const CORS = { "Access-Control-Allow-Origin": "*" };
+
+// Only the city's centre is stored, never the exact coordinates sent by the widget
+async function reverseGeocode(lat, lng, token) {
+  const url = `${MAPBOX_API}/search/geocode/v6/reverse?longitude=${lng}&latitude=${lat}&types=place&access_token=${token}`;
+  const response = await fetch(url);
+  if (!response.ok) throw new Error(`geocode failed: ${response.status}`);
+  const feature = (await response.json()).features?.[0];
+  if (!feature) throw new Error("no place found");
+  const [placeLng, placeLat] = feature.geometry.coordinates;
+  const context = feature.properties.context || {};
+  return {
+    city: feature.properties.name,
+    region: context.region?.name || "",
+    country: context.country?.name || "",
+    lat: placeLat,
+    lng: placeLng,
+    updated: Date.now(),
+  };
+}
+
 // Regions shown as a whole instead of zooming to the city come from the WHOLE_REGIONS
 // secret, a JSON object of region name -> [west, south, east, north]. Unset means city view.
 // ?view=city always shows the city.
