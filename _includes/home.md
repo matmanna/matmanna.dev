@@ -24,7 +24,7 @@
   <a href="https://tangled.sh/matmanna" data-no-external-icon rel="nofollow">
     <img src="/assets/images/badges/social/tangled-badge.svg" alt="Tangled badge" width="57" height="20">
   </a>
-  <button type="button" class="social-more" aria-expanded="false">more &gt;</button>
+  <button type="button" class="social-more" aria-expanded="false">more &#9656;</button>
   <a class="social-extra" href="https://last.fm/user/matmanna" data-no-external-icon rel="nofollow">
     <img src="/assets/images/badges/social/lastfm-badge.svg" alt="Last.fm badge" width="43" height="20">
   </a>
@@ -200,7 +200,7 @@ Since being exposed to computer programming on [Scratch](https://scratch.mit.edu
     display: none;
   }
   .social-more {
-    font-size: 0.75rem;
+    font: inherit;
     line-height: 20px;
     padding: 0 2px;
     background: none;
@@ -221,7 +221,7 @@ Since being exposed to computer programming on [Scratch](https://scratch.mit.edu
     button.addEventListener('click', () => {
       const open = row.classList.toggle('is-open');
       button.setAttribute('aria-expanded', String(open));
-      button.textContent = open ? 'less <' : 'more >';
+      button.textContent = open ? 'less \u25C2' : 'more \u25B8';
     });
   })();
 </script>
