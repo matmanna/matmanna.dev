@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Rebuilds cartoon-light.json and cartoon-dark.json from Mapbox Streets v12.
+"""Rebuilds the four cartoon-*.json styles from Mapbox Streets v12:
+colourful light/dark, and brown-light/brown-dark that use only the site's orange/brown scale.
 
 Recolours every layer with the site's orange palette, thickens roads and drops
 POI/shield icons that can't be recoloured. Needs a Mapbox token in MAPBOX_TOKEN
@@ -24,6 +25,18 @@ PAL = {
   minor="#4a3628", minor_c="#1a110c", sec="#5d4331", sec_c="#1a110c", pri="#a8501c", pri_c="#1a110c",
   mot="#ea580c", mot_c="#7c2d12", path="#5a4231", rail="#4a3a2e", pedestrian="#3a2a20",
   text="#ffedd5", halo="#241812", wtext="#7fb4d6", boundary="#5c4030", ferry="#3d6f94"),
+ "brown-light": dict(
+  land="#ffedd5", grass="#fed7aa", wood="#fdba74", park="#fed7aa", water="#fb923c", waterline="#fb923c",
+  building="#fed7aa", aero="#fed7aa", pitch="#fdba74", hospital="#fed7aa", school="#fed7aa", industrial="#fed7aa", sand="#ffedd5",
+  minor="#fff7ed", minor_c="#fed7aa", sec="#fff7ed", sec_c="#fdba74", pri="#fdba74", pri_c="#fb923c",
+  mot="#f97316", mot_c="#c2410c", path="#fdba74", rail="#fb923c", pedestrian="#fff7ed",
+  text="#7c2d12", halo="#ffedd5", wtext="#431407", boundary="#fb923c", ferry="#c2410c"),
+ "brown-dark": dict(
+  land="#431407", grass="#5a1f0c", wood="#7c2d12", park="#5a1f0c", water="#9a3412", waterline="#9a3412",
+  building="#5a1f0c", aero="#5a1f0c", pitch="#7c2d12", hospital="#5a1f0c", school="#5a1f0c", industrial="#5a1f0c", sand="#431407",
+  minor="#7c2d12", minor_c="#2a0c04", sec="#9a3412", sec_c="#2a0c04", pri="#c2410c", pri_c="#2a0c04",
+  mot="#f97316", mot_c="#7c2d12", path="#7c2d12", rail="#7c2d12", pedestrian="#7c2d12",
+  text="#ffedd5", halo="#431407", wtext="#fdba74", boundary="#9a3412", ferry="#c2410c"),
 }
 
 REMOVE = {"hillshade","water-depth","water-shadow","waterway-shadow","building-underground","poi-label","transit-label",
@@ -101,6 +114,6 @@ def build(theme):
     for k in('owner','id','created','modified','visibility','draft'): s.pop(k,None)
     return s
 
-for th in("light","dark"):
+for th in("light","dark","brown-light","brown-dark"):
     json.dump(build(th),open(f"cartoon-{th}.json","w"),separators=(',',':'))
     print(th, len(json.load(open(f"cartoon-{th}.json"))['layers']))

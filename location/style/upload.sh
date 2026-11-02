@@ -8,10 +8,10 @@ cd "$(dirname "$0")"
 token="${MAPBOX_SECRET_TOKEN:?set MAPBOX_SECRET_TOKEN to a secret token with styles:write}"
 user=$(curl -fsS "https://api.mapbox.com/tokens/v2?access_token=$token" | python3 -c 'import json,sys; print(json.load(sys.stdin)["token"]["user"])')
 
-for theme in light dark; do
+for theme in light dark brown-light brown-dark; do
   id=$(curl -fsS -X POST "https://api.mapbox.com/styles/v1/$user?access_token=$token" \
     -H "Content-Type: application/json" --data @"cartoon-$theme.json" |
     python3 -c 'import json,sys; print(json.load(sys.stdin)["id"])')
-  echo "STYLE_${theme^^}=$user/$id"
+  echo "cartoon-$theme=$user/$id"
 done
-echo "Add these under [vars] in location/wrangler.toml, then run: wrangler deploy"
+echo "Pick a light and a dark style, set them as STYLE_LIGHT and STYLE_DARK under [vars] in location/wrangler.toml, then run: wrangler deploy"
