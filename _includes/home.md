@@ -218,15 +218,6 @@ _...some initiatives & projects I've worked on independently, (<a href="/project
   {% endfor %}
 </ul>
 
-_...as a student at The Pennsylvania State University and engineer for the Builders Collective org,_
-
-<ul class="projects-width-breakout px-0 flex mt-3 flex-col gap-3 not-prose">
-  {% assign psu_projects = site.projects | where_exp: "project", "project.hidden != true" | where_exp: "project", "project.org contains 'penn state'" | sort: "start_date" | reverse %}
-  {% for project in psu_projects %}
-  {% include post-card.html entry=project kind='project' %}
-  {% endfor %}
-</ul>
-
 _...my various roles and responsibilities at Hack Club,_
 
 <ul class="projects-width-breakout px-0 flex mt-3 flex-col gap-3 not-prose">
@@ -235,6 +226,15 @@ _...my various roles and responsibilities at Hack Club,_
   {% assign projects_with_end = visible_projects | where_exp: "project", "project.end_date != nil and project.end_date != ''" | where_exp: "project", "project.org contains 'hack club' or project.org contains 'Hack Club'" | sort: "start_date" | reverse %}
   {% assign recent_projects = projects_without_end | concat: projects_with_end %}
   {% for project in recent_projects limit:8 %}
+  {% include post-card.html entry=project kind='project' %}
+  {% endfor %}
+</ul>
+
+_...as a student at The Pennsylvania State University and engineer for the Builders Collective org,_
+
+<ul class="projects-width-breakout px-0 flex mt-3 flex-col gap-3 not-prose">
+  {% assign psu_projects = site.projects | where_exp: "project", "project.hidden != true" | where_exp: "project", "project.org contains 'penn state'" | sort: "start_date" | reverse %}
+  {% for project in psu_projects %}
   {% include post-card.html entry=project kind='project' %}
   {% endfor %}
 </ul>
