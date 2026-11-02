@@ -199,6 +199,14 @@ Since being exposed to computer programming on [Scratch](https://scratch.mit.edu
   .social-badges:not([data-open]) .social-extra {
     display: none;
   }
+  #social-badges[data-open] {
+    width: auto;
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
   .social-more {
     font: inherit;
     line-height: 20px;
