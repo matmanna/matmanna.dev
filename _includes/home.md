@@ -1,5 +1,5 @@
 
-<div class="social-badges flex flex-row gap-2 not-prose flex-wrap items-center" style="min-height: 30.33px;">
+<div id="social-badges" class="social-badges flex flex-row gap-2 not-prose flex-wrap items-center" style="min-height: 30.33px;">
   <a href="https://linkedin.com/in/matmanna" data-no-external-icon rel="nofollow">
     <img src="/assets/images/badges/social/linkedin-badge.svg" alt="LinkedIn badge" width="37" height="20">
   </a>
@@ -24,7 +24,7 @@
   <a href="https://tangled.sh/matmanna" data-no-external-icon rel="nofollow">
     <img src="/assets/images/badges/social/tangled-badge.svg" alt="Tangled badge" width="57" height="20">
   </a>
-  <button type="button" class="social-more" aria-expanded="false">more &#9656;</button>
+  <button type="button" id="social-more" class="social-more" aria-expanded="false">more &#9656;</button>
   <a class="social-extra" href="https://last.fm/user/matmanna" data-no-external-icon rel="nofollow">
     <img src="/assets/images/badges/social/lastfm-badge.svg" alt="Last.fm badge" width="43" height="20">
   </a>
@@ -196,7 +196,7 @@ Since being exposed to computer programming on [Scratch](https://scratch.mit.edu
 [class~=not-prose] *)):after {
   content:""
 }
-  .social-badges:not(.is-open) .social-extra {
+  .social-badges:not([data-open]) .social-extra {
     display: none;
   }
   .social-more {
@@ -215,11 +215,12 @@ Since being exposed to computer programming on [Scratch](https://scratch.mit.edu
 <noscript><style>.social-badges .social-extra { display: inline-block !important; } .social-more { display: none; }</style></noscript>
 <script>
   (function () {
-    const row = document.querySelector('.social-badges');
-    const button = row && row.querySelector('.social-more');
-    if (!button) return;
+    /* Ids and data attributes only: the build renames CSS classes but not names used in scripts */
+    const row = document.getElementById('social-badges');
+    const button = document.getElementById('social-more');
+    if (!row || !button) return;
     button.addEventListener('click', () => {
-      const open = row.classList.toggle('is-open');
+      const open = row.toggleAttribute('data-open');
       button.setAttribute('aria-expanded', String(open));
       button.textContent = open ? 'less \u25C2' : 'more \u25B8';
     });
