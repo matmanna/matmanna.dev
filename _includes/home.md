@@ -147,9 +147,9 @@ Since being exposed to computer programming on [Scratch](https://scratch.mit.edu
 - run AV systems (livestreams and sound mixers) for funerals and weddings
 - discovered and disclosed vulnerabilities / data leaks within my school and Hack Club
 - <details><summary>been recognized in other ways <sub>(not that interesting)</sub></summary><ul>
-  <li>participated in the selective PennApps XXVI college [hackathon](https://pennapps.com)</li>
+  <li>participated in selective college hackathons including PennApps XXVI, SteelHacks, LA Hacks AI, and Cal Hacks</li>
   <li>received recognition for Integrity and Sportsmanship within academics and competitions.</li>
-  <li>earned ~$1k in grants and prizes for personal projects submitted to Hack Club programs incl. High Seas, Summer of Making, CMD-K, and Magazine.</li></ul>
+  <li>earned ~$1k in grants and prizes for personal projects submitted to Hack Club programs incl. High Seas, Summer of Making, CMD-K, Horizons, Flavortown, Stardance, Tonic, and Magazine.</li></ul>
   </details>
 
 <style>

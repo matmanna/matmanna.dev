@@ -1,7 +1,7 @@
 ---
 layout: project
 title: Marmalade 
-description: Original developer and maintainer of an API sync & permission access layer for Jelly, a shared team inbox SaaS product used by support teams
+description: Original developer and maintainer of an API sync & permission access layer for Jelly (a shared team inbox SaaS) used by 4 supporting teams serving 75k+
 image: /assets/images/projects/marmalade.avif
 start_date: 2026-06-28
 org: [ "hack club" ]
