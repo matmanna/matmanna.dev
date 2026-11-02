@@ -62,7 +62,7 @@ Outside of computing, I’m also a guitarist, competition aficionado, and lingua
 
 <figure class="location-map not-prose">
   <img id="location-image" alt="Map of where I am right now" width="742" height="200" loading="lazy" src="https://location.matmanna.dev/light" data-light-src="https://location.matmanna.dev/light" data-dark-src="https://location.matmanna.dev/dark">
-  <figcaption id="location-caption"></figcaption>
+  <figcaption><span id="location-caption"></span><span class="location-credit"> · map © <a class="no-external-icon" href="https://www.mapbox.com/about/maps/">Mapbox</a> © <a class="no-external-icon" href="https://www.openstreetmap.org/copyright">OpenStreetMap</a></span></figcaption>
 </figure>
 <style>
   .location-map img {

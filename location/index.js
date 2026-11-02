@@ -3,7 +3,7 @@ const MAPBOX_API = "https://api.mapbox.com";
 // set STYLE_LIGHT / STYLE_DARK (see location/style) to use the site-palette cartoon styles
 const STYLES = { light: "mapbox/streets-v12", dark: "mapbox/navigation-night-v1" };
 // Bump when the rendered image changes (zoom, overlays) so edge-cached maps are regenerated
-const RENDER_VERSION = 2;
+const RENDER_VERSION = 3;
 const ZOOM = 11;
 const CORS = { "Access-Control-Allow-Origin": "*" };
 
@@ -44,7 +44,7 @@ async function mapImage(request, env, ctx, theme, location) {
   if (cached) return cached;
 
   const { lat, lng } = location;
-  const target = `${MAPBOX_API}/styles/v1/${style}/static/${lng},${lat},${ZOOM},0/${width}x${height}@2x?access_token=${env.MAPBOX_TOKEN}`;
+  const target = `${MAPBOX_API}/styles/v1/${style}/static/${lng},${lat},${ZOOM},0/${width}x${height}@2x?attribution=false&logo=false&access_token=${env.MAPBOX_TOKEN}`;
   const upstream = await fetch(target);
   if (!upstream.ok) return new Response("Map unavailable", { status: 502 });
 

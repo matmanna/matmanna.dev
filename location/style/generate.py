@@ -2,7 +2,8 @@
 """Rebuilds the four cartoon-*.json styles from Mapbox Streets v12:
 colourful light/dark, and stone-light/stone-dark that use only the site's own Tailwind stone scale.
 
-Recolours every layer with the site's orange palette, thickens roads and drops
+Flattens the map (one tone for green areas, only the main road network,
+thick rounded roads, just town labels) and recolours every layer with the site's orange palette, thickens roads and drops
 POI/shield icons that can't be recoloured. Needs a Mapbox token in MAPBOX_TOKEN
 to download the base style: MAPBOX_TOKEN=pk... python3 generate.py
 """
@@ -45,6 +46,11 @@ REMOVE = {"hillshade","water-depth","water-shadow","waterway-shadow","building-u
  "pitch-outline","land-structure-line","ferry-aerialway-label","aerialway","road-pedestrian-polygon-pattern","admin-0-boundary-disputed",
  "tunnel-oneway-arrow-blue","tunnel-oneway-arrow-white","road-oneway-arrow-blue","road-oneway-arrow-white","bridge-oneway-arrow-blue","bridge-oneway-arrow-white"}
 
+# Cartoon simplification: keep only the road network you can read at city zoom, drop small
+# labels, paths, rail, ferries, waterways and boundaries
+DROP_RE = re.compile(r"^(road|bridge|tunnel)-(minor|street|path|steps|pedestrian|construction|rail|oneway)|^tunnel-|-oneway-|^ferry|^admin-|^aeroway|^waterway|^road-polygon|^road-pedestrian|^land-structure|^building|^golf|^natural-|^water-(line|point)-label$|^road-label$|^airport-label$|^settlement-subdivision-label$|^state-label$|^country-label$|^continent-label$|^block-")
+KEEP_LABELS = {"settlement-major-label","settlement-minor-label"}
+
 def scale(e, k):
     if isinstance(e,(int,float)): return round(e*k,3)
     if not isinstance(e,list) or not e: return e
@@ -67,17 +73,16 @@ def build(theme):
     out=[]
     for l in s['layers']:
         i=l['id']
-        if i in REMOVE: continue
+        if i in REMOVE or (DROP_RE.search(i) and i not in KEEP_LABELS): continue
         l=copy.deepcopy(l); paint=l.setdefault('paint',{}); t=l['type']
         if i=="land": paint['background-color']=p['land']
         elif i=="landcover":
-            paint['fill-color']=["match",["get","class"],"wood",p['wood'],"scrub",p['grass'],"grass",p['grass'],"crop",p['grass'],"snow","#ffffff",p['grass']]
+            paint['fill-color']=p['park']
             paint['fill-opacity']=1
         elif i=="national-park": paint['fill-color']=p['park']; paint['fill-opacity']=["interpolate",["linear"],["zoom"],5,0,6,1]
         elif i=="landuse":
-            paint['fill-color']=["match",["get","class"],"park",p['park'],"pitch",p['pitch'],"golf_course",p['park'],"cemetery",p['park'],
-              "wood",p['wood'],"grass",p['grass'],"scrub",p['grass'],"agriculture",p['grass'],"hospital",p['hospital'],"school",p['school'],
-              "college",p['school'],"sand",p['sand'],"glacier","#ffffff","airport",p['aero'],"industrial",p['industrial'],p['land']]
+            paint['fill-color']=["match",["get","class"],"park",p['park'],"pitch",p['park'],"golf_course",p['park'],"cemetery",p['park'],
+              "wood",p['park'],"grass",p['park'],"scrub",p['park'],"agriculture",p['land'],p['land']]
             paint['fill-opacity']=["interpolate",["linear"],["zoom"],5,0,8,1]
         elif i=="waterway": paint['line-color']=p['waterline']
         elif i=="water": paint['fill-color']=p['water']
@@ -100,13 +105,15 @@ def build(theme):
             else: c,cc=p['minor'],p['minor_c']
             paint['line-color']= cc if casing else c
             if "rail-tracks" in i: paint['line-color']=p['land']
-            if 'line-width' in paint: paint['line-width']=scale(paint['line-width'], 1.45 if casing else 1.3)
-            if 'line-gap-width' in paint: paint['line-gap-width']=scale(paint['line-gap-width'],1.3)
+            if 'line-width' in paint: paint['line-width']=scale(paint['line-width'], 2.1 if casing else 1.8)
+            l.setdefault('layout',{}).update({'line-cap':'round','line-join':'round'})
+            if 'line-gap-width' in paint: paint['line-gap-width']=scale(paint['line-gap-width'],1.8)
+            l.setdefault('layout',{}).update({'line-cap':'round','line-join':'round'})
             paint.pop('line-opacity',None) if "tunnel" not in i else None
         elif t=="symbol" and 'text-field' in l.get('layout',{}):
             natural = i in("water-line-label","water-point-label","waterway-label")
             paint['text-color']= p['wtext'] if natural else p['text']
-            paint['text-halo-color']=p['halo']; paint['text-halo-width']=2; paint['text-halo-blur']=0.5
+            paint['text-halo-color']=p['halo']; paint['text-halo-width']=2.5; paint['text-halo-blur']=0.5
             paint.pop('text-opacity',None)
         out.append(l)
     s['layers']=out
