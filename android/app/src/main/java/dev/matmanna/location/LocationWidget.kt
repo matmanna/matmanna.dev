@@ -40,7 +40,9 @@ class LocationWidget : AppWidgetProvider() {
             val views = baseViews(context)
             try {
                 val json = JSONObject(get("$BASE_URL/json").decodeToString())
-                views.setTextViewText(R.id.status, json.optString("city", "Tap to update"))
+                // The worker leaves the city empty for regions it only shows as a whole
+                val label = json.optString("city").ifBlank { json.optString("region") }
+                views.setTextViewText(R.id.status, label.ifBlank { "Tap to update" })
                 views.setImageViewBitmap(R.id.map, map(context))
             } catch (e: Exception) {
                 views.setTextViewText(R.id.status, "Tap to update")

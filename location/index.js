@@ -103,7 +103,9 @@ export default {
     if (!location) return new Response("No location yet", { status: 404, headers: CORS });
 
     if (path === "json") {
-      const { city, region, country, updated } = location;
+      const { region, country, updated } = location;
+      // In a whole-region area only the region is public, never the city
+      const city = wholeRegionBbox(env, region) ? "" : location.city;
       return Response.json(
         { city, region, country, updated },
         { headers: { "Cache-Control": "public, max-age=60", ...CORS } }
