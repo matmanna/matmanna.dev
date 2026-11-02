@@ -304,20 +304,20 @@ _...my various roles and responsibilities at Hack Club,_
   {% endfor %}
 </ul>
 
-_...as a student at The Pennsylvania State University and engineer for the Builders Collective org,_
-
-<ul class="projects-width-breakout px-0 flex mt-3 flex-col gap-3 not-prose">
-  {% assign psu_projects = site.projects | where_exp: "project", "project.hidden != true" | where_exp: "project", "project.org contains 'penn state'" | sort: "start_date" | reverse %}
-  {% for project in psu_projects %}
-  {% include post-card.html entry=project kind='project' %}
-  {% endfor %}
-</ul>
-
 _...my hackathon and competition submissions,_
 
 <ul class="projects-width-breakout px-0 flex mt-3 flex-col gap-3 not-prose">
   {% assign competition_projects = site.projects | where_exp: "project", "project.hidden != true" | where_exp: "project", "project.competition == true" | sort: "end_date" | reverse %}
   {% for project in competition_projects limit:10 %}
+  {% include post-card.html entry=project kind='project' %}
+  {% endfor %}
+</ul>
+
+_...stuff I've created for my university or the Builders Collective org,_
+
+<ul class="projects-width-breakout px-0 flex mt-3 flex-col gap-3 not-prose">
+  {% assign psu_projects = site.projects | where_exp: "project", "project.hidden != true" | where_exp: "project", "project.org contains 'penn state'" | sort: "start_date" | reverse %}
+  {% for project in psu_projects %}
   {% include post-card.html entry=project kind='project' %}
   {% endfor %}
 </ul>
