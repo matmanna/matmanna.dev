@@ -66,7 +66,7 @@ async function mapImage(request, env, ctx, theme, location) {
   const cached = await cache.match(cacheKey);
   if (cached) return cached;
 
-  const target = `${MAPBOX_API}/styles/v1/${style}/static/${framing}/${width}x${height}@2x?${bbox ? "padding=10&" : ""}attribution=false&logo=false&cb=${location.updated}-${RENDER_VERSION}-${mapVersion}&access_token=${env.MAPBOX_TOKEN}`;
+  const target = `${MAPBOX_API}/styles/v1/${style}/static/${framing}/${width}x${height}@2x?${bbox ? "padding=10&" : ""}attribution=false&logo=false&fresh=true&access_token=${env.MAPBOX_TOKEN}`;
   const upstream = await fetch(target);
   if (!upstream.ok) return new Response("Map unavailable", { status: 502 });
 
