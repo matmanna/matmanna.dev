@@ -5,27 +5,16 @@ const STYLES = { light: "mapbox/streets-v12", dark: "mapbox/navigation-night-v1"
 // Bump when the rendered image changes (zoom, overlays) so edge-cached maps are regenerated
 const RENDER_VERSION = 3;
 const ZOOM = 11;
-// ?view=state zooms out to show the whole state around the city
-const STATE_ZOOM = 6;
-const CORS = { "Access-Control-Allow-Origin": "*" };
-
-// Only the city's centre is stored, never the exact coordinates sent by the widget
-async function reverseGeocode(lat, lng, token) {
-  const url = `${MAPBOX_API}/search/geocode/v6/reverse?longitude=${lng}&latitude=${lat}&types=place&access_token=${token}`;
-  const response = await fetch(url);
-  if (!response.ok) throw new Error(`geocode failed: ${response.status}`);
-  const feature = (await response.json()).features?.[0];
-  if (!feature) throw new Error("no place found");
-  const [placeLng, placeLat] = feature.geometry.coordinates;
-  const context = feature.properties.context || {};
-  return {
-    city: feature.properties.name,
-    region: context.region?.name || "",
-    country: context.country?.name || "",
-    lat: placeLat,
-    lng: placeLng,
-    updated: Date.now(),
-  };
+// Regions shown as a whole instead of zooming to the city come from the WHOLE_REGIONS
+// secret, a JSON object of region name -> [west, south, east, north]. Unset means city view.
+// ?view=city always shows the city.
+function wholeRegionBbox(env, region) {
+  try {
+    const bbox = JSON.parse(env.WHOLE_REGIONS || "{}")[region];
+    return Array.isArray(bbox) && bbox.length === 4 && bbox.every(Number.isFinite) ? bbox : null;
+  } catch {
+    return null;
+  }
 }
 
 function clamp(value, fallback, min, max) {
@@ -38,16 +27,17 @@ async function mapImage(request, env, ctx, theme, location) {
   const url = new URL(request.url);
   const width = clamp(url.searchParams.get("w"), 742, 100, 1280);
   const height = clamp(url.searchParams.get("h"), 200, 100, 1280);
-  const zoom = url.searchParams.get("view") === "state" ? STATE_ZOOM : ZOOM;
+  const view = url.searchParams.get("view");
+  const bbox = view === "city" ? null : wholeRegionBbox(env, location.region);
+  const framing = bbox ? `%5B${bbox.join(",")}%5D` : `${location.lng},${location.lat},${ZOOM},0`;
 
   // Versioned by the last update, so a new location never serves a stale map
   const cache = caches.default;
-  const cacheKey = new Request(`https://location.matmanna.dev/${theme}?w=${width}&h=${height}&s=${encodeURIComponent(style)}&z=${zoom}&r=${RENDER_VERSION}&v=${location.updated}`);
+  const cacheKey = new Request(`https://location.matmanna.dev/${theme}?w=${width}&h=${height}&s=${encodeURIComponent(style)}&f=${framing}&r=${RENDER_VERSION}&v=${location.updated}`);
   const cached = await cache.match(cacheKey);
   if (cached) return cached;
 
-  const { lat, lng } = location;
-  const target = `${MAPBOX_API}/styles/v1/${style}/static/${lng},${lat},${zoom},0/${width}x${height}@2x?attribution=false&logo=false&access_token=${env.MAPBOX_TOKEN}`;
+  const target = `${MAPBOX_API}/styles/v1/${style}/static/${framing}/${width}x${height}@2x?${bbox ? "padding=10&" : ""}attribution=false&logo=false&access_token=${env.MAPBOX_TOKEN}`;
   const upstream = await fetch(target);
   if (!upstream.ok) return new Response("Map unavailable", { status: 502 });
 

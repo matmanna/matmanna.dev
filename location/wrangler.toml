@@ -17,4 +17,4 @@ STYLE_DARK = "matmanna/cmvyo8vr300e101qpds8sbl9d"
 binding = "LOCATION"
 id = "3f828ecf8a174c9aa7728fd88f1967d9"
 
-# Secrets: wrangler secret put MAPBOX_TOKEN / wrangler secret put UPDATE_TOKEN
+# Secrets: wrangler secret put MAPBOX_TOKEN / UPDATE_TOKEN / WHOLE_REGIONS (optional, JSON: {"Region name":[west,south,east,north]})
