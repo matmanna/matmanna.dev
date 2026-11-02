@@ -44,8 +44,14 @@ function clamp(value, fallback, min, max) {
 }
 
 async function mapImage(request, env, ctx, theme, location) {
-  const style = (theme === "dark" ? env.STYLE_DARK : env.STYLE_LIGHT) || STYLES[theme];
   const url = new URL(request.url);
+  // ?style=plain serves the unthemed cartoon map (for places that can't match the site's colours,
+  // like a GitHub README); it falls back to Mapbox's own styles until STYLE_*_PLAIN are set
+  const plain = url.searchParams.get("style") === "plain";
+  const custom = plain
+    ? (theme === "dark" ? env.STYLE_DARK_PLAIN : env.STYLE_LIGHT_PLAIN)
+    : (theme === "dark" ? env.STYLE_DARK : env.STYLE_LIGHT);
+  const style = custom || STYLES[theme];
   const width = clamp(url.searchParams.get("w"), 742, 100, 1280);
   const height = clamp(url.searchParams.get("h"), 200, 100, 1280);
   const view = url.searchParams.get("view");
