@@ -278,106 +278,10 @@ function processFile(filePath) {
     }
   });
 
-  // 5. Combine frequent class pairs (disabled — too many regressions from dark mode and responsive conflicts)
-  // html = combineClasses(html);
+  // 5. Class-combination merging runs as a separate global pass (see ./combine-classes)
+  // at the end of the script, after every file is minified.
 
   if (modified) fs.writeFileSync(filePath, html);
-}
-
-function combineClasses(html) {
-  // Find all class="..." attributes and their class lists
-  const classAttrRegex = /class="([^"]*)"/g;
-  const pairCounts = {};
-  const allClasses = new Set();
-  let cm;
-  while ((cm = classAttrRegex.exec(html)) !== null) {
-    const classes = cm[1].split(/\s+/).filter(c => c && !c.startsWith('dark:') && !c.match(/^(sm|md|lg|xl|2xl):/) && !c.startsWith('not-'));
-    classes.forEach(c => allClasses.add(c));
-    // Count pairs
-    for (let i = 0; i < classes.length; i++) {
-      for (let j = i + 1; j < classes.length; j++) {
-        const pair = [classes[i], classes[j]].sort().join(' ');
-        pairCounts[pair] = (pairCounts[pair] || 0) + 1;
-      }
-    }
-  }
-
-  // Find classes that have responsive or dark mode variants
-  const responsiveClasses = new Set();
-  const darkClasses = new Set();
-  ['sm:', 'md:', 'lg:', 'xl:', '2xl:'].forEach(prefix => {
-    allClasses.forEach(c => {
-      if (allClasses.has(prefix + c)) responsiveClasses.add(c);
-    });
-  });
-  allClasses.forEach(c => {
-    if (allClasses.has('dark:' + c)) darkClasses.add(c);
-  });
-
-  // Find the CSS rule for a class by searching the inline CSS
-  function getCSSRule(className) {
-    const escaped = className.replace(/[-]/g, '\\-');
-    const regex = new RegExp('\\.' + escaped + '\\{([^}]*)\\}');
-    const match = html.match(regex);
-    return match ? match[1] : null;
-  }
-
-  // Find pairs that would save bytes
-  const candidates = [];
-  Object.entries(pairCounts).forEach(([pair, count]) => {
-    if (count < 3) return;
-    const [a, b] = pair.split(' ');
-    // Skip pairs where either class has a responsive or dark mode variant
-    if (responsiveClasses.has(a) || responsiveClasses.has(b)) return;
-    if (darkClasses.has(a) || darkClasses.has(b)) return;
-    const ruleA = getCSSRule(a);
-    const ruleB = getCSSRule(b);
-    if (!ruleA || !ruleB) return;
-    // Skip pairs that set flex-direction (conflicts with sm:flex-row responsive)
-    if (ruleA.includes('flex-direction') || ruleB.includes('flex-direction')) return;
-
-    const originalPerOccurrence = a.length + 1 + b.length;
-    const combinedPerOccurrence = 2;
-    const ruleCost = 2 + 2 + ruleA.length + ruleB.length + 1;
-    const savedPerOccurrence = originalPerOccurrence - combinedPerOccurrence;
-    const totalSaved = savedPerOccurrence * count - ruleCost;
-
-    if (totalSaved > 0) {
-      candidates.push({ pair, a, b, ruleA, ruleB, count, totalSaved });
-    }
-  });
-
-  candidates.sort((a, b) => b.totalSaved - a.totalSaved);
-
-  let combinedIdx = 0;
-  let applied = 0;
-  for (const cand of candidates) {
-    if (applied >= 10) break;
-
-    const combinedName = 'q' + combinedIdx;
-    combinedIdx++;
-
-    const combinedRule = '.' + combinedName + '{' + cand.ruleA + ';' + cand.ruleB + '}';
-    const escA = cand.a.replace(/[-]/g, '\\-');
-    const escB = cand.b.replace(/[-]/g, '\\-');
-    const pairRegex = new RegExp('\\b' + escA + '\\s+' + escB + '\\b', 'g');
-    const pairRegexReverse = new RegExp('\\b' + escB + '\\s+' + escA + '\\b', 'g');
-
-    const before = html.length;
-    html = html.replace(pairRegex, combinedName);
-    html = html.replace(pairRegexReverse, combinedName);
-
-    if (html.length < before) {
-      const firstStyleEnd = html.indexOf('</style>');
-      if (firstStyleEnd >= 0) {
-        html = html.substring(0, firstStyleEnd) + combinedRule + html.substring(firstStyleEnd);
-      }
-      applied++;
-      console.log('Combined "' + cand.pair + '" -> .' + combinedName + ' (saved ' + cand.totalSaved + ' bytes, ' + cand.count + ' occurrences)');
-    }
-  }
-
-  return html;
 }
 
 function walkDir(dir) {
