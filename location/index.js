@@ -56,15 +56,17 @@ async function mapImage(request, env, ctx, theme, location) {
   const height = clamp(url.searchParams.get("h"), 200, 100, 1280);
   const view = url.searchParams.get("view");
   const bbox = view === "city" ? null : wholeRegionBbox(env, location.region);
+  // Bump the optional MAP_VERSION var after editing a Mapbox style to force fresh maps
+  const mapVersion = env.MAP_VERSION || "0";
   const framing = bbox ? `%5B${bbox.join(",")}%5D` : `${location.lng},${location.lat},${ZOOM},0`;
 
   // Versioned by the last update, so a new location never serves a stale map
   const cache = caches.default;
-  const cacheKey = new Request(`https://location.matmanna.dev/${theme}?w=${width}&h=${height}&s=${encodeURIComponent(style)}&f=${framing}&r=${RENDER_VERSION}&v=${location.updated}`);
+  const cacheKey = new Request(`https://location.matmanna.dev/${theme}?w=${width}&h=${height}&s=${encodeURIComponent(style)}&f=${framing}&r=${RENDER_VERSION}&mv=${mapVersion}&v=${location.updated}`);
   const cached = await cache.match(cacheKey);
   if (cached) return cached;
 
-  const target = `${MAPBOX_API}/styles/v1/${style}/static/${framing}/${width}x${height}@2x?${bbox ? "padding=10&" : ""}attribution=false&logo=false&access_token=${env.MAPBOX_TOKEN}`;
+  const target = `${MAPBOX_API}/styles/v1/${style}/static/${framing}/${width}x${height}@2x?${bbox ? "padding=10&" : ""}attribution=false&logo=false&cb=${location.updated}-${RENDER_VERSION}-${mapVersion}&access_token=${env.MAPBOX_TOKEN}`;
   const upstream = await fetch(target);
   if (!upstream.ok) return new Response("Map unavailable", { status: 502 });
 
