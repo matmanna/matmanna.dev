@@ -5,6 +5,8 @@ const STYLES = { light: "mapbox/streets-v12", dark: "mapbox/navigation-night-v1"
 // Bump when the rendered image changes (zoom, overlays) so edge-cached maps are regenerated
 const RENDER_VERSION = 3;
 const ZOOM = 11;
+// ?view=state zooms out to show the whole state around the city
+const STATE_ZOOM = 6;
 const CORS = { "Access-Control-Allow-Origin": "*" };
 
 // Only the city's centre is stored, never the exact coordinates sent by the widget
@@ -36,15 +38,16 @@ async function mapImage(request, env, ctx, theme, location) {
   const url = new URL(request.url);
   const width = clamp(url.searchParams.get("w"), 742, 100, 1280);
   const height = clamp(url.searchParams.get("h"), 200, 100, 1280);
+  const zoom = url.searchParams.get("view") === "state" ? STATE_ZOOM : ZOOM;
 
   // Versioned by the last update, so a new location never serves a stale map
   const cache = caches.default;
-  const cacheKey = new Request(`https://location.matmanna.dev/${theme}?w=${width}&h=${height}&s=${encodeURIComponent(style)}&r=${RENDER_VERSION}&v=${location.updated}`);
+  const cacheKey = new Request(`https://location.matmanna.dev/${theme}?w=${width}&h=${height}&s=${encodeURIComponent(style)}&z=${zoom}&r=${RENDER_VERSION}&v=${location.updated}`);
   const cached = await cache.match(cacheKey);
   if (cached) return cached;
 
   const { lat, lng } = location;
-  const target = `${MAPBOX_API}/styles/v1/${style}/static/${lng},${lat},${ZOOM},0/${width}x${height}@2x?attribution=false&logo=false&access_token=${env.MAPBOX_TOKEN}`;
+  const target = `${MAPBOX_API}/styles/v1/${style}/static/${lng},${lat},${zoom},0/${width}x${height}@2x?attribution=false&logo=false&access_token=${env.MAPBOX_TOKEN}`;
   const upstream = await fetch(target);
   if (!upstream.ok) return new Response("Map unavailable", { status: 502 });
 

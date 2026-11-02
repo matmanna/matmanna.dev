@@ -3,7 +3,7 @@
 colourful light/dark, and stone-light/stone-dark that use only the site's own Tailwind stone scale.
 
 Flattens the map (one tone for green areas, only the main road network,
-thick rounded roads, just town labels) and recolours every layer with the site's orange palette, thickens roads and drops
+thick rounded roads, just town labels, state boundary and name) and recolours every layer with the site's orange palette, thickens roads and drops
 POI/shield icons that can't be recoloured. Needs a Mapbox token in MAPBOX_TOKEN
 to download the base style: MAPBOX_TOKEN=pk... python3 generate.py
 """
@@ -48,8 +48,8 @@ REMOVE = {"hillshade","water-depth","water-shadow","waterway-shadow","building-u
 
 # Cartoon simplification: keep only the road network you can read at city zoom, drop small
 # labels, paths, rail, ferries, waterways and boundaries
-DROP_RE = re.compile(r"^(road|bridge|tunnel)-(minor|street|path|steps|pedestrian|construction|rail|oneway)|^tunnel-|-oneway-|^ferry|^admin-|^aeroway|^waterway|^road-polygon|^road-pedestrian|^land-structure|^building|^golf|^natural-|^water-(line|point)-label$|^road-label$|^airport-label$|^settlement-subdivision-label$|^state-label$|^country-label$|^continent-label$|^block-")
-KEEP_LABELS = {"settlement-major-label","settlement-minor-label"}
+DROP_RE = re.compile(r"^(road|bridge|tunnel)-(minor|street|path|steps|pedestrian|construction|rail|oneway)|^tunnel-|-oneway-|^ferry|^admin-0|^aeroway|^waterway|^road-polygon|^road-pedestrian|^land-structure|^building|^golf|^natural-|^water-(line|point)-label$|^road-label$|^airport-label$|^settlement-subdivision-label$|^country-label$|^continent-label$|^block-")
+KEEP_LABELS = {"settlement-major-label","settlement-minor-label","state-label"}
 
 def scale(e, k):
     if isinstance(e,(int,float)): return round(e*k,3)
@@ -104,6 +104,8 @@ def build(theme):
             elif any(x in i for x in("path","steps","pedestrian","construction")): c,cc=p['path'],p['path']
             else: c,cc=p['minor'],p['minor_c']
             paint['line-color']= cc if casing else c
+            if any(x in i for x in('primary','secondary','tertiary','major-link')): l['minzoom']=max(l.get('minzoom',0),8.5)
+            if 'motorway' in i or 'trunk' in i: l['minzoom']=max(l.get('minzoom',0),5)
             if "rail-tracks" in i: paint['line-color']=p['land']
             if 'line-width' in paint: paint['line-width']=scale(paint['line-width'], 2.1 if casing else 1.8)
             l.setdefault('layout',{}).update({'line-cap':'round','line-join':'round'})
@@ -116,6 +118,18 @@ def build(theme):
             paint['text-halo-color']=p['halo']; paint['text-halo-width']=2.5; paint['text-halo-blur']=0.5
             paint.pop('text-opacity',None)
         out.append(l)
+    # Only interstates (class motorway) at state zoom; other trunk roads join from zoom 8.5
+    final=[]
+    for l in out:
+        final.append(l)
+        if l['id'] in ("road-motorway-trunk","road-motorway-trunk-case"):
+            trunk=copy.deepcopy(l)
+            trunk['id']=l['id'].replace("motorway-trunk","trunk")
+            trunk['filter']=["all",["==",["get","class"],"trunk"],["==",["geometry-type"],"LineString"]]
+            trunk['minzoom']=8.5
+            l['filter']=["all",["==",["get","class"],"motorway"],["==",["geometry-type"],"LineString"]]
+            final.append(trunk)
+    out=final
     s['layers']=out
     s['name']=f"matmanna cartoon {theme}"
     for k in('owner','id','created','modified','visibility','draft'): s.pop(k,None)
