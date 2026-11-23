@@ -2,9 +2,14 @@
 layout: project
 title: plinth
 description: A better foundation for modular agent harnesses.
+image: /assets/images/projects/plinth.webp
+card_image: /assets/images/projects/cards/plinth-card.webp
 start_date: 2026-11-22
 activity_status: active
 links:
+  - title: Website
+    url: https://plinth.matmanna.dev
+    icon: fa-solid fa-up-right-from-square
   - title: Source
     url: https://github.com/matmanna/plinth
     icon: fa-brands fa-github
