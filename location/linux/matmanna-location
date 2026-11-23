@@ -12,8 +12,9 @@ body='{}'
 
 if [[ -x $WHERE_AM_I ]]; then
   fix=$(timeout 20 "$WHERE_AM_I" -t 15 2>/dev/null || true)
-  lat=$(awk '/^Latitude:/ { sub("°", "", $2); print $2; exit }' <<<"$fix")
-  lng=$(awk '/^Longitude:/ { sub("°", "", $2); print $2; exit }' <<<"$fix")
+  # where-am-i prints a new block per refinement; the first is often a stale GeoIP guess, so keep the last.
+  lat=$(awk '/^Latitude:/ { sub("°", "", $2); v=$2 } END { print v }' <<<"$fix")
+  lng=$(awk '/^Longitude:/ { sub("°", "", $2); v=$2 } END { print v }' <<<"$fix")
   if [[ -n $lat && -n $lng ]]; then
     body="{\"lat\":$lat,\"lng\":$lng}"
   fi
