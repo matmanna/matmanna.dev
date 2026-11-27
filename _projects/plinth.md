@@ -1,7 +1,7 @@
 ---
 layout: project
 title: plinth
-description: A better foundation for modular agent harnesses.
+description: A foundation for all the factories.
 image: /assets/images/projects/plinth.webp
 card_image: /assets/images/projects/cards/plinth-card.webp
 start_date: 2026-11-22
