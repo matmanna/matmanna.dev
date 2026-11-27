@@ -1,7 +1,7 @@
 ---
 layout: project
 title: mytholog
-description: Mythos-class agents that red-team your (or your clients') projects. Plugin modularity included.
+description: A harness for Mythos-class agents that red-team your (or your clients') projects. Plugin modularity included.
 image: /assets/images/projects/mytholog.webp
 card_image: /assets/images/projects/cards/mytholog-card.webp
 start_date: 2026-11-22
