@@ -2,8 +2,14 @@
 layout: project
 title: mytholog
 description: An offensive security harness for organization software factories.
+image: /assets/images/projects/mytholog.webp
+card_image: /assets/images/projects/cards/mytholog-card.webp
 start_date: 2026-11-22
 activity_status: active
+links:
+  - title: Website
+    url: https://mytholog.matmanna.dev
+    icon: fa-solid fa-up-right-from-square
 tags:
   - Security
   - Claude Agent SDK
@@ -16,4 +22,6 @@ skills:
     icon: fa-solid fa-code
 ---
 
-mytholog is an agentic harness that runs defensive security audits and red-team sweeps across a whole software organization, continuously, with a human editor in the loop. A Claude model does the reading, probing and writing, while the harness handles what a model shouldn't be trusted with alone: scoping, scheduling, isolation, safety policy, evidence capture, a ledger of every artifact it creates, and the report pipeline.
+mytholog is a security factory for internal teams: the same discipline that ships your software, pointed at breaking it. Scheduled sweeps re-read only what changed across every repository, a skeptic agent filters the candidates, and findings go to the people who own the code. Proving a bug waits on a person's approval inside the case, so nothing touches a live target without one, and every decision leaves a paper trail.
+
+Each case moves from signal to doubt, proof, write-up and a submission that a person sends. Closing a case with a reason becomes a rule, so the next sweep raises less noise.
