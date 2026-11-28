@@ -11,10 +11,25 @@ token=$(<"$TOKEN_FILE")
 body='{}'
 
 if [[ -x $WHERE_AM_I ]]; then
-  fix=$(timeout 20 "$WHERE_AM_I" -t 15 2>/dev/null || true)
-  # where-am-i prints a new block per refinement; the first is often a stale GeoIP guess, so keep the last.
-  lat=$(awk '/^Latitude:/ { sub("°", "", $2); v=$2 } END { print v }' <<<"$fix")
-  lng=$(awk '/^Longitude:/ { sub("°", "", $2); v=$2 } END { print v }' <<<"$fix")
+  # GeoClue's first fix is a coarse GeoIP guess (often the ISP's registered city, not ours).
+  # The Wi-Fi based fix can take a minute, so wait for the first fix that is not GeoIP.
+  out=$(mktemp)
+  trap 'rm -f "$out"' EXIT
+  "$WHERE_AM_I" -t 90 >"$out" 2>/dev/null &
+  pid=$!
+  lat= lng=
+  for _ in $(seq 90); do
+    read -r lat lng < <(awk '
+      /^Latitude:/  { sub("°", "", $2); la = $2 }
+      /^Longitude:/ { sub("°", "", $2); lo = $2 }
+      /^Description:/ && $0 !~ /GeoIP/ { l = la " " lo }
+      END { print l }' "$out") || true
+    [[ -n $lat && -n $lng ]] && break
+    kill -0 "$pid" 2>/dev/null || break
+    sleep 1
+  done
+  kill "$pid" 2>/dev/null || true
+  wait "$pid" 2>/dev/null || true
   if [[ -n $lat && -n $lng ]]; then
     body="{\"lat\":$lat,\"lng\":$lng}"
   fi
