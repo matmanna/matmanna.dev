@@ -277,7 +277,7 @@ _...some initiatives & projects I've worked on independently, (<a href="/project
 
 <ul class="projects-width-breakout px-0 flex mt-3 flex-col gap-3 not-prose">
   {% assign visible_projects = site.projects | where_exp: "project", "project.hidden != true" | where_exp: "project", "project.competition != true" %}
-  {% assign projects_without_end = visible_projects | where_exp: "project", "project.end_date == nil or project.end_date == ''" %}
+  {% assign projects_without_end = visible_projects | where_exp: "project", "project.end_date == nil or project.end_date == ''" | sort: "start_date" | reverse %}
   {% assign projects_with_end = visible_projects | where_exp: "project", "project.end_date != nil and project.end_date != ''" | sort: "end_date" | reverse %}
   {% assign recent_projects = projects_without_end | concat: projects_with_end %}
   {% assign project_count = 0 %}
